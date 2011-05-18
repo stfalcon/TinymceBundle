@@ -7,7 +7,7 @@ By analogy with the bundle https://github.com/ihqs/WysiwygBundle
 
     git submodule add git://github.com/stfalcon/TinymceBundle.git vendor/bundles/Stfalcon/Bundle
 
-Modify your autoloader if you didn't installer another IHQS Bundle yet.
+Modify your autoloader if you didn't installer another Stfalcon Bundle yet.
 Register namespace :
 
     // app/autoload.php
