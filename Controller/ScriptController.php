@@ -12,6 +12,7 @@ class ScriptController extends BaseController
 
     public function initAction()
     {
-        return $this->render('StfalconTinymceBundle:Script:init.html.twig', array());
+        return $this->render('StfalconTinymceBundle:Script:init.html.twig',
+                array('tinymce_config' => $this->container->getParameter('stfalcon_tinymce.config')));
     }
 }
