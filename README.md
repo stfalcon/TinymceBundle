@@ -43,6 +43,16 @@ Configure your application
         plugins: "fullscreen"
         theme_advanced_buttons1_add: "fullscreen"
 
+run the command
+
+    php app/console assets:install web/
+
+to copy the resources to the projects web directory"
+
 Add script to your templates at the bottom of your page (for faster page display).
 
     {% render "StfalconTinymceBundle:Script:init" %}
+
+or
+
+    {{ init_tinymce()|raw }}
