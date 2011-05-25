@@ -55,4 +55,4 @@ Add script to your templates at the bottom of your page (for faster page display
 
 or
 
-    {{ init_tinymce()|raw }}
+    {{ tinymce_init()|raw }}

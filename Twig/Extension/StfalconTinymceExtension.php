@@ -43,13 +43,13 @@ class StfalconTinymceExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'init_tinymce' => new \Twig_Function_Method($this, 'init_tinymce'),
+            'tinymce_init' => new \Twig_Function_Method($this, 'tinymce_init'),
         );
     }
     /**
      * TinyMce initializations
      */
-    public function init_tinymce()
+    public function tinymce_init()
     {
         return ($this->getContainer()->get('templating')->render('StfalconTinymceBundle:Script:init.html.twig', array(
             'tinymce_config' => $this->getContainer()->getParameter('stfalcon_tinymce.config')
