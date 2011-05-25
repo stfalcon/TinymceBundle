@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <!-- T W I G   H E L P E R S -->
+        <service id="twig.extension.stfalcon_tinymce" class="Stfalcon\Bundle\TinymceBundle\Twig\Extension\StfalconTinymceExtension">
+            <argument type="service" id="service_container"></argument>
+            <tag name="twig.extension" alias="stfalcon_tinymce" />
+        </service>
+
+    </services>
+</container>
