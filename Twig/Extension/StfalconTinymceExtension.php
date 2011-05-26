@@ -43,7 +43,7 @@ class StfalconTinymceExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'tinymce_init' => new \Twig_Function_Method($this, 'tinymce_init'),
+            'tinymce_init' => new \Twig_Function_Method($this, 'tinymce_init', array('is_safe' => array('html')))
         );
     }
     /**
