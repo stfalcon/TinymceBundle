@@ -51,8 +51,11 @@ class StfalconTinymceExtension extends \Twig_Extension
      */
     public function tinymce_init()
     {
+        //$assets = $this->getContainer()->get('templating.helper.assets');
+        //var_dump($assets->getUrl('/bundles/stfalcontinymce/vendor/tiny_mce/tiny_mce.js'));
         return ($this->getContainer()->get('templating')->render('StfalconTinymceBundle:Script:init.html.twig', array(
-            'tinymce_config' => $this->getContainer()->getParameter('stfalcon_tinymce.config')
+            'tinymce_config' => $this->getContainer()->getParameter('stfalcon_tinymce.config'),
+            'tinymce_config_json' => json_encode($this->getContainer()->getParameter('stfalcon_tinymce.config'))
         )));
     }
 
