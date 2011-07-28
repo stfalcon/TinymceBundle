@@ -73,3 +73,8 @@ If, you want to change theme from "advanced" to "simple" you need to add tinymce
 Add script to your templates/layout at the bottom of your page (for faster page display).
 
     {{ tinymce_init() }}
+
+If needed add jquery before calling tinymce_init
+
+    <script type="text/javascript" src="{{ asset('/bundles/stfalcontinymce/vendor/tiny_mce/jquery-1.6.1.min.js') }}"></script>
+    {{ tinymce_init() }}
