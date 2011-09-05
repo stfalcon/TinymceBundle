@@ -32,6 +32,7 @@ Configure your application
 
     // app/config.yml
     stfalcon_tinymce:
+        include_jquery: true
         theme:
             simple:
                 mode: "textareas"
