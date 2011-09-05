@@ -40,6 +40,7 @@ class Configuration
                 ->scalarNode('theme_advanced_buttons3')->defaultValue("")->end()
                 // http://tinymce.moxiecode.com/wiki.php/Configuration:plugins
                 ->scalarNode('plugins')->defaultValue("")->end()
+                ->booleanNode('include_jquery')->defaultValue("true")->end()
                 
             ->end();
 
