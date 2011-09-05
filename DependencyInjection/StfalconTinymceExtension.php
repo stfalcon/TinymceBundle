@@ -27,6 +27,7 @@ class StfalconTinymceExtension extends Extension
         }
 
         $container->setParameter('stfalcon_tinymce.config', $config);
+        $container->setParameter('stfalcon_tinymce.include_jquery', isset($config['include_jquery']) ? $config['include_jquery'] : true);
 
         // load dependency injection config
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
