@@ -9,7 +9,7 @@ Download the code by adding the git module or editing the deps file in the root 
 
 ### Download via git submodule
 
-    git submodule add git://github.com/stfalcon/TinymceBundle.git vendor/bundles/Stfalcon/Bundle
+    git submodule add git://github.com/stfalcon/TinymceBundle.git vendor/bundles/Stfalcon/Bundle/TinymceBundle
 
 ### Download by editing deps file
 
