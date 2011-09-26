@@ -5,7 +5,18 @@ By analogy with the bundle https://github.com/ihqs/WysiwygBundle
 
 ## Installation
 
+Download the code by adding the git module or editing the deps file in the root project.
+
+### Download via git submodule
+
     git submodule add git://github.com/stfalcon/TinymceBundle.git vendor/bundles/Stfalcon/Bundle
+
+### Download by editing deps file
+
+    [TinymceBundle]
+        git=git://github.com/stfalcon/TinymceBundle.git
+        target=/bundles/Stfalcon/Bundle/TinymceBundle
+
 
 Modify your autoloader if you didn't installer another Stfalcon Bundle yet.
 Register namespace :
