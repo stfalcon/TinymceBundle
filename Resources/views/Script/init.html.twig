@@ -4,6 +4,7 @@
 <script type="text/javascript" src="{{ asset('/bundles/stfalcontinymce/vendor/tiny_mce/jquery.tinymce.js') }}"></script>
 
 <script type="text/javascript">
+    //<![CDATA[
     var tinymce_options = {{ tinymce_config_json|raw }};
     $('textarea.tinymce').each(function (){
             var attr = jQuery.parseJSON($(this).attr('tinymce'));
@@ -11,4 +12,5 @@
             options.script_url = '{{ asset('/bundles/stfalcontinymce/vendor/tiny_mce/tiny_mce.js') }}';
             $(this).tinymce(options);
     });
+    //]]>
 </script>
