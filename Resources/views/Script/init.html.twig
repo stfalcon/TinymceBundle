@@ -1,7 +1,7 @@
 {% if include_jquery %}
-    <script type="text/javascript" src="{{ asset('/bundles/stfalcontinymce/vendor/tiny_mce/jquery-1.6.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/stfalcontinymce/vendor/tiny_mce/jquery-1.6.1.min.js') }}"></script>
 {% endif %}
-<script type="text/javascript" src="{{ asset('/bundles/stfalcontinymce/vendor/tiny_mce/jquery.tinymce.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/stfalcontinymce/vendor/tiny_mce/jquery.tinymce.js') }}"></script>
 
 <script type="text/javascript">
     //<![CDATA[
@@ -9,7 +9,7 @@
     $('textarea.tinymce').each(function (){
             var attr = jQuery.parseJSON($(this).attr('tinymce'));
             var options =  (attr && attr.theme == 'simple') ? tinymce_options.theme.simple : tinymce_options.theme.advanced;
-            options.script_url = '{{ asset('/bundles/stfalcontinymce/vendor/tiny_mce/tiny_mce.js') }}';
+            options.script_url = '{{ asset('bundles/stfalcontinymce/vendor/tiny_mce/tiny_mce.js') }}';
             $(this).tinymce(options);
     });
     //]]>
