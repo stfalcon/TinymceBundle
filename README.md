@@ -73,10 +73,12 @@ run the command
     php app/console assets:install web/
 
 to copy the resources to the projects web directory"
-
-Add class "timymce" into textarea field to initialize TinyMCE.
+ 
+Add class "tinymce" into textarea field to initialize TinyMCE.
 
     <textarea  class="tinymce"></textarea>
+
+If you are using FormBuilder, use an array to add the class.  e.g. ->add('introtext', 'textarea', array('attr' => array('class' => 'tinymce')))
 
 If, you want to change theme from "advanced" to "simple" you need to add tinymce attribute and configurate it.
 
