@@ -87,3 +87,13 @@ If, you want to change theme from "advanced" to "simple" you need to add tinymce
 Add script to your templates/layout at the bottom of your page (for faster page display).
 
     {{ tinymce_init() }}
+
+## Localization
+
+You can change language of your tiny_mce by adding language selector into theme, something like
+
+    stfalcon_tinymce:
+        include_jquery: true
+        theme:
+            advanced:
+                language: ru
