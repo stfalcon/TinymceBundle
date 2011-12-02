@@ -1,0 +1,46 @@
+
+.add-com .com-block .title {
+    float: left;
+    padding-bottom: 13px;
+    width: 100%;
+}
+.com-menu {
+    float: left;
+    position: relative;
+    width: 100%;
+    z-index: 2;
+}
+.com-block label {
+    float: left;
+    padding-bottom: 0px;
+    width: 30%;
+}
+
+.com-block input {
+    border: 1px solid #9E9E9E;
+    float: left;
+    margin: 0;
+    padding: 0;
+    width: 345px;
+}
+.line-bg {
+    background: url("../img/ext-searchbg.gif") repeat-x scroll 0 0 transparent;
+    clear: both;
+    height: 7px;
+    margin-bottom: 5px;
+}
+.prev-post {
+    float: left;
+    margin-left: 150px;
+    margin-top: 15px;
+}
+.prev-post input {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 2px solid #595858;
+    color: #666666;
+    cursor: pointer;
+    float: left;
+    font-size: 11px;
+    margin-right: 6px;
+    padding: 1px 18px;
+}
