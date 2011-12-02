@@ -25,9 +25,10 @@ class StfalconTinymceExtension extends Extension
         foreach($configs as $c) {
             $config = array_merge($config, $c);
         }
-
         $container->setParameter('stfalcon_tinymce.config', $config);
         $container->setParameter('stfalcon_tinymce.include_jquery', isset($config['include_jquery']) ? $config['include_jquery'] : true);
+        $container->setParameter('stfalcon_tinymce.textarea_class', 
+					(isset($config['textarea_class']) AND $config['textarea_class']) ? '.' . $config['textarea_class'] : '');
 
         // load dependency injection config
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
