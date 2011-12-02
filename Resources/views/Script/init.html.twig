@@ -6,7 +6,8 @@
 <script type="text/javascript">
     //<![CDATA[
     var tinymce_options = {{ tinymce_config_json|raw }};
-    $('textarea.tinymce').each(function (){
+	var textarea = 'textarea{{textarea_class}}';
+    $(textarea).each(function (){
             var attr = jQuery.parseJSON($(this).attr('tinymce'));
             var options =  (attr && attr.theme == 'simple') ? tinymce_options.theme.simple : tinymce_options.theme.advanced;
             options.script_url = '{{ asset('bundles/stfalcontinymce/vendor/tiny_mce/tiny_mce.js') }}';
