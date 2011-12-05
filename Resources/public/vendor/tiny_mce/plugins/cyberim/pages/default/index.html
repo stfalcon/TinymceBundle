@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Cyber Image Manager</title>
+		<!--script type='text/javascript' src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script-->
+		<link type="image/x-icon" rel="shortcut icon" href="pages/default/favicon.ico">
+		<link href="index.php?task=css&amp;file=general" rel="stylesheet" type="text/css"/>
+		<script type="text/javascript" src="index.php?task=script&amp;file=jquery-1.4.2.min.js"></script>
+		<script type="text/javascript" src="index.php?task=script&amp;file=jquery.dirs.js"></script>
+		<script type="text/javascript" src="index.php?task=script&amp;file=jquery.paginator.js"></script>
+		<script type="text/javascript" src="index.php?task=script&amp;file=jquery.core.js"></script>
+	</head>
+		
+	<body>		
+		<table cellpadding="0" cellspacing="0" width="100%">
+			<tr valign="top">
+				<td class="sen-left" valign="top">
+					<div class="sen-left-wrap">
+						<div class="sen-left-title">
+							<h1>{#folder_tree}</h1>
+							<div id="upload_files" title="{#upload_files}"></div>
+							<div id="folder_add" title="{#folder_add}"></div>
+							<div class="clr"></div>
+						</div>
+						<div class="sen-dirs"></div>
+					</div>
+					
+					<div class="sen-left-wrap" style="display:none;" id="file_description">
+						<div class="sen-left-title">
+							<h1>{#file_description}</h1>
+							<div id="remove_file" title="{#remove_file}"></div>
+							<div id="rename_file" title="{#rename_file}"></div>
+							<div id="download_file" title="{#download_file}"></div>
+							<div class="clr"></div>
+						</div>
+						<div id="file_desc_data"></div>
+					</div>       
+				</td>
+				<td class="sen-content">
+					<div class="sen-content-wrap">
+						<div class="tool-bar"></div> 
+						<table cellpadding="0" cellspacing="0" width="100%">
+							<tr>
+								<td valign="top">
+									<div class="sen-files-wrap">
+										<div id="sen-pathview">
+											<div class="sen-pathview-el" id="sen-pathview-root" style="cursor:pointer;" title="{#root_directory}">
+												<div class="sen-dir"></div>
+											</div>
+										</div>	
+										<div style="clear:both;"></div>
+									</div>
+									<br/>
+									<div id="sen-items">
+										<div class="sen-files-wrap">
+											<div id="sen-list">{#directory_is_empty}</div>
+											<div style="clear:both;"></div>
+											<div id="paginator1" class="paginator" style="display:none"></div>
+										</div>
+									</div>	
+									<div id="sen-uploader" class="sen-files-wrap">
+										<iframe name="ajaxFrame" id="ajaxFrame"></iframe>
+										<div id="upload_toolbar">
+											<div id="files_add" title="{#upload_files_add}"></div>
+											<div id="start_upload" title="{#upload_start}"></div>
+											<div id="clear_queue" title="{#upload_clear_queue}"></div>
+											<div id="cancel_upload" title="{#upload_cancel}"></div>
+										</div>
+										<div id="filesQueue"></div>
+							  		</div>						               		  
+								</td>
+							</tr>     
+						</table>
+					</div>
+				</td>
+			</tr>
+		</table>
+    </body>
+</html>
