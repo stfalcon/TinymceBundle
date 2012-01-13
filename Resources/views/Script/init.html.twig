@@ -4,14 +4,27 @@
 <script type="text/javascript" src="{{ asset('bundles/stfalcontinymce/vendor/tiny_mce/jquery.tinymce.js') }}"></script>
 
 <script type="text/javascript">
-    //<![CDATA[
-    var tinymce_options = {{ tinymce_config_json|raw }};
-	var textarea = 'textarea{{textarea_class}}';
+//<![CDATA[
+(function($, undefined) {
+    var tinymce_options = {{ tinymce_config_json|raw }},
+        textarea = 'textarea{{textarea_class}}';
+
     $(textarea).each(function (){
-            var attr = jQuery.parseJSON($(this).attr('tinymce'));
-            var options =  (attr && attr.theme == 'simple') ? tinymce_options.theme.simple : tinymce_options.theme.advanced;
+            var $textarea = $(this),
+                attr = $.parseJSON($textarea.attr('tinymce')),
+                options = (attr && attr.theme == 'simple') ? tinymce_options.theme.simple : tinymce_options.theme.advanced;
+
             options.script_url = '{{ asset('bundles/stfalcontinymce/vendor/tiny_mce/tiny_mce.js') }}';
-            $(this).tinymce(options);
+
+            // workaround for an incompatibility with html5-validation (see: http://git.io/CMKJTw)
+            if($textarea.is('[required]')) {
+                options.oninit = function(editor) {
+                    editor.onChange.add(function(ed, l) { ed.save(); });
+                };
+            }
+
+            $textarea.tinymce(options);
     });
-    //]]>
+} (jQuery));
+//]]>
 </script>
