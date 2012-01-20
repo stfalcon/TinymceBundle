@@ -12,8 +12,15 @@
     $(textarea).each(function (){
             var $textarea = $(this),
                 attr = $.parseJSON($textarea.attr('tinymce')),
-                options = (attr && attr.theme == 'simple') ? tinymce_options.theme.simple : tinymce_options.theme.advanced;
+                theme;
 
+            if (!attr || !attr.theme || !tinymce_options.theme[attr.theme])
+            	theme = 'simple';
+            else 
+            	theme = attr.theme;
+
+            var options = tinymce_options.theme[theme];
+            
             options.script_url = '{{ asset('bundles/stfalcontinymce/vendor/tiny_mce/tiny_mce.js') }}';
 
             // workaround for an incompatibility with html5-validation (see: http://git.io/CMKJTw)
