@@ -9,21 +9,23 @@
     var tinymce_options = {{ tinymce_config_json|raw }},
         textarea = 'textarea{{textarea_class}}';
 
-    $(textarea).each(function (){
-            var $textarea = $(this),
-                attr = $.parseJSON($textarea.attr('tinymce')),
-                options = (attr && attr.theme == 'simple') ? tinymce_options.theme.simple : tinymce_options.theme.advanced;
+    $(function() {
+        $(textarea).each(function (){
+                var $textarea = $(this),
+                    attr = $.parseJSON($textarea.attr('tinymce')),
+                    options = (attr && attr.theme == 'simple') ? tinymce_options.theme.simple : tinymce_options.theme.advanced;
 
-            options.script_url = '{{ asset('bundles/stfalcontinymce/vendor/tiny_mce/tiny_mce.js') }}';
+                options.script_url = '{{ asset('bundles/stfalcontinymce/vendor/tiny_mce/tiny_mce.js') }}';
 
-            // workaround for an incompatibility with html5-validation (see: http://git.io/CMKJTw)
-            if($textarea.is('[required]')) {
-                options.oninit = function(editor) {
-                    editor.onChange.add(function(ed, l) { ed.save(); });
-                };
-            }
+                // workaround for an incompatibility with html5-validation (see: http://git.io/CMKJTw)
+                if($textarea.is('[required]')) {
+                    options.oninit = function(editor) {
+                        editor.onChange.add(function(ed, l) { ed.save(); });
+                    };
+                }
 
-            $textarea.tinymce(options);
+                $textarea.tinymce(options);
+        });
     });
 } (jQuery));
 //]]>
