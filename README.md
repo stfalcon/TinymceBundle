@@ -68,6 +68,18 @@ Configure your application
                 theme_advanced_toolbar_align: "left"
                 theme_advanced_statusbar_location: "bottom"
                 theme_advanced_resizing: true
+            medium:
+                mode: "textareas"
+                theme: "advanced"
+                plugins: "table,advhr,advlink,paste,xhtmlxtras,spellchecker"
+                theme_advanced_buttons1: "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,forecolor,backcolor,|,hr,removeformat,|,sub,sup,|,spellchecker"
+                theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,bullist,numlist,|,undo,redo,|,link,unlink,anchor,cleanup,code,|,tablecontrols"
+                theme_advanced_buttons3: ""
+                theme_advanced_toolbar_location: "top"
+                theme_advanced_toolbar_align: "left"
+                theme_advanced_statusbar_location: ""
+                paste_auto_cleanup_on_paste: true
+                spellchecker_languages: "+English=en,Dutch=nl"
 
 run the command
 
@@ -87,11 +99,14 @@ and add the parameter textarea_class to tinymce confgig, something like that:
 		    textarea_class: "tinymce"
 			...
 	
-If you are using FormBuilder, use an array to add the class.  e.g. ->add('introtext', 'textarea', array('attr' => array('class' => 'tinymce')))
+If you are using FormBuilder, use an array to add the class, you can also use the 'theme' option to change the
+used theme to something other than 'simple' (i.e. on of the other defined themes in your config - the example above
+defined 'advanced' and 'medium').  e.g.:
 
-If, you want to change theme from "advanced" to "simple" you need to add tinymce attribute and configurate it.
-
-    <textarea  class="tinymce" tinymce='{"theme":"simple"}'></textarea>  //Note the double quotes!
+        $builder->add('introtext', 'textarea', array(
+            'attr'  => array('class' => 'tinymce')
+            'theme' => 'medium',
+        ))
 
 Add script to your templates/layout at the bottom of your page (for faster page display).
 
