@@ -104,8 +104,7 @@ used theme to something other than 'simple' (i.e. on of the other defined themes
 defined 'advanced' and 'medium').  e.g.:
 
         $builder->add('introtext', 'textarea', array(
-            'attr'  => array('class' => 'tinymce')
-            'theme' => 'medium',
+            'attr'  => array('class' => 'tinymce', 'theme' => 'medium')
         ))
 
 Add script to your templates/layout at the bottom of your page (for faster page display).
