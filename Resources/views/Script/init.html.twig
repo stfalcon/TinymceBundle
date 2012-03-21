@@ -9,7 +9,8 @@
     var tinymce_options = {{ tinymce_config_json|raw }},
         textarea = 'textarea{{textarea_class}}';
 
-    $(textarea).each(function (){
+    $(function() {
+        $(textarea).each(function (){
             var $textarea = $(this),
                 attr = $.parseJSON($textarea.attr('tinymce')),
                 theme;
