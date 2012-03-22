@@ -7,7 +7,8 @@
     "authors": [
         {
             "name":     "Stepan Tanasiychuk",
-            "homepage": "http://blog.stfalcon.com"
+            "homepage": "http://blog.stfalcon.com",
+            "email":    "ceo@stfalcon.com"
         }
     ],
     "require": {
