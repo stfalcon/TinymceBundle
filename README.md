@@ -88,7 +88,7 @@ run the command
 to copy the resources to the projects web directory"
 
 On default, tinymce is enabled for all textarea on page, but if you want customize it, do it following:
- 
+
 Add class "tinymce" into textarea field to initialize TinyMCE.
 
     <textarea  class="tinymce"></textarea>
@@ -98,14 +98,14 @@ and add the parameter textarea_class to tinymce confgig, something like that:
 			...
 		    textarea_class: "tinymce"
 			...
-	
+
 If you are using FormBuilder, use an array to add the class, you can also use the 'theme' option to change the
 used theme to something other than 'simple' (i.e. on of the other defined themes in your config - the example above
 defined 'advanced' and 'medium').  e.g.:
 
         $builder->add('introtext', 'textarea', array(
             'attr'  => array('class' => 'tinymce', 'theme' => 'medium')
-        ))
+        ));
 
 Add script to your templates/layout at the bottom of your page (for faster page display).
 
