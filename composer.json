@@ -9,7 +9,16 @@
             "name":     "Stepan Tanasiychuk",
             "homepage": "http://blog.stfalcon.com",
             "email":    "ceo@stfalcon.com"
-        }
+        },
+        {
+            "name":     "Igor Negrutsa",
+            "homepage": "http://igor-negrutsa.info",
+            "email":    "progi2007@gmail.com"
+        },
+        {
+            "name":     "Symfony Community",
+            "homepage": "https://github.com/stfalcon/TinymceBundle/contributors"
+        }        
     ],
     "require": {
         "php":             ">=5.3.0",
