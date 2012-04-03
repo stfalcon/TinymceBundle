@@ -80,6 +80,21 @@ Configure your application
                 theme_advanced_statusbar_location: ""
                 paste_auto_cleanup_on_paste: true
                 spellchecker_languages: "+English=en,Dutch=nl"
+            bbcode:
+                mode: "none"
+                theme: "advanced"
+                plugins: "bbcode"
+                theme_advanced_buttons1: "bold,italic,underline,undo,redo,link,unlink,image,forecolor,styleselect,removeformat,cleanup,code"
+                theme_advanced_buttons2: ""
+                theme_advanced_buttons3: ""
+                theme_advanced_toolbar_location: "bottom"
+                theme_advanced_toolbar_align: "center"
+                theme_advanced_styles: "Code=codeStyle;Quote=quoteStyle"
+                entity_encoding: "raw"
+                add_unload_trigger: false
+                remove_linebreaks: false
+                inline_styles: false
+                convert_fonts_to_spans: false
 
 run the command
 
