@@ -149,6 +149,8 @@ You can change language of your tiny_mce by adding language selector into theme,
             advanced:
                 language: ru
 
+### Custom buttons
+
 You can add some custom buttons to editor's toolbar (See: http://www.tinymce.com/tryit/custom_toolbar_button.php)
 
 First of all you should describe it in your config:
