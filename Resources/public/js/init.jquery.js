@@ -6,6 +6,18 @@
 function initTinyMCE(options) {
     (function ($, undefined) {
         $(function () {
+
+            // Get custom buttons data
+            var buttonData, buttonFunction;
+            if (typeof options.tinymce_buttons == 'object') {
+                for (var buttonId in options.tinymce_buttons) {
+                    buttonData = options.tinymce_buttons[buttonId];
+                    if (typeof window['tinymce_button_' + buttonId] == 'function') {
+                        buttonFunction = window['tinymce_button_' + buttonId];
+                    }
+                }
+            }
+
             $('textarea' + options.textarea_class).each(function () {
                 var $textarea = $(this);
 
@@ -26,6 +38,18 @@ function initTinyMCE(options) {
                         });
                     };
                 }
+
+                // Add custom buttons to current editor
+                if (buttonData && buttonFunction) {
+                    themeOptions.setup = function (editor) {
+                        editor.addButton(buttonId, $.extend({}, buttonData, {
+                            onclick:function () {
+                                buttonFunction(editor);
+                            }
+                        }));
+                    }
+                }
+
                 $textarea.tinymce(themeOptions);
             });
         });

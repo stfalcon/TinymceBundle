@@ -7,7 +7,16 @@ function initTinyMCE(options) {
 
     if (typeof tinyMCE == 'undefined') return false;
 
-    var textareas = getElementsByClassName(options.textarea_class, 'textarea');
+    var textareas = getElementsByClassName(options.textarea_class, 'textarea'), buttonData, buttonFunction;
+    // Get custom buttons data
+    if (typeof options.tinymce_buttons == 'object') {
+        for (var buttonId in options.tinymce_buttons) {
+            buttonData = options.tinymce_buttons[buttonId];
+            if (typeof window['tinymce_button_' + buttonId] == 'function') {
+                buttonFunction = window['tinymce_button_' + buttonId];
+            }
+        }
+    }
     for (var i in textareas) {
         // Skip if can't get element
         if (typeof textareas[i] == 'undefined') continue;
@@ -28,6 +37,17 @@ function initTinyMCE(options) {
 
             }
         }
+
+        // Add custom buttons to current editor
+        if (buttonData && buttonFunction) {
+            tinyMCE.settings.setup = function (editor) {
+                var thisButtonData = clone(buttonData);
+                thisButtonData.onclick = function () {
+                    buttonFunction(editor);
+                }
+                editor.addButton(buttonId, thisButtonData);
+            }
+        }
         tinyMCE.execCommand('mceAddControl', true, textarea.id);
     }
 }
@@ -46,4 +66,27 @@ function getElementsByClassName(classname, node) {
         if (re.test(elements[i].className)) array.push(elements[i]);
     }
     return array;
+}
+
+/**
+ * Clone object
+ *
+ * @param o
+ */
+function clone(o) {
+    if (!o || "object" !== typeof o) {
+        return o;
+    }
+    var c = "function" === typeof o.pop ? [] : {};
+    var p, v;
+    for (p in o) {
+        if (o.hasOwnProperty(p)) {
+            v = o[p];
+            if (v && "object" === typeof v) {
+                c[p] = clone(v);
+            }
+            else c[p] = v;
+        }
+    }
+    return c;
 }

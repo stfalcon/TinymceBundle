@@ -46,6 +46,7 @@ class Configuration
                 ->scalarNode('plugins')->defaultValue("")->end()
                 ->booleanNode('tinymce_jquery')->defaultValue("true")->end()
                 ->booleanNode('include_jquery')->defaultValue("true")->end()
+                ->booleanNode('tinymce_buttons')->defaultValue(array())->end()
             ->end();
 
         return $treeBuilder->buildTree();
