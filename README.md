@@ -1,6 +1,6 @@
 # TinymceBundle
 
-Bundle for connecting WYSIWYG editor TinyMCE to your Symfony2 project.
+Bundle is destined to add TinyMCE WYSIWYG editor to your Symfony2 project.
 By analogy with the bundle https://github.com/ihqs/WysiwygBundle
 
 ## Installation
@@ -27,7 +27,7 @@ Register namespace :
         'Stfalcon'                       => __DIR__.'/../vendor/bundles',
     ));
 
-Instantiate Bundle in your app/AppKernel.hpp file
+Instantiate Bundle in your app/AppKernel.php file
 
     public function registerBundles()
     {
@@ -44,6 +44,7 @@ Configure your application
     // app/config.yml
     stfalcon_tinymce:
         include_jquery: true
+        tinymce_jquery: true
         textarea_class: "tinymce"
         theme:
             simple:
@@ -100,28 +101,37 @@ run the command
 
     php app/console assets:install web/
 
-to copy the resources to the projects web directory"
+to copy the resources to the projects web directory.
 
-On default, tinymce is enabled for all textarea on page, but if you want customize it, do it following:
+By default, tinymce is enabled for all textareas on the page, but if you want to customize it, do the following:
 
-Add class "tinymce" into textarea field to initialize TinyMCE.
+Add class "tinymce" to textarea field to initialize TinyMCE.
 
-    <textarea  class="tinymce"></textarea>
+    <textarea class="tinymce"></textarea>
 
-and add the parameter textarea_class to tinymce confgig, something like that:
+and add the parameter `textarea_class` to tinymce config. Something like that:
 	stfalcon_tinymce:
 			...
 		    textarea_class: "tinymce"
 			...
 
-If you are using FormBuilder, use an array to add the class, you can also use the 'theme' option to change the
+If you want to use the editor without jQuery dependancy, you can switch it to use non-jQuery version.
+
+    stfalcon_tinymce:
+        include_jquery: false
+        tinymce_jquery: false
+        ...
+
+The option `include_jquery` allow to load external jQuery library from the Google CDN.
+
+If you are using FormBuilder, use an array to add the class, you can also use the `theme` option to change the
 used theme to something other than 'simple' (i.e. on of the other defined themes in your config - the example above
-defined 'advanced' and 'medium').  e.g.:
+defined 'medium').  e.g.:
 
         $builder->add('introtext', 'textarea', array(
-            'attr'  => array(
+            'attr' => array(
                 'class' => 'tinymce',
-                'data-theme' => 'medium'
+                'data-theme' => 'medium' // simple, advanced, bbcode
             )
         ));
 
@@ -134,7 +144,7 @@ Add script to your templates/layout at the bottom of your page (for faster page 
 You can change language of your tiny_mce by adding language selector into theme, something like
 
     stfalcon_tinymce:
-        include_jquery: true
+        ...
         theme:
             advanced:
                 language: ru
