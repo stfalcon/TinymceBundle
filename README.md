@@ -148,3 +148,31 @@ You can change language of your tiny_mce by adding language selector into theme,
         theme:
             advanced:
                 language: ru
+
+You can add some custom buttons to editor's toolbar (See: http://www.tinymce.com/tryit/custom_toolbar_button.php)
+
+First of all you should describe it in your config:
+
+    stfalcon_tinymce:
+        tinymce_buttons:
+            stfalcon: # Id of your button
+                title: 'Stfalcon'
+                image: 'http://stfalcon.com/favicon.ico'
+
+        theme:
+            simple:
+                mode: "textareas"
+                theme: "advanced"
+                theme_advanced_buttons1: "stfalcon,bold,italic,...
+
+And you should create a callback function `tinymce_button_` for your button, based on your button ID:
+
+
+```javascript
+
+function tinymce_button_stfalcon(ed) {
+    ed.focus();
+    ed.selection.setContent('Hello from stfalcon.com :)');
+}
+
+```
