@@ -1,38 +1,15 @@
 {% if include_jquery %}
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 {% endif %}
-<script type="text/javascript" src="{{ asset('bundles/stfalcontinymce/vendor/tiny_mce/jquery.tinymce.js') }}"></script>
-
+{% if tinymce_jquery %}
+    <script type="text/javascript" src="{{ asset('bundles/stfalcontinymce/vendor/tiny_mce/jquery.tinymce.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/stfalcontinymce/js/init.jquery.js') }}"></script>
+{% else %}
+    <script type="text/javascript" src="{{ asset('bundles/stfalcontinymce/vendor/tiny_mce/tiny_mce.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/stfalcontinymce/js/init.standard.js') }}"></script>
+{% endif %}
 <script type="text/javascript">
 //<![CDATA[
-(function ($, undefined) {
-    var tinymce_options = {{ tinymce_config_json|raw }},
-        textarea = 'textarea{{textarea_class}}';
-
-    $(function () {
-        $(textarea).each(function () {
-            var $textarea = $(this),
-                theme = $textarea.data('theme');
-
-            if (!theme || !tinymce_options.theme[theme]) {
-                theme = 'simple';
-            }
-
-            var options = tinymce_options.theme[theme];
-
-            options.script_url = '{{ asset('bundles/stfalcontinymce/vendor/tiny_mce/tiny_mce.js') }}';
-
-            // workaround for an incompatibility with html5-validation (see: http://git.io/CMKJTw)
-            if ($textarea.is('[required]')) {
-                options.oninit = function (editor) {
-                    editor.onChange.add(function (ed, l) {
-                        ed.save();
-                    });
-                };
-            }
-            $textarea.tinymce(options);
-        });
-    });
-}(jQuery));
+    initTinyMCE({{ tinymce_config|raw }});
 //]]>
 </script>

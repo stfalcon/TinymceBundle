@@ -6,7 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Twig Extension for TinyMce support.
  *
- * @author  naydav <web@naydav.com>
+ * @author naydav <web@naydav.com>
  */
 class StfalconTinymceExtension extends \Twig_Extension
 {
@@ -18,7 +18,7 @@ class StfalconTinymceExtension extends \Twig_Extension
     protected $container;
 
     /**
-     * Initialize tinymce  helper
+     * Initialize tinymce helper
      *
      * @param ContainerInterface $container
      */
@@ -28,11 +28,27 @@ class StfalconTinymceExtension extends \Twig_Extension
     }
 
     /**
-     * @return ContainerInterface
+     * Gets a service.
+     *
+     * @param string $id The service identifier
+     *
+     * @return object The associated service
      */
-    public function getContainer()
+    public function getService($id)
     {
-        return $this->container;
+        return $this->container->get($id);
+    }
+
+    /**
+     * Get parameters from the service container
+     *
+     * @param string $name
+     *
+     * @return mixed
+     */
+    public function getParameter($name)
+    {
+        return $this->container->getParameter($name);
     }
 
     /**
@@ -46,17 +62,31 @@ class StfalconTinymceExtension extends \Twig_Extension
             'tinymce_init' => new \Twig_Function_Method($this, 'tinymce_init', array('is_safe' => array('html')))
         );
     }
+
     /**
      * TinyMce initializations
+     *
+     * @param array $options
+     *
+     * @return string
      */
-    public function tinymce_init()
+    public function tinymce_init($options = array())
     {
-        //$assets = $this->getContainer()->get('templating.helper.assets');
-        return ($this->getContainer()->get('templating')->render('StfalconTinymceBundle:Script:init.html.twig', array(
-            'tinymce_config_json' => json_encode($this->getContainer()->getParameter('stfalcon_tinymce.config')),
-            'include_jquery' => $this->getContainer()->getParameter('stfalcon_tinymce.include_jquery'),
-            'textarea_class' => $this->getContainer()->getParameter('stfalcon_tinymce.textarea_class'),
-        )));
+
+        $config = $this->getParameter('stfalcon_tinymce.config');
+
+        /** @var $assets \Symfony\Component\Templating\Helper\CoreAssetsHelper */
+        $assets = $this->getService('templating.helper.assets');
+
+        // Get path to tinymce script for the jQuery version of the editor
+        $config['jquery_script_url'] = $assets->getUrl('bundles/stfalcontinymce/vendor/tiny_mce/tiny_mce.js');;
+
+        return $this->getService('templating')->render('StfalconTinymceBundle:Script:init.html.twig', array(
+            'tinymce_config' => json_encode($config),
+            'include_jquery' => $config['include_jquery'],
+            'tinymce_jquery' => $config['tinymce_jquery']
+        ));
+
     }
 
     /**

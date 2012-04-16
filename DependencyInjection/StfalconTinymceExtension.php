@@ -16,19 +16,28 @@ class StfalconTinymceExtension extends Extension
     /**
      * Loads the StfalconTinymce configuration.
      *
-     * @param  array           $configs The configurations being loaded
-     * @param ContainerBuilder $container
+     * @param array            $configs   An array of configuration values
+     * @param ContainerBuilder $container A ContainerBuilder instance
      */
     public function load(array $configs, ContainerBuilder $container)
     {
         $config = array();
-        foreach($configs as $c) {
+        foreach ($configs as $c) {
             $config = array_merge($config, $c);
         }
+
+        // Use jQuery or standalone build of the TinyMCE
+        $config['tinymce_jquery'] = isset($config['tinymce_jquery']) ? (bool) $config['tinymce_jquery'] : false;
+
+        // Include jQuery library
+        $config['include_jquery'] = isset($config['include_jquery']) ? (bool) $config['include_jquery'] : false;
+
+        // Set target element (textarea) selector
+        if (isset($config['textarea_class']) && $config['textarea_class']) {
+            $config['textarea_class']  = ($config['tinymce_jquery'] ? '.' : '') . $config['textarea_class'];
+        }
+
         $container->setParameter('stfalcon_tinymce.config', $config);
-        $container->setParameter('stfalcon_tinymce.include_jquery', isset($config['include_jquery']) ? $config['include_jquery'] : true);
-        $container->setParameter('stfalcon_tinymce.textarea_class', 
-					(isset($config['textarea_class']) AND $config['textarea_class']) ? '.' . $config['textarea_class'] : '');
 
         // load dependency injection config
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
