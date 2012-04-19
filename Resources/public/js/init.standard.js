@@ -6,50 +6,52 @@
 function initTinyMCE(options) {
 
     if (typeof tinyMCE == 'undefined') return false;
-
-    var textareas = getElementsByClassName(options.textarea_class, 'textarea'), buttonData, buttonFunction;
-    // Get custom buttons data
-    if (typeof options.tinymce_buttons == 'object') {
-        for (var buttonId in options.tinymce_buttons) {
-            buttonData = options.tinymce_buttons[buttonId];
-            if (typeof window['tinymce_button_' + buttonId] == 'function') {
-                buttonFunction = window['tinymce_button_' + buttonId];
-            }
-        }
-    }
-    for (var i in textareas) {
-        // Skip if can't get element
-        if (typeof textareas[i] == 'undefined') continue;
-
-        var textarea = textareas[i];
-        // Get editor's theme from the textarea data
-        var theme = textarea.getAttribute("data-theme") || 'simple';
-
-        // Get selected theme options
-        tinyMCE.settings = (typeof options.theme[theme] != 'undefined')
-                            ? options.theme[theme]
-                            : options.theme['simple']
-
-        // workaround for an incompatibility with html5-validation (see: http://git.io/CMKJTw)
-        if (textarea.getAttribute("required")) {
-            tinyMCE.settings.onchange_callback = function (ed) {
-                ed.save();
-
-            }
-        }
-
-        // Add custom buttons to current editor
-        if (buttonData && buttonFunction) {
-            tinyMCE.settings.setup = function (editor) {
-                var thisButtonData = clone(buttonData);
-                thisButtonData.onclick = function () {
-                    buttonFunction(editor);
+    // Load when DOM is ready
+    domready(function () {
+        var textareas = getElementsByClassName(options.textarea_class, 'textarea'), buttonData, buttonFunction;
+        // Get custom buttons data
+        if (typeof options.tinymce_buttons == 'object') {
+            for (var buttonId in options.tinymce_buttons) {
+                buttonData = options.tinymce_buttons[buttonId];
+                if (typeof window['tinymce_button_' + buttonId] == 'function') {
+                    buttonFunction = window['tinymce_button_' + buttonId];
                 }
-                editor.addButton(buttonId, thisButtonData);
             }
         }
-        tinyMCE.execCommand('mceAddControl', true, textarea.id);
-    }
+        for (var i in textareas) {
+            // Skip if can't get element
+            if (typeof textareas[i] == 'undefined') continue;
+
+            var textarea = textareas[i];
+            // Get editor's theme from the textarea data
+            var theme = textarea.getAttribute("data-theme") || 'simple';
+
+            // Get selected theme options
+            tinyMCE.settings = (typeof options.theme[theme] != 'undefined')
+                ? options.theme[theme]
+                : options.theme['simple']
+
+            // workaround for an incompatibility with html5-validation (see: http://git.io/CMKJTw)
+            if (textarea.getAttribute("required")) {
+                tinyMCE.settings.onchange_callback = function (ed) {
+                    ed.save();
+
+                }
+            }
+
+            // Add custom buttons to current editor
+            if (buttonData && buttonFunction) {
+                tinyMCE.settings.setup = function (editor) {
+                    var thisButtonData = clone(buttonData);
+                    thisButtonData.onclick = function () {
+                        buttonFunction(editor);
+                    }
+                    editor.addButton(buttonId, thisButtonData);
+                }
+            }
+            tinyMCE.execCommand('mceAddControl', true, textarea.id);
+        }
+    });
 }
 
 /**
