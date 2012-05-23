@@ -81,6 +81,20 @@ class StfalconTinymceExtension extends \Twig_Extension
         // Get path to tinymce script for the jQuery version of the editor
         $config['jquery_script_url'] = $assets->getUrl('bundles/stfalcontinymce/vendor/tiny_mce/tiny_mce.js');;
 
+        //      tinymce_buttons:
+        //        my_custom_button: 
+        //          title: 'insert this thing'
+        //          image: "asset[bundles/mybundle/images/myicon.ico]"
+        foreach ($config['tinymce_buttons'] as &$customButton)
+        {
+            $imageUrl = $customButton['image'];
+            $url = preg_replace('/^asset\[(.+)\]$/i', '$1', $imageUrl);
+            if ($imageUrl !== $url)
+            {
+                $customButton['image'] = $assets->getUrl($url);                
+            }
+        }
+        
         return $this->getService('templating')->render('StfalconTinymceBundle:Script:init.html.twig', array(
             'tinymce_config' => json_encode($config),
             'include_jquery' => $config['include_jquery'],
