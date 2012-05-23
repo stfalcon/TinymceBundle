@@ -158,8 +158,12 @@ First of all you should describe it in your config:
     stfalcon_tinymce:
         tinymce_buttons:
             stfalcon: # Id of your button
-                title: 'Stfalcon'
-                image: 'http://stfalcon.com/favicon.ico'
+                title: "Stfalcon"
+                image: "http://stfalcon.com/favicon.ico"
+                ...
+                or for the local images
+                ...
+                image: "asset[bundles/somebundle/images/icon.ico]"
 
         theme:
             simple:
@@ -174,7 +178,7 @@ And you should create a callback function `tinymce_button_` for your button, bas
 
 function tinymce_button_stfalcon(ed) {
     ed.focus();
-    ed.selection.setContent('Hello from stfalcon.com :)');
+    ed.selection.setContent("Hello from stfalcon.com :)");
 }
 
 ```
