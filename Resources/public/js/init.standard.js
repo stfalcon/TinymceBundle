@@ -65,7 +65,7 @@ function initTinyMCE(options) {
             tinyMCE.execCommand('mceAddControl', true, currentTextarea);
         }
         if (errorCount) {
-            alert("Some of textareas on the page hasn't unique ID attribute! TinyMCE couldn't be initialize it.");
+            alert("Some of textareas on the page hasn't unique ID attribute! TinyMCE couldn't initialize it.");
         }
     });
 }
