@@ -8,7 +8,12 @@ function initTinyMCE(options) {
     if (typeof tinyMCE == 'undefined') return false;
     // Load when DOM is ready
     domready(function () {
-        var textareas = getElementsByClassName(options.textarea_class, 'textarea'), buttonData, buttonFunction;
+        var textareas = getElementsByClassName(options.textarea_class, 'textarea'),
+            textareasCount = textareas.length,
+            currentTextarea,
+            buttonData,
+            buttonFunction,
+            errorCount = 0;
         // Get custom buttons data
         if (typeof options.tinymce_buttons == 'object') {
             for (var buttonId in options.tinymce_buttons) {
@@ -49,7 +54,18 @@ function initTinyMCE(options) {
                     editor.addButton(buttonId, thisButtonData);
                 }
             }
-            tinyMCE.execCommand('mceAddControl', true, textarea.id);
+            if (textareasCount == 1) {
+                currentTextarea = textarea;
+            } else if (false === textarea.hasAttribute('id')) {
+                errorCount++;
+                continue;
+            } else {
+                currentTextarea = textarea.id;
+            }
+            tinyMCE.execCommand('mceAddControl', true, currentTextarea);
+        }
+        if (errorCount) {
+            alert("Some of textareas on the page hasn't unique ID attribute! TinyMCE couldn't be initialize it.");
         }
     });
 }
