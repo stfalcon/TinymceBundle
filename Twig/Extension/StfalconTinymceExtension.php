@@ -79,7 +79,7 @@ class StfalconTinymceExtension extends \Twig_Extension
         $assets = $this->getService('templating.helper.assets');
 
         // Get path to tinymce script for the jQuery version of the editor
-        $config['jquery_script_url'] = $assets->getUrl('bundles/stfalcontinymce/vendor/tiny_mce/tiny_mce.js');;
+        $config['jquery_script_url'] = $assets->getUrl('bundles/stfalcontinymce/vendor/tiny_mce/tiny_mce.js');
 
         // Get local button's image
         if (isset($config['tinymce_buttons'])) {
