@@ -47,7 +47,7 @@ class Editor extends CI_Controller {
 		$config['encrypt_name'] = $this->config->item('encrypt_name', 'uploader_settings');
 		$config['overwrite'] = $this->config->item('overwrite', 'uploader_settings');
 		$config['upload_path'] = $this->config->item('upload_path', 'uploader_settings');
-		
+
 		if (!$conf['allow_resize'])
 		{
 			$config['max_width'] = $this->config->item('max_width', 'uploader_settings');

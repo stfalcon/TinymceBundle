@@ -1,4 +1,13 @@
 <?php
+
+
+require_once __DIR__.'/../../../../../../../../../../../app/bootstrap.php.cache';
+require_once __DIR__.'/../../../../../../../../../../../app/AppKernel.php';
+
+$kernel = new AppKernel('prod', false);
+$kernel->boot();
+$container = $kernel->getContainer();
+
 /*-------------------------------------------------------------------
 | Image Upload Plugin for TinyMCE
 | http://justboil.me/tinymce-images-plugin/
@@ -13,7 +22,16 @@
 |
 | 
 -------------------------------------------------------------------*/
+function config_get_or_default( $container, $name, $default=null ) {
+    $prefix = 'tinymce_';
+    $name = $prefix.$name;
+    var_dump($name);
+    if( $container->hasParameter($name) ) {
+        return $container->getParameter($name);
+    }
 
+    return $default;
+}
 
 /*-------------------------------------------------------------------
 |
@@ -24,8 +42,8 @@
 | 
 -------------------------------------------------------------------*/
 
-	
-	$config['img_path'] = '/images';
+	$config['img_path'] = config_get_or_default($container, 'img_path', '/uploads' );
+var_dump($config['img_path']);
 
 
 /*-------------------------------------------------------------------
@@ -37,7 +55,7 @@
 -------------------------------------------------------------------*/
 
 	
-	$config['allowed_types'] = 'gif|jpg|png';
+	$config['allowed_types'] = config_get_or_default($container, 'allowed_types', 'gif|jpg|png' );
 
 
 /*-------------------------------------------------------------------
@@ -50,7 +68,7 @@
 -------------------------------------------------------------------*/
 
 	
-	$config['max_size'] = 0;
+	$config['max_size'] = config_get_or_default($container, 'max_size', 0 );
 
 
 /*-------------------------------------------------------------------
@@ -62,7 +80,7 @@
 -------------------------------------------------------------------*/
 
 	
-	$config['max_width'] = 0;
+	$config['max_width'] = config_get_or_default($container, 'max_width', 0 );
 
 
 /*-------------------------------------------------------------------
@@ -74,7 +92,7 @@
 -------------------------------------------------------------------*/
 
 	
-	$config['max_height'] = 0;
+	$config['max_height'] = config_get_or_default($container, 'max_height', 0 );
 
 
 /*-------------------------------------------------------------------
@@ -88,7 +106,7 @@
 -------------------------------------------------------------------*/
 
 	
-	$config['allow_resize'] = TRUE;
+	$config['allow_resize'] = config_get_or_default($container, 'allow_resize', true );
 
 
 /*-------------------------------------------------------------------
@@ -102,7 +120,7 @@
 -------------------------------------------------------------------*/
 
 	
-	$config['encrypt_name'] = FALSE;
+	$config['encrypt_name'] = config_get_or_default($container, 'encrypt_name', true );
 
 
 /*-------------------------------------------------------------------
@@ -114,7 +132,7 @@
 -------------------------------------------------------------------*/
 
 
-	$config['overwrite'] = FALSE;
+	$config['overwrite'] = config_get_or_default($container, 'overwrite', false );
 	
 	
 /*-------------------------------------------------------------------
@@ -124,7 +142,7 @@
 -------------------------------------------------------------------*/
 
 	
-	$config['upload_path'] = $_SERVER['DOCUMENT_ROOT'] . $config['img_path'];
+	$config['upload_path'] = config_get_or_default($container, 'upload_path', $_SERVER['DOCUMENT_ROOT'] . $config['img_path'] );
 	
 
 /*-------------------------------------------------------------------
