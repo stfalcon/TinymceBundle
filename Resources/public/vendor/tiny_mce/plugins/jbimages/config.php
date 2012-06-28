@@ -4,7 +4,8 @@
 require_once __DIR__.'/../../../../../../../../../../../app/bootstrap.php.cache';
 require_once __DIR__.'/../../../../../../../../../../../app/AppKernel.php';
 
-$kernel = new AppKernel('prod', false);
+$kernel = new AppKernel('dev', true);
+$kernel->loadClassCache();
 $kernel->boot();
 $container = $kernel->getContainer();
 
@@ -25,7 +26,6 @@ $container = $kernel->getContainer();
 function config_get_or_default( $container, $name, $default=null ) {
     $prefix = 'tinymce_';
     $name = $prefix.$name;
-    var_dump($name);
     if( $container->hasParameter($name) ) {
         return $container->getParameter($name);
     }
@@ -43,7 +43,6 @@ function config_get_or_default( $container, $name, $default=null ) {
 -------------------------------------------------------------------*/
 
 	$config['img_path'] = config_get_or_default($container, 'img_path', '/uploads' );
-var_dump($config['img_path']);
 
 
 /*-------------------------------------------------------------------
