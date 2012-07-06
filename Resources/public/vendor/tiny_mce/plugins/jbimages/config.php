@@ -140,7 +140,7 @@ function config_get_or_default( $container, $name, $default=null ) {
 -------------------------------------------------------------------*/
 
 	
-	$config['upload_path'] = config_get_or_default($container, 'upload_path', $_SERVER['DOCUMENT_ROOT'] . $config['img_path'] );
+	$config['upload_path'] = $_SERVER['DOCUMENT_ROOT'] . config_get_or_default($container, 'upload_path', $config['img_path'] );
 	
 
 /*-------------------------------------------------------------------

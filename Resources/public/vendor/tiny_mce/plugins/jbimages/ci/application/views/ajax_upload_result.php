@@ -5,9 +5,9 @@
 <title>JustBoil's Result Page</title>
 <script language="javascript" type="text/javascript">
 	window.parent.window.jbImagesDialog.uploadFinish({
-		filename:'<?php echo $file_name; ?>',
-		result: '<?php echo $result; ?>',
-		resultCode: '<?php echo $resultcode; ?>'
+		filename:'<?php echo isset($file_name)?$file_name:'Aucun nom de fichier défini'; ?>',
+		result: '<?php echo isset($result)?$result:'Aucun result défini'; ?>',
+		resultCode: '<?php echo isset($resultcode)?$resultcode:'Aucun resultcode défini'; ?>'
 	});
 </script>
 </head>
