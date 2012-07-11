@@ -17,13 +17,14 @@ function initTinyMCE(options) {
         // Get custom buttons data
         if (typeof options.tinymce_buttons == 'object') {
             for (var buttonId in options.tinymce_buttons) {
+                if (!options.tinymce_buttons.hasOwnProperty(buttonId)) continue;
                 buttonData = options.tinymce_buttons[buttonId];
                 if (typeof window['tinymce_button_' + buttonId] == 'function') {
                     buttonFunction = window['tinymce_button_' + buttonId];
                 }
             }
         }
-        for (var i in textareas) {
+        for (var i = 0; i < textareasCount; i++) {
             // Skip if can't get element
             if (typeof textareas[i] == 'undefined') continue;
 
