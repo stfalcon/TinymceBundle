@@ -9,7 +9,7 @@
     <script type="text/javascript" src="{{ asset('bundles/stfalcontinymce/js/ready.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/stfalcontinymce/js/init.standard.js') }}"></script>
 {% endif %}
-<script type="text/javascript">
+<script type="text/javascript" id="tinymce-init" data-env="{{app.environment}}">
 //<![CDATA[
     initTinyMCE({{ tinymce_config|raw }});
 //]]>

@@ -3,7 +3,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'].'/../app/bootstrap.php.cache';
 require_once $_SERVER['DOCUMENT_ROOT'].'/../app/AppKernel.php';
 
-$kernel = new AppKernel('dev', true);
+$kernel = new AppKernel($_GET['sf_environment'], $_GET['sf_environment'] == 'dev' );
 $kernel->loadClassCache();
 $kernel->boot();
 $container = $kernel->getContainer();

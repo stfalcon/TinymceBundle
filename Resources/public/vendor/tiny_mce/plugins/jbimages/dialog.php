@@ -11,7 +11,7 @@
 <body>
 <div id="upload_in_progress" class="upload_infobar"><img src="img/spinner.gif" width="16" height="16" class="spinner" />{#jbimages_dlg.upload_in_progress}&hellip; <div id="upload_additional_info"></div></div>
 <div id="upload_infobar" class="upload_infobar"></div>
-<div id="upload_form_container"><form id="upl" name="upl" action="ci/index.php/upload/{#jbimages_dlg.lang_id}" method="post" enctype="multipart/form-data" target="upload_target" onsubmit="jbImagesDialog.inProgress();">
+<div id="upload_form_container"><form id="upl" name="upl" action="ci/index.php/upload/{#jbimages_dlg.lang_id}?sf_environment=<?php echo $_GET['sf_environment']; ?>" method="post" enctype="multipart/form-data" target="upload_target" onsubmit="jbImagesDialog.inProgress();">
 	<h1>{#jbimages_dlg.select_an_image}</h1>
 	<p><input id="uploader" name="userfile" type="file" class="jbFilebox" onChange="document.upl.submit(); jbImagesDialog.inProgress();" /></p>
 	<p><input type="submit" value="{#jbimages_dlg.upload}" class="jbButton" /></p>

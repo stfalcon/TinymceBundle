@@ -20,7 +20,7 @@
 			// Register the command so that it can be invoked by using tinyMCE.activeEditor.execCommand('mceExample');
 			ed.addCommand('jbImages', function() {
 				ed.windowManager.open({
-					file : url + '/dialog.htm',
+					file : url + '/dialog.php?sf_environment='+document.getElementById("tinymce-init").getAttribute("data-env"),
 					width : 330 + parseInt(ed.getLang('jbimages.delta_width', 0)),
 					height : 175 + parseInt(ed.getLang('jbimages.delta_height', 0)),
 					inline : 1
