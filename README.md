@@ -157,9 +157,12 @@ First of all you should describe it in your config:
 
     stfalcon_tinymce:
         tinymce_buttons:
-            stfalcon: # Id of your button
+            stfalcon: # Id of the first button
                 title: "Stfalcon"
                 image: "http://stfalcon.com/favicon.ico"
+            hello_world: # Id of the second button
+                title: "Google"
+                image: "http://google.com/favicon.ico"
                 ...
                 or for the local images
                 ...
@@ -169,9 +172,9 @@ First of all you should describe it in your config:
             simple:
                 mode: "textareas"
                 theme: "advanced"
-                theme_advanced_buttons1: "stfalcon,bold,italic,...
+                theme_advanced_buttons1: "stfalcon, hello_world, bold,italic,...
 
-And you should create a callback function `tinymce_button_` for your button, based on your button ID:
+And you should create a callback functions `tinymce_button_` for your buttons, based on their button ID:
 
 
 ```javascript
@@ -179,6 +182,11 @@ And you should create a callback function `tinymce_button_` for your button, bas
 function tinymce_button_stfalcon(ed) {
     ed.focus();
     ed.selection.setContent("Hello from stfalcon.com :)");
+}
+
+function tinymce_button_hello_world(ed) {
+    ed.focus();
+    ed.selection.setContent("Hello world!");
 }
 
 ```
