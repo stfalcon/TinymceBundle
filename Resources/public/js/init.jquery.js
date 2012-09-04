@@ -31,8 +31,9 @@ function initTinyMCE(options) {
                         $.each(options.tinymce_buttons, function (id, opts) {
                             opts = $.extend({}, opts, {
                                 onclick:function () {
-                                    if (typeof window['tinymce_button_' + id] == 'function') {
-                                        window['tinymce_button_' + id](ed);
+                                    var callback = window['tinymce_button_' + id];
+                                    if (typeof callback == 'function') {
+                                        callback(ed);
                                     } else {
                                         alert('You have to create callback function: "tinymce_button_' + id + '"');
                                     }
