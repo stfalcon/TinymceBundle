@@ -4,70 +4,67 @@
  * @param options
  */
 function initTinyMCE(options) {
-
     if (typeof tinyMCE == 'undefined') return false;
     // Load when DOM is ready
     domready(function () {
         var textareas = getElementsByClassName(options.textarea_class, 'textarea'),
-            textareasCount = textareas.length,
-            currentTextarea,
-            buttonData,
-            buttonFunction,
-            errorCount = 0;
-        // Get custom buttons data
-        if (typeof options.tinymce_buttons == 'object') {
-            for (var buttonId in options.tinymce_buttons) {
-                if (!options.tinymce_buttons.hasOwnProperty(buttonId)) continue;
-                buttonData = options.tinymce_buttons[buttonId];
-                if (typeof window['tinymce_button_' + buttonId] == 'function') {
-                    buttonFunction = window['tinymce_button_' + buttonId];
-                }
-            }
-        }
-        for (var i = 0; i < textareasCount; i++) {
-            // Skip if can't get element
-            if (typeof textareas[i] == 'undefined') continue;
+            err = 0;
 
-            var textarea = textareas[i];
+        for (var i = 0; i < textareas.length; i++) {
             // Get editor's theme from the textarea data
-            var theme = textarea.getAttribute("data-theme") || 'simple';
+            var theme = textareas[i].getAttribute("data-theme") || 'simple';
 
             // Get selected theme options
             tinyMCE.settings = (typeof options.theme[theme] != 'undefined')
                 ? options.theme[theme]
-                : options.theme['simple']
+                : options.theme['simple'];
 
             // workaround for an incompatibility with html5-validation (see: http://git.io/CMKJTw)
-            if (textarea.getAttribute("required")) {
+            if (textareas[i].getAttribute("required")) {
                 tinyMCE.settings.onchange_callback = function (ed) {
                     ed.save();
-
                 }
             }
 
             // Add custom buttons to current editor
-            if (buttonData && buttonFunction) {
+            if (typeof options.tinymce_buttons == 'object') {
                 tinyMCE.settings.setup = function (editor) {
-                    var thisButtonData = clone(buttonData);
-                    thisButtonData.onclick = function () {
-                        buttonFunction(editor);
+                    for (var buttonId in options.tinymce_buttons) {
+                        if (!options.tinymce_buttons.hasOwnProperty(buttonId)) continue;
+
+                        // Some tricky function to isolate variables values
+                        (function (id, opts) {
+                            opts.onclick = function () {
+                                var callback = window['tinymce_button_' + id];
+                                if (typeof callback == 'function') {
+                                    callback(editor);
+                                } else {
+                                    alert('You have to create callback function: "tinymce_button_' + id + '"');
+                                }
+                            }
+                            editor.addButton(id, opts);
+
+                        })(buttonId, clone(options.tinymce_buttons[buttonId]));
                     }
-                    editor.addButton(buttonId, thisButtonData);
                 }
             }
-            if (textareasCount == 1) {
-                currentTextarea = textarea;
-            } else if (false === textarea.hasAttribute('id')) {
-                errorCount++;
+
+            if (textareas.length == 1) {
+                // Single textarea, so we can init it without ID attribute
+                tinyMCE.execCommand('mceAddControl', true, textareas[i]);
+            } else if ((textareas.length > 1) && (false === textareas[i].hasAttribute('id'))) {
+                // Skip some textarea without ID which unable to initialize and increase error's counter
+                err++;
                 continue;
             } else {
-                currentTextarea = textarea.id;
+                // Initialize textarea by its ID attribute
+                tinyMCE.execCommand('mceAddControl', true, textareas[i].getAttribute('id'));
             }
-            tinyMCE.execCommand('mceAddControl', true, currentTextarea);
+
         }
-        if (errorCount) {
-            alert("Some of textareas on the page hasn't unique ID attribute! TinyMCE couldn't initialize it.");
-        }
+
+        //Show error message if target elements are invalid
+        if (err) alert("Some of textareas on the page hasn't unique ID attribute! TinyMCE couldn't initialize it.");
     });
 }
 
@@ -88,10 +85,10 @@ function getElementsByClassName(classname, node) {
 }
 
 /**
- * Clone object
- *
- * @param o
- */
+* Clone object
+*
+* @param o
+*/
 function clone(o) {
     if (!o || "object" !== typeof o) {
         return o;
