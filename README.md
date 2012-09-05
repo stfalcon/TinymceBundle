@@ -41,7 +41,7 @@ Instantiate Bundle in your app/AppKernel.php file
 
 Configure your application
 
-    // app/config.yml
+    // app/config/config.yml
     stfalcon_tinymce:
         include_jquery: true
         tinymce_jquery: true
@@ -141,13 +141,26 @@ Add script to your templates/layout at the bottom of your page (for faster page 
 
 ## Localization
 
-You can change language of your tiny_mce by adding language selector into theme, something like
+You can change language of your tiny_mce by adding language selector into top level of configuration, something like
 
+
+    // app/config/config.yml
     stfalcon_tinymce:
-        ...
+        include_jquery: true
+        tinymce_jquery: true
+        textarea_class: "tinymce"
+        language: %locale%
         theme:
-            advanced:
-                language: ru
+            simple:
+                mode: "textareas"
+                theme: "advanced"
+        ...
+
+> NOTE! As there is no way to set custom language for each instance of editor, this option set on language for all instances
+
+In the example we set default language from the parameters.ini. Of course you can set default language passing the language code (ru or ru_RU, en or en_US)
+
+If language parameter isn't set default language will be get from the session.
 
 ### Custom buttons
 
