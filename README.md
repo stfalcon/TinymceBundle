@@ -203,3 +203,20 @@ function tinymce_button_hello_world(ed) {
 }
 
 ```
+
+### Custom CSS
+    This option enables you to specify a custom CSS file that extends the theme content CSS.
+    This CSS file is the one used within the editor (the editable area).
+    This option can also be a comma separated list of URLs.
+
+    If you specify a relative path, it is resolved in relation to the URL of the (HTML) file that includes TinyMCE, NOT relative to TinyMCE itself.
+
+    stfalcon_tinymce:
+        ...
+        theme:
+            simple:
+                content_css: "/bundles/mybundle/css/tinymce-content.css"
+                mode: "textareas"
+                ...
+
+> Read Official TinyMCE documentation for more details: http://www.tinymce.com/wiki.php/Configuration:content_css
