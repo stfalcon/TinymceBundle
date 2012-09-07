@@ -95,7 +95,7 @@ class StfalconTinymceExtension extends \Twig_Extension
         // If the language is not set in the config...
         if (!isset($config['language']) || empty($config['language'])) {
             // get it from the session
-            $config['language'] = $this->getService('session')->get('locale');
+            $config['language'] = $this->getService('session')->getLocale();
         }
 
         // Check the language code and trim it to 2 symbols (en_US to en, ru_RU to ru, ...)
