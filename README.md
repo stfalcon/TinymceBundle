@@ -13,9 +13,20 @@ Download the code by adding the git module or editing the deps file in the root 
 
 ### Download by editing deps file
 
+#### Symfony 2.1 compatible)
+
     [TinymceBundle]
         git=git://github.com/stfalcon/TinymceBundle.git
         target=/bundles/Stfalcon/Bundle/TinymceBundle
+
+or
+
+#### Symfony 2.0.x compatible
+
+    [TinymceBundle]
+        git=git://github.com/stfalcon/TinymceBundle.git
+        target=/bundles/Stfalcon/Bundle/TinymceBundle
+        version=2.0.x
 
 
 Modify your autoloader if you didn't installer another Stfalcon Bundle yet.
