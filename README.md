@@ -195,7 +195,7 @@ If language parameter isn't set default language will be get from the session.
 
 ### Custom buttons
 
-You can add some custom buttons to editor's toolbar (See: http://www.tinymce.com/tryit/custom_toolbar_button.php)
+You can add some custom buttons to editor's toolbar (see http://www.tinymce.com/tryit/custom_toolbar_button.php)
 
 First of all you should describe it in your config:
 

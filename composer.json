@@ -1,7 +1,7 @@
 {
     "name": "stfalcon/tinymce-bundle",
     "description": "This Bundle integrates TinyMCE WYSIWYG editor into a Symfony2 project.",
-    "keywords": ["wysiwyg", "tinymce"],
+    "keywords": ["wysiwyg", "tinymce", "editor"],
     "type": "symfony-bundle",
     "license": "MIT",
     "authors": [
