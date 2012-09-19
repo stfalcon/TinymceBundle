@@ -15,6 +15,16 @@ Download the code by adding the git module or editing the deps file in the root 
 
 #### Symfony 2.1 compatible)
 
+If you use composer add TinyMCE bundle as dependencies to the composer.json of your application
+
+    "require": {
+        ...
+        "stfalcon/tinymce-bundle": "dev-master"
+        ...
+    },
+
+    or if you prefer standard vendor installer then add dependencies to deps file.
+
     [TinymceBundle]
         git=git://github.com/stfalcon/TinymceBundle.git
         target=/bundles/Stfalcon/Bundle/TinymceBundle
@@ -22,6 +32,16 @@ Download the code by adding the git module or editing the deps file in the root 
 or
 
 #### Symfony 2.0.x compatible
+
+If you use composer add TinyMCE bundle as dependencies to the composer.json of your application
+
+    "require": {
+        ...
+        "stfalcon/tinymce-bundle": "2.0.x-dev"
+        ...
+    },
+
+    or if you prefer standard vendor installer then add dependencies to deps file.
 
     [TinymceBundle]
         git=git://github.com/stfalcon/TinymceBundle.git
