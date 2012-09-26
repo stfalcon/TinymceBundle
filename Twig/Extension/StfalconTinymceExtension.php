@@ -66,11 +66,9 @@ class StfalconTinymceExtension extends \Twig_Extension
     /**
      * TinyMce initializations
      *
-     * @param array $options
-     *
      * @return string
      */
-    public function tinymce_init($options = array())
+    public function tinymce_init()
     {
 
         $config = $this->getParameter('stfalcon_tinymce.config');
@@ -82,13 +80,11 @@ class StfalconTinymceExtension extends \Twig_Extension
         $config['jquery_script_url'] = $assets->getUrl('bundles/stfalcontinymce/vendor/tiny_mce/tiny_mce.jquery.js');
 
         // Get local button's image
-        if (isset($config['tinymce_buttons'])) {
-            foreach ($config['tinymce_buttons'] as &$customButton) {
-                $imageUrl = $customButton['image'];
-                $url      = preg_replace('/^asset\[(.+)\]$/i', '$1', $imageUrl);
-                if ($imageUrl !== $url) {
-                    $customButton['image'] = $assets->getUrl($url);
-                }
+        foreach ($config['tinymce_buttons'] as &$customButton) {
+            $imageUrl = $customButton['image'];
+            $url      = preg_replace('/^asset\[(.+)\]$/i', '$1', $imageUrl);
+            if ($imageUrl !== $url) {
+                $customButton['image'] = $assets->getUrl($url);
             }
         }
 
