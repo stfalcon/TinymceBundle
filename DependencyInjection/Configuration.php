@@ -29,7 +29,7 @@ class Configuration implements ConfigurationInterface
                     // Use jQuery (true) or standalone (false) build of the TinyMCE
                     ->booleanNode('tinymce_jquery')->defaultFalse()->end()
                     // Textarea class
-                    ->scalarNode('textarea_class')->defaultValue('tinymce')->end()
+                    ->scalarNode('textarea_class')->end()
                     // Default language for all instances of the editor
                     ->scalarNode('language')->defaultNull()->end()
                     ->arrayNode('theme')

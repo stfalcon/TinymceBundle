@@ -6,7 +6,15 @@
 function initTinyMCE(options) {
     (function ($, undefined) {
         $(function () {
-            $('textarea' + options.textarea_class).each(function () {
+            var $tinymceTargets;
+
+            if(options.textarea_class){
+                $tinymceTargets = $('textarea' + options.textarea_class);
+            } else {
+                $tinymceTargets = $('textarea');
+            }
+
+            $tinymceTargets.each(function () {
                 var $textarea = $(this),
                     theme = $textarea.data('theme') || 'simple';
 
