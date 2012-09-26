@@ -9,13 +9,15 @@ Download the code by adding the git module or editing the deps file in the root 
 
 ### Download via git submodule
 
+```bash
     git submodule add git://github.com/stfalcon/TinymceBundle.git vendor/bundles/Stfalcon/Bundle/TinymceBundle
+```
 
 ### Download by editing deps file
 
-#### Symfony 2.1 compatible)
-
 If you use composer add TinyMCE bundle as dependencies to the composer.json of your application
+
+#### for Symfony 2.1
 
     "require": {
         ...
@@ -23,17 +25,7 @@ If you use composer add TinyMCE bundle as dependencies to the composer.json of y
         ...
     },
 
-    or if you prefer standard vendor installer then add dependencies to deps file.
-
-    [TinymceBundle]
-        git=git://github.com/stfalcon/TinymceBundle.git
-        target=/bundles/Stfalcon/Bundle/TinymceBundle
-
-or
-
-#### Symfony 2.0.x compatible
-
-If you use composer add TinyMCE bundle as dependencies to the composer.json of your application
+#### for Symfony 2.0
 
     "require": {
         ...
@@ -41,7 +33,15 @@ If you use composer add TinyMCE bundle as dependencies to the composer.json of y
         ...
     },
 
-    or if you prefer standard vendor installer then add dependencies to deps file.
+If you prefer standard vendor installer then add dependencies to deps file
+
+#### for Symfony 2.1
+
+    [TinymceBundle]
+        git=git://github.com/stfalcon/TinymceBundle.git
+        target=/bundles/Stfalcon/Bundle/TinymceBundle
+
+#### for Symfony 2.0
 
     [TinymceBundle]
         git=git://github.com/stfalcon/TinymceBundle.git
@@ -49,17 +49,26 @@ If you use composer add TinyMCE bundle as dependencies to the composer.json of y
         version=2.0.x
 
 
-Modify your autoloader if you didn't installer another Stfalcon Bundle yet.
-Register namespace :
+## Register namespace
 
-    // app/autoload.php
+Modify your autoloader file if you didn't it before for some another Stfalcon Bundle yet.
+
+```php
+// app/autoload.php
+<?php
+    // ...
     $loader->registerNamespaces(array(
         // ...
         'Stfalcon'                       => __DIR__.'/../vendor/bundles',
     ));
+```
 
-Instantiate Bundle in your app/AppKernel.php file
+Then instantiate Bundle in your kernel init file
 
+```php
+// app/AppKernel.php
+<?php
+    // ...
     public function registerBundles()
     {
         $bundles = array(
@@ -67,17 +76,103 @@ Instantiate Bundle in your app/AppKernel.php file
             new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
         );
     }
+```
 
-## Configuration
+after run the command
 
-Configure your application
+```bash
+    php app/console assets:install web/
+```
 
+to copy the resources to the projects web directory.
+
+## Base configuration
+
+By default, tinymce is enabled for all textareas on the page, but if you want to customize it, do the following:
+
+Add class "tinymce" to textarea field to initialize TinyMCE.
+
+```html
+    <textarea class="tinymce"></textarea>
+```
+
+If you want to use jQuery version of the editor set the following parameters:
+
+```yaml
+    stfalcon_tinymce:
+        include_jquery: true
+        tinymce_jquery: true
+        ...
+```
+
+The option `include_jquery` allow to load external jQuery library from the Google CDN. Set it to `true` if you haven't included jQuery library somewhere yet
+
+If you are using FormBuilder, use an array to add the class, you can also use the `theme` option to change the
+used theme to something other than 'simple' (i.e. on of the other defined themes in your config - the example above
+defined 'medium').  e.g.:
+
+```php
+<?php
+    $builder->add('introtext', 'textarea', array(
+        'attr' => array(
+            'class' => 'tinymce',
+            'data-theme' => 'medium' // simple, advanced, bbcode
+        )
+    ));
+```
+
+Add script to your templates/layout at the bottom of your page (for faster page display).
+
+```twig
+
+    {{ tinymce_init() }}
+
+```
+
+## Localization
+
+You can change language of your tiny_mce by adding language selector into top level of configuration, something like
+
+```yaml
     // app/config/config.yml
     stfalcon_tinymce:
         include_jquery: true
         tinymce_jquery: true
         textarea_class: "tinymce"
+        language: %locale%
         theme:
+            simple:
+                mode: "textareas"
+                theme: "advanced"
+        ...
+
+```
+
+> NOTE! As there is no way to set custom language for each instance of editor, this option set on language for all instances
+
+In the example we set default language from the parameters.ini. Of course you can set default language passing the language code (ru or ru_RU, en or en_US)
+
+If language parameter isn't set default language will be get from the session.
+
+## Custom configurations
+
+According to oficial documentation you can configure your editor as you wish. There are almost full list of available parameters thet you can configure by yourself:
+
+```yaml
+    // app/config/config.yml
+    stfalcon_tinymce:
+        include_jquery: true
+        tinymce_jquery: true
+        textarea_class: "tinymce"
+        # Get current language from the parameters.ini
+        language: %locale%
+        # Custom buttons
+        tinymce_buttons:
+            stfalcon: # Id of the first button
+                title: "Stfalcon"
+                image: "http://stfalcon.com/favicon.ico"
+        theme:
+            # Simple theme as same as default theme
             simple:
                 mode: "textareas"
                 theme: "advanced"
@@ -89,6 +184,7 @@ Configure your application
                 theme_advanced_statusbar_location: "bottom"
                 plugins: "fullscreen"
                 theme_advanced_buttons1_add: "fullscreen"
+            # Advanced theme with almost all enabled plugins
             advanced:
                 theme: "advanced"
                 plugins: "pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template"
@@ -100,6 +196,7 @@ Configure your application
                 theme_advanced_toolbar_align: "left"
                 theme_advanced_statusbar_location: "bottom"
                 theme_advanced_resizing: true
+            # Medium number of enabled plugins + spellchecker
             medium:
                 mode: "textareas"
                 theme: "advanced"
@@ -112,6 +209,7 @@ Configure your application
                 theme_advanced_statusbar_location: ""
                 paste_auto_cleanup_on_paste: true
                 spellchecker_languages: "+English=en,Dutch=nl"
+            # BBCode tag compatible theme (see http://www.bbcode.org/reference.php)
             bbcode:
                 mode: "none"
                 theme: "advanced"
@@ -127,78 +225,15 @@ Configure your application
                 remove_linebreaks: false
                 inline_styles: false
                 convert_fonts_to_spans: false
-
-run the command
-
-    php app/console assets:install web/
-
-to copy the resources to the projects web directory.
-
-By default, tinymce is enabled for all textareas on the page, but if you want to customize it, do the following:
-
-Add class "tinymce" to textarea field to initialize TinyMCE.
-
-    <textarea class="tinymce"></textarea>
-
-and add the parameter `textarea_class` to tinymce config. Something like that:
-	stfalcon_tinymce:
-			...
-		    textarea_class: "tinymce"
-			...
-
-If you want to use the editor without jQuery dependancy, you can switch it to use non-jQuery version.
-
-    stfalcon_tinymce:
-        include_jquery: false
-        tinymce_jquery: false
-        ...
-
-The option `include_jquery` allow to load external jQuery library from the Google CDN.
-
-If you are using FormBuilder, use an array to add the class, you can also use the `theme` option to change the
-used theme to something other than 'simple' (i.e. on of the other defined themes in your config - the example above
-defined 'medium').  e.g.:
-
-        $builder->add('introtext', 'textarea', array(
-            'attr' => array(
-                'class' => 'tinymce',
-                'data-theme' => 'medium' // simple, advanced, bbcode
-            )
-        ));
-
-Add script to your templates/layout at the bottom of your page (for faster page display).
-
-    {{ tinymce_init() }}
-
-## Localization
-
-You can change language of your tiny_mce by adding language selector into top level of configuration, something like
-
-
-    // app/config/config.yml
-    stfalcon_tinymce:
-        include_jquery: true
-        tinymce_jquery: true
-        textarea_class: "tinymce"
-        language: %locale%
-        theme:
-            simple:
-                mode: "textareas"
-                theme: "advanced"
-        ...
-
-> NOTE! As there is no way to set custom language for each instance of editor, this option set on language for all instances
-
-In the example we set default language from the parameters.ini. Of course you can set default language passing the language code (ru or ru_RU, en or en_US)
-
-If language parameter isn't set default language will be get from the session.
+```
 
 ### Custom buttons
 
-You can add some custom buttons to editor's toolbar (see http://www.tinymce.com/tryit/custom_toolbar_button.php)
+You can add some custom buttons to editor's toolbar (See: http://www.tinymce.com/tryit/custom_toolbar_button.php)
 
 First of all you should describe it in your config:
 
+```yaml
     stfalcon_tinymce:
         tinymce_buttons:
             stfalcon: # Id of the first button
@@ -216,7 +251,7 @@ First of all you should describe it in your config:
             simple:
                 mode: "textareas"
                 theme: "advanced"
-                theme_advanced_buttons1: "stfalcon, hello_world, bold,italic,...
+```
 
 And you should create a callback functions `tinymce_button_` for your buttons, based on their button ID:
 
@@ -242,6 +277,7 @@ function tinymce_button_hello_world(ed) {
 
     If you specify a relative path, it is resolved in relation to the URL of the (HTML) file that includes TinyMCE, NOT relative to TinyMCE itself.
 
+```yaml
     stfalcon_tinymce:
         ...
         theme:
@@ -249,5 +285,6 @@ function tinymce_button_hello_world(ed) {
                 content_css: "/bundles/mybundle/css/tinymce-content.css"
                 mode: "textareas"
                 ...
+```
 
-> Read Official TinyMCE documentation for more details: http://www.tinymce.com/wiki.php/Configuration:content_css
+> NOTE! Read Official TinyMCE documentation for more details: http://www.tinymce.com/wiki.php/Configuration:content_css

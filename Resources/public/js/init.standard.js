@@ -7,8 +7,14 @@ function initTinyMCE(options) {
     if (typeof tinyMCE == 'undefined') return false;
     // Load when DOM is ready
     domready(function () {
-        var textareas = getElementsByClassName(options.textarea_class, 'textarea'),
+        var textareas,
             err = 0;
+
+        if (options.textarea_class) {
+            textareas = getElementsByClassName(options.textarea_class, 'textarea');
+        } else {
+            textareas = document.getElementsByTagName('textarea');
+        }
 
         for (var i = 0; i < textareas.length; i++) {
             // Get editor's theme from the textarea data
