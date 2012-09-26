@@ -154,67 +154,6 @@ In the example we set default language from the parameters.ini. Of course you ca
 
 If language parameter isn't set default language will be get from the session.
 
-### Custom buttons
-
-You can add some custom buttons to editor's toolbar (See: http://www.tinymce.com/tryit/custom_toolbar_button.php)
-
-First of all you should describe it in your config:
-
-```yaml
-    stfalcon_tinymce:
-        tinymce_buttons:
-            stfalcon: # Id of the first button
-                title: "Stfalcon"
-                image: "http://stfalcon.com/favicon.ico"
-            hello_world: # Id of the second button
-                title: "Google"
-                image: "http://google.com/favicon.ico"
-                ...
-                or for the local images
-                ...
-                image: "asset[bundles/somebundle/images/icon.ico]"
-
-        theme:
-            simple:
-                mode: "textareas"
-                theme: "advanced"
-```
-
-And you should create a callback functions `tinymce_button_` for your buttons, based on their button ID:
-
-
-```javascript
-
-function tinymce_button_stfalcon(ed) {
-    ed.focus();
-    ed.selection.setContent("Hello from stfalcon.com :)");
-}
-
-function tinymce_button_hello_world(ed) {
-    ed.focus();
-    ed.selection.setContent("Hello world!");
-}
-
-```
-
-### Custom CSS
-    This option enables you to specify a custom CSS file that extends the theme content CSS.
-    This CSS file is the one used within the editor (the editable area).
-    This option can also be a comma separated list of URLs.
-
-    If you specify a relative path, it is resolved in relation to the URL of the (HTML) file that includes TinyMCE, NOT relative to TinyMCE itself.
-
-```yaml
-    stfalcon_tinymce:
-        ...
-        theme:
-            simple:
-                content_css: "/bundles/mybundle/css/tinymce-content.css"
-                mode: "textareas"
-                ...
-```
-
-
 ## Custom configurations
 
 According to oficial documentation you can configure your editor as you wish. There are almost full list of available parameters thet you can configure by yourself:
@@ -286,6 +225,66 @@ According to oficial documentation you can configure your editor as you wish. Th
                 remove_linebreaks: false
                 inline_styles: false
                 convert_fonts_to_spans: false
+```
+
+### Custom buttons
+
+You can add some custom buttons to editor's toolbar (See: http://www.tinymce.com/tryit/custom_toolbar_button.php)
+
+First of all you should describe it in your config:
+
+```yaml
+    stfalcon_tinymce:
+        tinymce_buttons:
+            stfalcon: # Id of the first button
+                title: "Stfalcon"
+                image: "http://stfalcon.com/favicon.ico"
+            hello_world: # Id of the second button
+                title: "Google"
+                image: "http://google.com/favicon.ico"
+                ...
+                or for the local images
+                ...
+                image: "asset[bundles/somebundle/images/icon.ico]"
+
+        theme:
+            simple:
+                mode: "textareas"
+                theme: "advanced"
+```
+
+And you should create a callback functions `tinymce_button_` for your buttons, based on their button ID:
+
+
+```javascript
+
+function tinymce_button_stfalcon(ed) {
+    ed.focus();
+    ed.selection.setContent("Hello from stfalcon.com :)");
+}
+
+function tinymce_button_hello_world(ed) {
+    ed.focus();
+    ed.selection.setContent("Hello world!");
+}
+
+```
+
+### Custom CSS
+    This option enables you to specify a custom CSS file that extends the theme content CSS.
+    This CSS file is the one used within the editor (the editable area).
+    This option can also be a comma separated list of URLs.
+
+    If you specify a relative path, it is resolved in relation to the URL of the (HTML) file that includes TinyMCE, NOT relative to TinyMCE itself.
+
+```yaml
+    stfalcon_tinymce:
+        ...
+        theme:
+            simple:
+                content_css: "/bundles/mybundle/css/tinymce-content.css"
+                mode: "textareas"
+                ...
 ```
 
 > NOTE! Read Official TinyMCE documentation for more details: http://www.tinymce.com/wiki.php/Configuration:content_css
