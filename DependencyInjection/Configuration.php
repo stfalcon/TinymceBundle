@@ -30,6 +30,10 @@ class Configuration implements ConfigurationInterface
                     ->booleanNode('tinymce_jquery')->defaultFalse()->end()
                     // Textarea class
                     ->scalarNode('textarea_class')->end()
+                    //width layout
+                    ->scalarNode('width')->defaultNull()->end()
+                    //height layout
+                    ->scalarNode('height')->defaultNull()->end()
                     // Default language for all instances of the editor
                     ->scalarNode('language')->defaultNull()->end()
                     ->arrayNode('theme')
