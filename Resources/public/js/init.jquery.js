@@ -49,7 +49,7 @@ function initTinyMCE(options) {
                             });
                             ed.addButton(id, opts);
                         });
-                    }
+                    };
                 }
 
                 $textarea.tinymce(themeOptions);
