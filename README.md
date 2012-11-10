@@ -4,9 +4,7 @@ Bundle is destined to add TinyMCE WYSIWYG editor to your Symfony2 project.
 
 ## Installation
 
-Download the code by adding the git module or editing the deps file in the root project.
-
-### Download by Composer
+### Installation by Composer
 
 If you use composer add TinyMCE bundle as dependencies to the composer.json of your application
 
@@ -26,7 +24,7 @@ If you use composer add TinyMCE bundle as dependencies to the composer.json of y
         ...
     },
 
-### Download via git submodule
+### Installation via git submodule
 
 ```bash
     git submodule add git://github.com/stfalcon/TinymceBundle.git vendor/bundles/Stfalcon/Bundle/TinymceBundle
