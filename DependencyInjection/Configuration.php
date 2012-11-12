@@ -54,7 +54,7 @@ class Configuration implements ConfigurationInterface
                                     return $defaults;
                                 })
                             ->end()
-                            ->prototype('scalar')->end()
+                            ->prototype('variable')->end()
                         ->end()
                         // Add default theme if it doesn't set
                         ->defaultValue(array('simple' => $defaults))
