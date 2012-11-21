@@ -145,6 +145,7 @@ According to oficial documentation you can configure your editor as you wish. Th
         include_jquery: true
         tinymce_jquery: true
         textarea_class: "tinymce"
+        base_url: "http://yourdomain.com/" # this parameter may be included if you need to override the assets_base_urls for your template engine (to override a CDN base url)
         # Get current language from the parameters.ini
         language: %locale%
         # Custom buttons
