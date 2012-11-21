@@ -72,12 +72,13 @@ class StfalconTinymceExtension extends \Twig_Extension
     {
 
         $config = $this->getParameter('stfalcon_tinymce.config');
+        $baseURL = (!isset($config['base_url']) ? null : $config['base_url']);
 
         /** @var $assets \Symfony\Component\Templating\Helper\CoreAssetsHelper */
         $assets = $this->getService('templating.helper.assets');
 
         // Get path to tinymce script for the jQuery version of the editor
-        $config['jquery_script_url'] = $assets->getUrl('bundles/stfalcontinymce/vendor/tiny_mce/tiny_mce.jquery.js');
+        $config['jquery_script_url'] = $assets->getUrl($baseURL.'bundles/stfalcontinymce/vendor/tiny_mce/tiny_mce.jquery.js');
 
         // Get local button's image
         foreach ($config['tinymce_buttons'] as &$customButton) {
@@ -107,7 +108,8 @@ class StfalconTinymceExtension extends \Twig_Extension
         return $this->getService('templating')->render('StfalconTinymceBundle:Script:init.html.twig', array(
             'tinymce_config' => json_encode($config),
             'include_jquery' => $config['include_jquery'],
-            'tinymce_jquery' => $config['tinymce_jquery']
+            'tinymce_jquery' => $config['tinymce_jquery'],
+            'base_url'=>$baseURL
         ));
 
     }
