@@ -109,9 +109,8 @@ class StfalconTinymceExtension extends \Twig_Extension
             'tinymce_config' => json_encode($config),
             'include_jquery' => $config['include_jquery'],
             'tinymce_jquery' => $config['tinymce_jquery'],
-            'base_url'=>$baseURL
+            'base_url'       => $baseURL
         ));
-
     }
 
     /**
