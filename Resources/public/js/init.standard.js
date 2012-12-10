@@ -16,6 +16,19 @@ function initTinyMCE(options) {
             textareas = document.getElementsByTagName('textarea');
         }
 
+        // Load external plugins
+        if (typeof options.external_plugins == 'object') {
+            for (var pluginId in options.external_plugins) {
+                if (!options.external_plugins.hasOwnProperty(pluginId)) continue;
+
+                var opts = options.external_plugins[pluginId],
+                    url = opts.url || null;
+                if (url) {
+                    tinymce.PluginManager.load(pluginId, url);
+                }
+            }
+        }
+
         for (var i = 0; i < textareas.length; i++) {
             // Get editor's theme from the textarea data
             var theme = textareas[i].getAttribute("data-theme") || 'simple';

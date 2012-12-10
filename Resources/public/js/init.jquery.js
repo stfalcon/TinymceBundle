@@ -33,24 +33,30 @@ function initTinyMCE(options) {
                         });
                     };
                 }
-                // Add custom buttons to current editor
-                if (typeof options.tinymce_buttons == 'object') {
-                    themeOptions.setup = function (ed) {
-                        $.each(options.tinymce_buttons, function (id, opts) {
-                            opts = $.extend({}, opts, {
-                                onclick:function () {
-                                    var callback = window['tinymce_button_' + id];
-                                    if (typeof callback == 'function') {
-                                        callback(ed);
-                                    } else {
-                                        alert('You have to create callback function: "tinymce_button_' + id + '"');
-                                    }
+                themeOptions.setup = function(ed) {
+                    // Add custom buttons to current editor
+                    $.each(options.tinymce_buttons || {}, function(id, opts) {
+                        opts = $.extend({}, opts, {
+                            onclick: function() {
+                                var callback = window['tinymce_button_' + id];
+                                if (typeof callback == 'function') {
+                                    callback(ed);
+                                } else {
+                                    alert('You have to create callback function: "tinymce_button_' + id + '"');
                                 }
-                            });
-                            ed.addButton(id, opts);
+                            }
                         });
-                    };
-                }
+                        ed.addButton(id, opts);
+                    });
+
+                    // Load external plugins
+                    $.each(options.external_plugins || {}, function(id, opts) {
+                        var url = opts.url || null;
+                        if (url) {
+                            tinymce.PluginManager.load(id, url);
+                        }
+                    });
+                };
 
                 $textarea.tinymce(themeOptions);
             });

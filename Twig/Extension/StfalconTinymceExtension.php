@@ -71,22 +71,23 @@ class StfalconTinymceExtension extends \Twig_Extension
     public function tinymce_init()
     {
 
-        $config = $this->getParameter('stfalcon_tinymce.config');
+        $config  = $this->getParameter('stfalcon_tinymce.config');
         $baseURL = (!isset($config['base_url']) ? null : $config['base_url']);
 
         /** @var $assets \Symfony\Component\Templating\Helper\CoreAssetsHelper */
         $assets = $this->getService('templating.helper.assets');
 
         // Get path to tinymce script for the jQuery version of the editor
-        $config['jquery_script_url'] = $assets->getUrl($baseURL.'bundles/stfalcontinymce/vendor/tiny_mce/tiny_mce.jquery.js');
+        $config['jquery_script_url'] = $assets->getUrl($baseURL . 'bundles/stfalcontinymce/vendor/tiny_mce/tiny_mce.jquery.js');
 
         // Get local button's image
         foreach ($config['tinymce_buttons'] as &$customButton) {
-            $imageUrl = $customButton['image'];
-            $url      = preg_replace('/^asset\[(.+)\]$/i', '$1', $imageUrl);
-            if ($imageUrl !== $url) {
-                $customButton['image'] = $assets->getUrl($url);
-            }
+            $customButton['image'] = $this->getAssetsUrl($customButton['image']);
+        }
+
+        // Update URL to external plugins
+        foreach ($config['external_plugins'] as &$extPlugin) {
+            $extPlugin['url'] = $this->getAssetsUrl($extPlugin['url']);
         }
 
         // If the language is not set in the config...
@@ -121,5 +122,27 @@ class StfalconTinymceExtension extends \Twig_Extension
     public function getName()
     {
         return 'stfalcon_tinymce';
+    }
+
+
+    /**
+     * Get url from config string
+     *
+     * @param string $inputUrl
+     *
+     * @return string
+     */
+    protected function getAssetsUrl($inputUrl)
+    {
+        /** @var $assets \Symfony\Component\Templating\Helper\CoreAssetsHelper */
+        $assets = $this->getService('templating.helper.assets');
+
+        $url = preg_replace('/^asset\[(.+)\]$/i', '$1', $inputUrl);
+
+            if ($inputUrl !== $url) {
+            return $assets->getUrl($url);
+        }
+
+        return $inputUrl;
     }
 }

@@ -72,6 +72,16 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
                     ->end()
+                    // Configure external TinyMCE plugins
+                    ->arrayNode('external_plugins')
+                        ->useAttributeAsKey('name')
+                        ->prototype('array')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('url')->isRequired()->end()
+                            ->end()
+                        ->end()
+                    ->end()
                 ->end()
             ->end();
 

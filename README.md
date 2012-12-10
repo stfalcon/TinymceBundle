@@ -209,6 +209,27 @@ According to oficial documentation you can configure your editor as you wish. Th
                 convert_fonts_to_spans: false
 ```
 
+### External plugins support
+
+If you want to load some external plugins which are situated in your bundle, you should configure it as in the example:
+
+```yaml
+    stfalcon_tinymce:
+        external_plugins:
+            filemanager:
+                url: "asset[bundles/acmedemo/js/tinymce-plugin/filemanager/editor_plugin.js]"
+            imagemanager:
+                url: "asset[bundles/acmedemo/js/tinymce-plugin/imagemanager/editor_plugin.js]"
+        ...
+        theme:
+            simple:
+                mode: "textareas"
+                theme: "advanced"
+                plugins: "-filemanager, -imagemanager, table,advhr,advlink,paste,xhtmlxtras,spellchecker...
+```
+
+> NOTE! Make sure that your plugin contain dash (-YOUREXTPLUGIN) before name on theme plugins section
+
 ### Custom buttons
 
 You can add some custom buttons to editor's toolbar (See: http://www.tinymce.com/tryit/custom_toolbar_button.php)
