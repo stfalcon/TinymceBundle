@@ -1,14 +1,14 @@
 # TinymceBundle
 
-Bundle is destined to add TinyMCE WYSIWYG editor to your Symfony2 project.
+This bundle makes it very easy to add the TinyMCE WYSIWYG editor to your Symfony2 project.
 
 ## Installation
 
 ### Installation by Composer
 
-If you use composer add TinyMCE bundle as dependencies to the composer.json of your application
+If you use composer, add TinyMCE bundle as a dependency to the composer.json of your application
 
-#### for Symfony 2.1
+#### For Symfony 2.1
 
     "require": {
         ...
@@ -16,7 +16,7 @@ If you use composer add TinyMCE bundle as dependencies to the composer.json of y
         ...
     },
 
-#### for Symfony 2.0
+#### For Symfony 2.0
 
     "require": {
         ...
@@ -30,9 +30,9 @@ If you use composer add TinyMCE bundle as dependencies to the composer.json of y
     git submodule add git://github.com/stfalcon/TinymceBundle.git vendor/bundles/Stfalcon/Bundle/TinymceBundle
 ```
 
-## Register namespace
+## Modify autoloader and update kernel
 
-Modify your autoloader file if you didn't it before for some another Stfalcon Bundle yet.
+If you are not using Composer, modify your autoloader file.
 
 ```php
 // app/autoload.php
@@ -44,7 +44,7 @@ Modify your autoloader file if you didn't it before for some another Stfalcon Bu
     ));
 ```
 
-Then instantiate Bundle in your kernel init file
+Add StfalconTinymceBundle to your application kernel.
 
 ```php
 // app/AppKernel.php
@@ -59,17 +59,23 @@ Then instantiate Bundle in your kernel init file
     }
 ```
 
-after run the command
+The bundle needs to copy the resources necessary to the web folder. You can use the command below:
 
 ```bash
     php app/console assets:install web/
 ```
 
-to copy the resources to the projects web directory.
+## Include in template
+
+This bundle comes with an extension for Twig. This makes it very easy to include the TinyMCE Javascript into your pages. Add the tag below to the places where you want to use TinyMCE. It will output the complete Javascript, including `<script>` tags. Add it to the bottom of your page for optimized performance.
+
+```twig
+    {{ tinymce_init() }}
+```
 
 ## Base configuration
 
-By default, tinymce is enabled for all textareas on the page, but if you want to customize it, do the following:
+By default, tinymce is enabled for all textareas on the page. If you want to customize it, do the following:
 
 Add class "tinymce" to textarea field to initialize TinyMCE.
 
@@ -86,11 +92,11 @@ If you want to use jQuery version of the editor set the following parameters:
         ...
 ```
 
-The option `include_jquery` allow to load external jQuery library from the Google CDN. Set it to `true` if you haven't included jQuery library somewhere yet
+The option `include_jquery` allows you to load external jQuery library from the Google CDN. Set it to `true` if you haven't included jQuery on your page.
 
 If you are using FormBuilder, use an array to add the class, you can also use the `theme` option to change the
 used theme to something other than 'simple' (i.e. on of the other defined themes in your config - the example above
-defined 'medium').  e.g.:
+defined 'medium'). e.g.:
 
 ```php
 <?php
@@ -102,17 +108,9 @@ defined 'medium').  e.g.:
     ));
 ```
 
-Add script to your templates/layout at the bottom of your page (for faster page display).
-
-```twig
-
-    {{ tinymce_init() }}
-
-```
-
 ## Localization
 
-You can change language of your tiny_mce by adding language selector into top level of configuration, something like
+You can change the language of your TinyMCE editor by adding language selector into top level of configuration, something like:
 
 ```yaml
     // app/config/config.yml
@@ -129,15 +127,15 @@ You can change language of your tiny_mce by adding language selector into top le
 
 ```
 
-> NOTE! As there is no way to set custom language for each instance of editor, this option set on language for all instances
+> NOTE! As there is no way to set custom language for each instance of editor, this option set on language for all instances.
 
-In the example we set default language from the parameters.ini. Of course you can set default language passing the language code (ru or ru_RU, en or en_US)
+In the example we set default language from the parameters.ini. Of course you can set your default language passing the language code (`ru` or `ru_RU`, `en` or `en_US`)
 
-If language parameter isn't set default language will be get from the session.
+If language parameter isn't set, the default language will be get from the session.
 
 ## Custom configurations
 
-According to oficial documentation you can configure your editor as you wish. There are almost full list of available parameters thet you can configure by yourself:
+According to the TinyMCE documentation you can configure your editor as you wish. Below is an almost full list of available parameters that you can configure by yourself:
 
 ```yaml
     // app/config/config.yml
@@ -154,7 +152,7 @@ According to oficial documentation you can configure your editor as you wish. Th
                 title: "Stfalcon"
                 image: "http://stfalcon.com/favicon.ico"
         theme:
-            # Simple theme as same as default theme
+            # Simple theme: same as default theme
             simple:
                 mode: "textareas"
                 theme: "advanced"
@@ -274,11 +272,10 @@ function tinymce_button_hello_world(ed) {
 ```
 
 ### Custom CSS
-    This option enables you to specify a custom CSS file that extends the theme content CSS.
-    This CSS file is the one used within the editor (the editable area).
-    This option can also be a comma separated list of URLs.
 
-    If you specify a relative path, it is resolved in relation to the URL of the (HTML) file that includes TinyMCE, NOT relative to TinyMCE itself.
+This option enables you to specify a custom CSS file that extends the theme content CSS. This CSS file is the one used within the editor (the editable area). This option can also be a comma separated list of URLs.
+
+If you specify a relative path, it is resolved in relation to the URL of the (HTML) file that includes TinyMCE, NOT relative to TinyMCE itself.
 
 ```yaml
     stfalcon_tinymce:
