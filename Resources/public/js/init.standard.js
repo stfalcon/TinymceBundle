@@ -68,15 +68,15 @@ function initTinyMCE(options) {
                 }
             }
 
-            if(false === textareas[i].hasAttribute('id')){
+            if (false === textareas[i].hasAttribute('id')) {
                 if (textareas.length == 1) {
                     // Single textarea, so we can init it without ID attribute
                     tinyMCE.execCommand('mceAddControl', true, textareas[i]);
-                } else{
+                } else {
                     // Skip some textarea without ID which unable to initialize and increase error's counter
                     err++;
                     continue;
-		}
+                }
             } else {
                 // Initialize textarea by its ID attribute
                 tinyMCE.execCommand('mceAddControl', true, textareas[i].getAttribute('id'));
