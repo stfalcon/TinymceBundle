@@ -68,17 +68,15 @@ function initTinyMCE(options) {
                 }
             }
 
-            if (textareas.length == 1) {
-		if(false === textareas[i].hasAttribute('id')){
+            if(false === textareas[i].hasAttribute('id')){
+                if (textareas.length == 1) {
                     // Single textarea, so we can init it without ID attribute
                     tinyMCE.execCommand('mceAddControl', true, textareas[i]);
-		}else{
-		    tinyMCE.execCommand('mceAddControl', true, textareas[i].getAttribute('id'));
+                } else{
+                    // Skip some textarea without ID which unable to initialize and increase error's counter
+                    err++;
+                    continue;
 		}
-            } else if ((textareas.length > 1) && (false === textareas[i].hasAttribute('id'))) {
-                // Skip some textarea without ID which unable to initialize and increase error's counter
-                err++;
-                continue;
             } else {
                 // Initialize textarea by its ID attribute
                 tinyMCE.execCommand('mceAddControl', true, textareas[i].getAttribute('id'));
