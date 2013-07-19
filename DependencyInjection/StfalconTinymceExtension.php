@@ -2,11 +2,10 @@
 
 namespace Stfalcon\Bundle\TinymceBundle\DependencyInjection;
 
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * StfalconTinymceExtension
@@ -24,15 +23,22 @@ class StfalconTinymceExtension extends Extension
         // Get default configuration of the bundle
         $config = $this->processConfiguration(new Configuration(), $configs);
 
+        if (empty($config['theme'])) {
+            $config['theme'] = array(
+                'simple' => array()
+            );
+        }
+
         // Set target element (textarea) selector
         if (isset($config['textarea_class']) && $config['textarea_class']) {
-            $config['textarea_class'] = ($config['tinymce_jquery'] ? '.' : '') . trim($config['textarea_class'], '.');
+            $config['selector'] = $config['textarea_class'];
+
         }
 
         $container->setParameter('stfalcon_tinymce.config', $config);
 
         // load dependency injection config
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('service.xml');
     }
 

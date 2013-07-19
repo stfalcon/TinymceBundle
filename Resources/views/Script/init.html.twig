@@ -1,11 +1,11 @@
 {% if include_jquery %}
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 {% endif %}
 {% if tinymce_jquery %}
-    <script type="text/javascript" src="{{ asset([base_url,'bundles/stfalcontinymce/vendor/tiny_mce/jquery.tinymce.js']|join) }}"></script>
+    <script type="text/javascript" src="{{ asset([base_url,'bundles/stfalcontinymce/vendor/tinymce/jquery.tinymce.min.js']|join) }}"></script>
     <script type="text/javascript" src="{{ asset([base_url,'bundles/stfalcontinymce/js/init.jquery.js']|join) }}"></script>
 {% else %}
-    <script type="text/javascript" src="{{ asset([base_url,'bundles/stfalcontinymce/vendor/tiny_mce/tiny_mce.js']|join) }}"></script>
+    <script type="text/javascript" src="{{ asset([base_url,'bundles/stfalcontinymce/vendor/tinymce/tinymce.min.js']|join) }}"></script>
     <script type="text/javascript" src="{{ asset([base_url,'bundles/stfalcontinymce/js/ready.min.js']|join) }}"></script>
     <script type="text/javascript" src="{{ asset([base_url,'bundles/stfalcontinymce/js/init.standard.js']|join) }}"></script>
 {% endif %}
