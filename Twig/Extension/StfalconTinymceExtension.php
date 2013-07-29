@@ -1,5 +1,4 @@
-<?php
-namespace Stfalcon\Bundle\TinymceBundle\Twig\Extension;
+mespace Stfalcon\Bundle\TinymceBundle\Twig\Extension;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -16,9 +15,9 @@ class StfalconTinymceExtension extends \Twig_Extension
      * @var ContainerInterface
      */
     protected $container;
-    
+
     /**
-     * Asset Base Url  
+     * Asset Base Url
      * Used to over ride the asset base url (to not use CDN for instance)
      *
      * @var String
@@ -107,9 +106,25 @@ class StfalconTinymceExtension extends \Twig_Extension
             $config['language'] = $this->getService('request')->getLocale();
         }
 
-        // Check the language code and trim it to 2 symbols (en_US to en, ru_RU to ru, ...)
-        if (strlen($config['language']) > 2) {
-            $config['language'] = substr($config['language'], 0, 2);
+        $langDirectory = __DIR__ . '/../../Resources/public/vendor/tinymce/langs/';
+
+        // A language code coming from the locale may not match an existing language file
+        if (!file_exists($langDirectory . $config['language'] . '.js')) {
+            // Try shortening the code
+            if (strlen($config['language']) > 2) {
+                $shortCode = substr($config['language'], 0, 2);
+
+                if (file_exists($langDirectory . $shortCode . '.js')) {
+                    $config['language'] = $shortCode;
+                }
+            } else {
+                // Try expanding the code
+                $longCode = $config['language'] . '_' . strtoupper($config['language']);
+
+                if (file_exists($langDirectory . $longCode . '.js')) {
+                    $config['language'] = $longCode;
+                }
+            }
         }
 
         // TinyMCE does not allow to set different languages to each instance
@@ -157,3 +172,4 @@ class StfalconTinymceExtension extends \Twig_Extension
         return $inputUrl;
     }
 }
+
