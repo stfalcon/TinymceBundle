@@ -161,7 +161,7 @@ If you want to load some external plugins which are situated in your bundle, you
         theme:
             simple:
                 theme: "modern"
-                plugins: "-filemanager, -imagemanager, table,advhr,advlink,paste,xhtmlxtras,spellchecker...
+                ...
 ```
 
 ### Custom buttons
