@@ -4,26 +4,40 @@
  * @param options
  */
 function initTinyMCE(options) {
-    if (typeof tinyMCE == 'undefined') return false;
+    if (typeof tinymce == 'undefined') return false;
     // Load when DOM is ready
-    domready(function () {
-        var textareas,
-            err = 0;
+    domready(function() {
 
-        if (options.textarea_class) {
-            textareas = getElementsByClassName(options.textarea_class, 'textarea');
-        } else {
-            textareas = document.getElementsByTagName('textarea');
+        var textareas = [];
+        switch (options.selector.substring(0, 1)) {
+            case "#":
+                var _t = document.getElementById(options.selector.substring(1));
+                if (_t) textareas.push(_t);
+                break;
+            case ".":
+                textareas = getElementsByClassName(options.selector.substring(1), 'textarea');
+                break;
+            default :
+                textareas = document.getElementsByTagName('textarea');
+        }
+        if (!textareas.length) {
+            return false;
         }
 
+        var externalPlugins = [];
         // Load external plugins
         if (typeof options.external_plugins == 'object') {
             for (var pluginId in options.external_plugins) {
-                if (!options.external_plugins.hasOwnProperty(pluginId)) continue;
-
+                if (!options.external_plugins.hasOwnProperty(pluginId)) {
+                    continue;
+                }
                 var opts = options.external_plugins[pluginId],
                     url = opts.url || null;
                 if (url) {
+                    externalPlugins.push({
+                        'id': pluginId,
+                        'url': url
+                    });
                     tinymce.PluginManager.load(pluginId, url);
                 }
             }
@@ -32,28 +46,31 @@ function initTinyMCE(options) {
         for (var i = 0; i < textareas.length; i++) {
             // Get editor's theme from the textarea data
             var theme = textareas[i].getAttribute("data-theme") || 'simple';
-
             // Get selected theme options
-            tinyMCE.settings = (typeof options.theme[theme] != 'undefined')
+            var settings = (typeof options.theme[theme] != 'undefined')
                 ? options.theme[theme]
                 : options.theme['simple'];
 
-            // workaround for an incompatibility with html5-validation (see: http://git.io/CMKJTw)
-            if (textareas[i].getAttribute("required")) {
-                tinyMCE.settings.onchange_callback = function (ed) {
-                    ed.save();
-                }
+            settings.external_plugins = settings.external_plugins || {};
+            for (var p = 0; p < externalPlugins.length; p++) {
+                settings.external_plugins[externalPlugins[p]['id']] = externalPlugins[p]['url'];
             }
-
+            // workaround for an incompatibility with html5-validation
+            if (textareas[i].hasAttribute("required")) {
+                textareas[i].removeAttribute("required")
+            }
+            if (!textareas[i].hasAttribute('id')) {
+                textareas[i].setAttribute("id", "tinymce_" + Math.random().toString(36).substr(2));
+            }
             // Add custom buttons to current editor
             if (typeof options.tinymce_buttons == 'object') {
-                tinyMCE.settings.setup = function (editor) {
+                settings.setup = function(editor) {
                     for (var buttonId in options.tinymce_buttons) {
                         if (!options.tinymce_buttons.hasOwnProperty(buttonId)) continue;
 
                         // Some tricky function to isolate variables values
-                        (function (id, opts) {
-                            opts.onclick = function () {
+                        (function(id, opts) {
+                            opts.onclick = function() {
                                 var callback = window['tinymce_button_' + id];
                                 if (typeof callback == 'function') {
                                     callback(editor);
@@ -67,25 +84,11 @@ function initTinyMCE(options) {
                     }
                 }
             }
-
-            if (false === textareas[i].hasAttribute('id')) {
-                if (textareas.length == 1) {
-                    // Single textarea, so we can init it without ID attribute
-                    tinyMCE.execCommand('mceAddControl', true, textareas[i]);
-                } else {
-                    // Skip some textarea without ID which unable to initialize and increase error's counter
-                    err++;
-                    continue;
-                }
-            } else {
-                // Initialize textarea by its ID attribute
-                tinyMCE.execCommand('mceAddControl', true, textareas[i].getAttribute('id'));
-            }
-
+            // Initialize textarea by its ID attribute
+            tinymce
+                .createEditor(textareas[i].getAttribute('id'), settings)
+                .render();
         }
-
-        //Show error message if target elements are invalid
-        if (err) alert("Some of textareas on the page hasn't unique ID attribute! TinyMCE couldn't initialize it.");
     });
 }
 
@@ -106,16 +109,15 @@ function getElementsByClassName(classname, node) {
 }
 
 /**
-* Clone object
-*
-* @param o
-*/
+ * Clone object
+ *
+ * @param o
+ */
 function clone(o) {
     if (!o || "object" !== typeof o) {
         return o;
     }
-    var c = "function" === typeof o.pop ? [] : {};
-    var p, v;
+    var c = "function" === typeof o.pop ? [] : {}, p, v;
     for (p in o) {
         if (o.hasOwnProperty(p)) {
             v = o[p];
