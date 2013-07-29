@@ -1,4 +1,5 @@
-mespace Stfalcon\Bundle\TinymceBundle\Twig\Extension;
+<?php
+namespace Stfalcon\Bundle\TinymceBundle\Twig\Extension;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
