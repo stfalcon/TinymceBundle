@@ -27,6 +27,14 @@ class StfalconTinymceExtension extends Extension
             $config['theme'] = array(
                 'simple' => array()
             );
+        } else {
+            foreach ($config['theme'] as &$bundleTheme) {
+                // Quick fix for the removed obsolete themes
+                if (isset($bundleTheme['theme']) && in_array($bundleTheme['theme'], array('advanced', 'simple'))) {
+                    $bundleTheme['theme'] = 'modern';
+                }
+                unset($bundleTheme);
+            }
         }
 
         // Set target element (textarea) selector
