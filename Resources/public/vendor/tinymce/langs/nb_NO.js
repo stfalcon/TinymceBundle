@@ -85,6 +85,7 @@ tinymce.addI18n('nb_NO',{
 "Remove link": "Fjern lenke",
 "Url": "Url",
 "Text to display": "Tekst som skal vises",
+"Anchors": "Anker",
 "Insert link": "Sett inn lenke",
 "New window": "Nytt vindu",
 "None": "Ingen",

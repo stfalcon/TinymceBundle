@@ -85,6 +85,7 @@ tinymce.addI18n('sv_SE',{
 "Remove link": "Tabort l\u00e4nk",
 "Url": "Url",
 "Text to display": "Text att visa",
+"Anchors": "Bokm\u00e4rken",
 "Insert link": "Infoga l\u00e4nk",
 "New window": "Nytt f\u00f6nster",
 "None": "Ingen",

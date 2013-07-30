@@ -85,6 +85,7 @@ tinymce.addI18n('pt_BR',{
 "Remove link": "Remover link",
 "Url": "Url",
 "Text to display": "Texto para mostrar",
+"Anchors": "\u00c2ncoras",
 "Insert link": "Inserir link",
 "New window": "Nova janela",
 "None": "Nenhum",

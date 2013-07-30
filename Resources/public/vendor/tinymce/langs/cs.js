@@ -85,6 +85,7 @@ tinymce.addI18n('cs',{
 "Remove link": "Odstranit odkaz",
 "Url": "Odkaz",
 "Text to display": "Text k zobrazen\u00ed",
+"Anchors": "Kotvy",
 "Insert link": "Vlo\u017eit odkaz",
 "New window": "Nov\u00e9 okno",
 "None": "\u017d\u00e1dn\u00e9",

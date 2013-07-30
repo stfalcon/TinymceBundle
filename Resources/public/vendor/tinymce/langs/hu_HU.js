@@ -85,6 +85,7 @@ tinymce.addI18n('hu_HU',{
 "Remove link": "Hivatkoz\u00e1s t\u00f6rl\u00e9se",
 "Url": "Url",
 "Text to display": "Megjelen\u0151 sz\u00f6veg",
+"Anchors": "Horgonyok",
 "Insert link": "Link beilleszt\u00e9se",
 "New window": "\u00daj ablak",
 "None": "Nincs",

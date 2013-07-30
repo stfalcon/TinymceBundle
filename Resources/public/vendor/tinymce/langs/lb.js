@@ -85,6 +85,7 @@ tinymce.addI18n('lb',{
 "Remove link": "Link l\u00e4schen",
 "Url": "URL",
 "Text to display": "Text deen unzeweisen ass",
+"Anchors": "Ankeren",
 "Insert link": "Link drasetzen",
 "New window": "Nei F\u00ebnster",
 "None": "Keen",

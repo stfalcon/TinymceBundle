@@ -85,6 +85,7 @@ tinymce.addI18n('ro',{
 "Remove link": "\u0218terge link-ul",
 "Url": "Url",
 "Text to display": "Text de afi\u0219at",
+"Anchors": "Ancor\u0103",
 "Insert link": "Inserare link",
 "New window": "Fereastr\u0103 nou\u0103",
 "None": "Nici unul",

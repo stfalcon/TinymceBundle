@@ -65,6 +65,7 @@ tinymce.addI18n('tr_TR',{
 "Image description": "Resim a\u00e7\u0131klamas\u0131",
 "Style": "Stil",
 "Dimensions": "Boyutlar",
+"Insert image": "Resim ekle",
 "Insert date\/time": "Tarih \/ Zaman ekle",
 "Url": "Url",
 "Text to display": "G\u00f6r\u00fcnen yaz\u0131",

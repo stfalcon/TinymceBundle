@@ -85,6 +85,7 @@ tinymce.addI18n('bs',{
 "Remove link": "Ukloni link",
 "Url": "URL",
 "Text to display": "Tekst za prikaz",
+"Anchors": "Anchori",
 "Insert link": "Umetni link",
 "New window": "Novi prozor",
 "None": "Ni\u0161ta",

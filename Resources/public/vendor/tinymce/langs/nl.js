@@ -85,6 +85,7 @@ tinymce.addI18n('nl',{
 "Remove link": "Link verwijderen",
 "Url": "Url",
 "Text to display": "weer te geven tekst",
+"Anchors": "Anker",
 "Insert link": "Hyperlink invoegen",
 "New window": "Nieuw venster",
 "None": "Geen",
