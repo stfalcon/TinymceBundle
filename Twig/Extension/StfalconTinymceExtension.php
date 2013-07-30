@@ -67,7 +67,7 @@ class StfalconTinymceExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'tinymce_init' => new \Twig_Function_Method($this, 'tinymce_init', array('is_safe' => array('html')))
+            'tinymce_init' => new \Twig_Function_Method($this, 'tinymceInit', array('is_safe' => array('html')))
         );
     }
 
@@ -76,7 +76,7 @@ class StfalconTinymceExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function tinymce_init()
+    public function tinymceInit()
     {
         $config = $this->getParameter('stfalcon_tinymce.config');
 
@@ -117,6 +117,8 @@ class StfalconTinymceExtension extends \Twig_Extension
 
                 if (file_exists($langDirectory . $shortCode . '.js')) {
                     $config['language'] = $shortCode;
+                } else {
+                    unset($config['language']);
                 }
             } else {
                 // Try expanding the code
@@ -124,13 +126,17 @@ class StfalconTinymceExtension extends \Twig_Extension
 
                 if (file_exists($langDirectory . $longCode . '.js')) {
                     $config['language'] = $longCode;
+                } else {
+                    unset($config['language']);
                 }
             }
         }
 
-        // TinyMCE does not allow to set different languages to each instance
-        foreach ($config['theme'] as $themeName => $themeOptions) {
-            $config['theme'][$themeName]['language'] = $config['language'];
+        if (isset($config['language']) && $config['language']) {
+            // TinyMCE does not allow to set different languages to each instance
+            foreach ($config['theme'] as $themeName => $themeOptions) {
+                $config['theme'][$themeName]['language'] = $config['language'];
+            }
         }
 
         return $this->getService('templating')->render('StfalconTinymceBundle:Script:init.html.twig', array(
@@ -166,7 +172,7 @@ class StfalconTinymceExtension extends \Twig_Extension
 
         $url = preg_replace('/^asset\[(.+)\]$/i', '$1', $inputUrl);
 
-            if ($inputUrl !== $url) {
+        if ($inputUrl !== $url) {
             return $assets->getUrl($this->baseUrl . $url);
         }
 
