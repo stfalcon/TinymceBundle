@@ -140,7 +140,7 @@ class StfalconTinymceExtension extends \Twig_Extension
         }
 
         return $this->getService('templating')->render('StfalconTinymceBundle:Script:init.html.twig', array(
-            'tinymce_config' => json_encode($config),
+            'tinymce_config' => preg_replace('/"file_browser_callback":"([^"]+)"\s*/', 'file_browser_callback:$1', json_encode($config)),
             'include_jquery' => $config['include_jquery'],
             'tinymce_jquery' => $config['tinymce_jquery'],
             'base_url'       => $this->baseUrl
