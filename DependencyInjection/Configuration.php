@@ -28,6 +28,8 @@ class Configuration implements ConfigurationInterface
             ->booleanNode('include_jquery')->defaultFalse()->end()
             // Use jQuery (true) or standalone (false) build of the TinyMCE
             ->booleanNode('tinymce_jquery')->defaultFalse()->end()
+            // Set init to true to use callback on the event init
+            ->booleanNode('init')->defaultFalse()->end()
             // Selector
             ->scalarNode('textarea_class')->end() // @deprecated
             ->scalarNode('selector')->end()
