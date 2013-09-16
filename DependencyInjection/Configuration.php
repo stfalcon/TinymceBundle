@@ -87,7 +87,8 @@ class Configuration implements ConfigurationInterface
                     "insertdatetime media nonbreaking save table contextmenu directionality",
                     "emoticons template paste textcolor"
                 ),
-                "toolbar1"     => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+                "toolbar1"     => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify
+                                   | bullist numlist outdent indent | link image",
                 "toolbar2"     => "print preview media | forecolor backcolor emoticons",
                 "image_advtab" => true,
             ),
