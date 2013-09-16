@@ -82,6 +82,17 @@ function initTinyMCE(options) {
 
                         })(buttonId, clone(options.tinymce_buttons[buttonId]));
                     }
+                    //Init Event
+                    if(options.use_callback_tinymce_init){
+                        editor.on('init',function(){
+                            var callback = window['callback_tinymce_init'];
+                            if (typeof callback == 'function') {
+                                callback();
+                            } else {
+                                alert('You have to create callback function: callback_tinymce_init');
+                            }
+                        });
+                    }
                 }
             }
             // Initialize textarea by its ID attribute

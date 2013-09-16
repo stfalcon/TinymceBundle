@@ -223,4 +223,30 @@ If you specify a relative path, it is resolved in relation to the URL of the (HT
                 ...
 ```
 
+### Init Event
+
+As $(document).ready() in jQuery you can listen to the init event as well in Tinymce.
+
+To do so you must edit your config and set `use_callback_tinymce_init` to true.
+
+`app/config/config.yml`:
+
+```yaml
+    stfalcon_tinymce:
+        ...
+        use_callback_tinymce_init: true
+        ...
+
+```
+
+And then create a javascript callback function named `callback_tinymce_init` as follow
+
+```javascript
+
+function callback_tinymce_init() {
+    // execute your best script ever
+}
+
+```
+
 > NOTE! Read Official TinyMCE documentation for more details: http://www.tinymce.com/wiki.php/Configuration:content_css
