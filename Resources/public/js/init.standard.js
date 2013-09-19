@@ -104,6 +104,25 @@ function initTinyMCE(options) {
 }
 
 /**
+ * Remove all tinymce editors and add them again
+ * Useful after ajax loaded dom content
+ *
+ * @param {object} options
+ */
+function reinitTinyMCE(options){
+    if(typeof tinyMCE == "undefined"){
+        return;
+    }
+    var i, t = tinyMCE.editors;
+    for (i in t){
+        if (t.hasOwnProperty(i)){
+            t[i].remove();
+        }
+    }
+    initTinyMCE(options);
+}
+
+/**
  * Get elements by class name
  *
  * @param classname
