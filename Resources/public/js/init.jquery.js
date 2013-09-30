@@ -61,6 +61,10 @@ function initTinyMCE(options) {
                         });
                     }
                 };
+                //Invalid tags
+                if(options.invalid_elements){
+                    settings.invalid_elements = options.invalid_elements;
+                }
                 textarea.tinymce(settings);
             });
         });

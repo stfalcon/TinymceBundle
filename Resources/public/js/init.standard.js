@@ -95,6 +95,10 @@ function initTinyMCE(options) {
                     }
                 }
             }
+            //Invalid tags
+            if(options.invalid_elements){
+                settings.invalid_elements = options.invalid_elements;
+            }
             // Initialize textarea by its ID attribute
             tinymce
                 .createEditor(textareas[i].getAttribute('id'), settings)

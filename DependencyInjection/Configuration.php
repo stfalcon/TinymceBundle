@@ -33,6 +33,8 @@ class Configuration implements ConfigurationInterface
             // Selector
             ->scalarNode('textarea_class')->end() // @deprecated
             ->scalarNode('selector')->end()
+            // Invalid tags
+            ->scalarNode('invalid_elements')->end()
             // base url for content
             ->scalarNode('base_url')->end()
             // Default language for all instances of the editor
