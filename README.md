@@ -249,4 +249,20 @@ function callback_tinymce_init() {
 
 ```
 
+### Invalid elements
+
+TinyMce can clean your text from undesir html tags before submitting content.
+
+To do so you must specify a list of invalid tag separated by comma in your config file.
+
+`app/config/config.yml` 
+
+```yaml
+    stfalcon_tinymce:
+        ...
+        invalid_elements: 'span,a,img,...'
+        ...
+
+```
+
 > NOTE! Read Official TinyMCE documentation for more details: http://www.tinymce.com/wiki.php/Configuration:content_css
