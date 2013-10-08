@@ -10,7 +10,8 @@
     <script type="text/javascript" src="{{ asset([base_url,'bundles/stfalcontinymce/js/init.standard.js']|join) }}"></script>
 {% endif %}
 <script type="text/javascript">
-//<![CDATA[
-    initTinyMCE({{ tinymce_config|raw }});
-//]]>
+    // make config readable for all js files
+    // useful for reinitTinyMCE calls
+    stfalcon_tinymce_config = {{ tinymce_config|raw }};
+    initTinyMCE(stfalcon_tinymce_config);
 </script>
