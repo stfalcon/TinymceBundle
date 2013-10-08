@@ -11,6 +11,7 @@
 {% endif %}
 <script type="text/javascript">
 //<![CDATA[
-    initTinyMCE({{ tinymce_config|raw }});
+    stfalcon_tinymce_config = {{ tinymce_config|raw }};
+    initTinyMCE();
 //]]>
 </script>

@@ -223,7 +223,9 @@ If you specify a relative path, it is resolved in relation to the URL of the (HT
                 ...
 ```
 
-### Init Event
+> NOTE! Read Official TinyMCE documentation for more details: http://www.tinymce.com/wiki.php/Configuration:content_css
+
+## Init Event
 
 As $(document).ready() in jQuery you can listen to the init event as well in Tinymce.
 
@@ -249,4 +251,16 @@ function callback_tinymce_init() {
 
 ```
 
-> NOTE! Read Official TinyMCE documentation for more details: http://www.tinymce.com/wiki.php/Configuration:content_css
+## How to init TinyMCE for dynamically loaded elements
+
+To initialize TinyMCE for new loaded textareas you should just call `initTinyMCE()` function.
+
+#### Example for Sonata Admin Bundle
+
+```javascript
+    jQuery(document).ready(function() {
+        $('form').on('sonata-collection-item-added', function(){
+            initTinyMCE();
+        });
+    });
+```

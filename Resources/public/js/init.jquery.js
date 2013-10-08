@@ -4,6 +4,7 @@
  * @param options
  */
 function initTinyMCE(options) {
+    if (typeof options == 'undefined') options = stfalcon_tinymce_config;
     (function($, undefined) {
         $(function() {
             var textareas = $('textarea');
@@ -50,8 +51,8 @@ function initTinyMCE(options) {
                         }
                     });
                     //Init Event
-                    if(options.use_callback_tinymce_init){
-                        ed.on('init',function(){
+                    if (options.use_callback_tinymce_init) {
+                        ed.on('init', function() {
                             var callback = window['callback_tinymce_init'];
                             if (typeof callback == 'function') {
                                 callback();
