@@ -31,8 +31,8 @@ class Configuration implements ConfigurationInterface
             // Set init to true to use callback on the event init
             ->booleanNode('use_callback_tinymce_init')->defaultFalse()->end()
             // Selector
-            ->scalarNode('textarea_class')->end() // @deprecated
-            ->scalarNode('selector')->end()
+            ->scalarNode('textarea_class')->defaultValue('.tinymce')->end() // @deprecated
+            ->scalarNode('selector')->defaultValue('.tinymce')->end()
             // base url for content
             ->scalarNode('base_url')->end()
             // Default language for all instances of the editor
