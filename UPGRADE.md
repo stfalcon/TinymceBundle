@@ -35,6 +35,7 @@ When upgrading TinyMCE bundle from 0.2.1 to 0.3.0, you need to do the following 
 
 ```
 
+> NOTE! `textarea_class` parameter has been removed since v.0.3.4. Please use `selector` one.
 
 ### Buttons and plugins
 

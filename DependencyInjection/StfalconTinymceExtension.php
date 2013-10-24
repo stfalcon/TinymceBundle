@@ -37,12 +37,6 @@ class StfalconTinymceExtension extends Extension
             }
         }
 
-        // Set target element (textarea) selector
-        if (isset($config['textarea_class']) && $config['textarea_class']) {
-            $config['selector'] = $config['textarea_class'];
-
-        }
-
         $container->setParameter('stfalcon_tinymce.config', $config);
 
         // load dependency injection config
