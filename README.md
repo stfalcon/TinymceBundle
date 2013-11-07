@@ -69,7 +69,7 @@ The option `include_jquery` allows you to load external jQuery library from the 
 
 If you are using FormBuilder, use an array to add the class, you can also use the `theme` option to change the
 used theme to something other than 'simple' (i.e. on of the other defined themes in your config - the example above
-defined 'medium'). e.g.:
+defined 'bbcode'). e.g.:
 
 ```php
 <?php
