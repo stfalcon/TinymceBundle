@@ -59,10 +59,10 @@ function initTinyMCE(options) {
                 settings.external_plugins[externalPlugins[p]['id']] = externalPlugins[p]['url'];
             }
             // workaround for an incompatibility with html5-validation
-            if (textareas[i].hasAttribute("required")) {
+            if (textareas[i].getAttribute("required") !== '') {
                 textareas[i].removeAttribute("required")
             }
-            if (!textareas[i].hasAttribute('id')) {
+            if (textareas[i].getAttribute('id') === '') {
                 textareas[i].setAttribute("id", "tinymce_" + Math.random().toString(36).substr(2));
             }
             // Add custom buttons to current editor
