@@ -5,6 +5,7 @@ tinymce.addI18n('lt',{
 "Div": "Div",
 "Paste": "\u012ed\u0117ti",
 "Close": "U\u017edaryti",
+"Font Family": "\u0160riftas",
 "Pre": "Pre",
 "Align right": "Lygiuoti de\u0161in\u0117je",
 "New document": "Naujas dokumentas",
@@ -22,6 +23,7 @@ tinymce.addI18n('lt',{
 "Header 1": "Antra\u0161t\u0117 1",
 "Superscript": "Vir\u0161utinis indeksas",
 "Clear formatting": "Naikinti formatavim\u0105",
+"Font Sizes": "\u0160rifto dyd\u017eiai",
 "Subscript": "Apatinis indeksas",
 "Header 6": "Antra\u0161t\u0117 6",
 "Redo": "Gr\u0105\u017einti",
@@ -51,6 +53,10 @@ tinymce.addI18n('lt',{
 "Upper Alpha": "Did\u017eiosios raid\u0117s",
 "Upper Roman": "Did\u017eiosios rom\u0117n\u0173",
 "Lower Roman": "Ma\u017eosios rom\u0117n\u0173",
+"Name": "Pavadinimas",
+"Anchor": "\u017dym\u0117",
+"You have unsaved changes are you sure you want to navigate away?": "Turite nei\u0161saugot\u0173 pakeitim\u0173! Ar tikrai norite i\u0161eiti?",
+"Restore last draft": "Atstatyti paskutin\u012f projekt\u0105",
 "Emoticons": "Jaustukai",
 "Horizontal space": "Horizontalus tarpas",
 "Insert\/edit image": "\u012eterpti|Tvarkyti paveiksl\u0117l\u012f",
@@ -72,5 +78,6 @@ tinymce.addI18n('lt',{
 "None": "Niekas",
 "Target": "Tikslin\u0117 nuoroda",
 "Insert\/edit link": "\u012eterpti\/taisyti nuorod\u0105",
+"Paste as text": "\u012eklijuoti kaip tekst\u0105",
 "Show invisible characters": "Rodyti nematomus simbolius"
 });

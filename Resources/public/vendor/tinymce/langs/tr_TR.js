@@ -16,7 +16,7 @@ tinymce.addI18n('tr_TR',{
 "Headers": "Ba\u015fl\u0131klar",
 "Select all": "T\u00fcm\u00fcn\u00fc se\u00e7",
 "Header 3": "Ba\u015fl\u0131k 3",
-"Blocks": "Engeller",
+"Blocks": "Bloklar",
 "Undo": "Geri Al",
 "Strikethrough": "\u00dcst\u00fc \u00e7izili",
 "Bullet list": "S\u0131ras\u0131z liste",

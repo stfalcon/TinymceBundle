@@ -99,6 +99,7 @@ tinymce.addI18n('lb',{
 "Embed": "Abannen",
 "Nonbreaking space": "Net-\u00ebmbriechenden Espace",
 "Page break": "S\u00e4iten\u00ebmbroch",
+"Paste as text": "Als Text apechen",
 "Preview": "Kucken",
 "Print": "Dr\u00e9cken",
 "Save": "Sp\u00e4icheren",

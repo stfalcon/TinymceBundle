@@ -55,7 +55,7 @@ tinymce.addI18n('nb_NO',{
 "Lower Roman": "Romerske minuskler",
 "Name": "Navn",
 "Anchor": "Anker",
-"You have unsaved changes are you sure you want to navigate away?": "Endringer er ikke arkivert. Vil du fortsette uten \u00e5 arkivere endringer?",
+"You have unsaved changes are you sure you want to navigate away?": "Du har ikke arkivert endringene. Vil du fortsette uten \u00e5 arkivere?",
 "Restore last draft": "Gjenopprett siste utkast",
 "Special character": "Spesialtegn",
 "Source code": "Kildekode",
