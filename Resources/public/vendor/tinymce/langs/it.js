@@ -91,7 +91,9 @@ tinymce.addI18n('it',{
 "Insert link": "Inserisci il Link",
 "New window": "Nuova Finestra",
 "None": "No",
+"The URL you entered seems to be an external link. Do you want to add the required http:\/\/ prefix?": "L'URL inserito sembra essere un collegamento esterno. Vuoi aggiungere il prefisso necessario http:\/\/?",
 "Target": "Target",
+"The URL you entered seems to be an email address. Do you want to add the required mailto: prefix?": "L'URL inserito sembra essere un indirizzo email. Vuoi aggiungere il prefisso necessario mailto:?",
 "Insert\/edit link": "Inserisci\/Modifica Link",
 "Insert\/edit video": "Inserisci\/Modifica Video",
 "Poster": "Anteprima",
@@ -100,6 +102,7 @@ tinymce.addI18n('it',{
 "Insert video": "Inserisci Video",
 "Embed": "Incorporare",
 "Nonbreaking space": "Spazio unificatore",
+"Page break": "Interruzione di pagina",
 "Paste as text": "incolla come testo",
 "Preview": "Anteprima",
 "Print": "Stampa",
@@ -170,7 +173,7 @@ tinymce.addI18n('it',{
 "Edit": "Modifica",
 "Rich Text Area. Press ALT-F9 for menu. Press ALT-F10 for toolbar. Press ALT-0 for help": "Rich Text Area. Premi ALT-F9 per il men\u00f9. Premi ALT-F10 per la barra degli strumenti. Premi ALT-0 per l'aiuto.",
 "Tools": "Strumenti",
-"View": "Visualizza",
+"View": "Visualiza",
 "Table": "Tabella",
 "Format": "Formato"
 });

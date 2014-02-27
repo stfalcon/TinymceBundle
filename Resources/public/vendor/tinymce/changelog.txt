@@ -1,3 +1,84 @@
+Version 4.0.17 (2014-02-26)
+	Added much better wai-aria accessibility support when it comes to keyboard navigation of complex UI controls.
+	Added dfn,code,samp,kbd,var,cite,mark,q elements to the default remove formats list. Patch contributed by Naim Hammadi.
+	Added var,cite,dfn,code,mark,q,sup,sub to the list of elements that gets cloned on enter. Patch contributed by Naim Hammadi.
+	Added new visual_anchor_class option to specify a custom class for inline anchors. Patch contributed by Naim Hammadi.
+	Added support for paste_data_images on WebKit/Blink when the user pastes image data.
+	Added support for highlighting the video icon when a video is added that produces an iframe. Patch contributed by monkeydiane.
+	Added image_class_list/link_class_list options to image/link dialogs to let the user select classes.
+	Fixed bug where the ObjectResizeStart event didn't get fired properly by the ControlSelection class.
+	Fixed bug where the autolink plugin would steal focus when loaded on IE 9+.
+	Fixed bug where the editor save method would remove the current selection when called on an inline editor.
+	Fixed bug where the formatter would merge span elements with parent bookmarks if an id format was used.
+	Fixed bug where WebKit/Blink browsers would scroll to the top of the editor when pasting into an empty element.
+	Fixed bug where removing the editor would cause an error about wrong document on IE 11 under specific circumstances.
+	Fixed bug where Gecko would place the caret at an incorrect location when using backspace.
+	Fixed bug where Gecko would throw "Wrong Document Error" for ranges that pointing to removed nodes.
+	Fixed bug where it wasn't possible to properly update the title and encoding properties in the fullpage plugin.
+	Fixed bug where paste plugin would produce an extra undo level on IE.
+	Fixed bug where the formatter would apply inline formatting outside the current word in if the selection was collapsed.
+	Fixed bug where it wasn't possible to delete tables on Chrome if you placed the selection within all the contents of the table.
+	Fixed bug where older IE versions wouldn't properly insert contents into table cells when editor focus was lost.
+	Fixed bug where older IE versions would fire focus/blur events even though the editor focus didn't change.
+	Fixed bug where IE 11 would add two trailing BR elements to the editor iframe body if the editor was hidden.
+	Fixed bug where the visualchars plugin wouldn't display non breaking spaces if they where inserted while the state was enabled.
+	Fixed bug where the wordcount plugin would be very slow some HTML where to much backtracking occured.
+	Fixed so pagebreak elements in the editor breaks pages when printing. Patch contributed by penc.
+	Fixed so UndoManager events pass though the original event that created the undo level such as a keydown, blur etc.
+	Fixed so the inserttime button is callsed insertdatetime the same as the menu item and plugin name.
+	Fixed so the word count plugin handles counting properly on most languages on the planet.
+	Fixed bug where the auroreize plugin would throw an error if the editor was manually removed within a few seconds.
+	Fixed bug where the image dialog would get stuck if the src was removed. Patch contribued by monkeydiane.
+	Fixed bug where there is an extra br tag for IE 9/10 that isn't needed. Patch contributed by monkeydiane.
+	Fixed bug where drag/drop in a scrolled editor would fail since it didn't use clientX/clientY cordinates. Patch contributed by annettem.
+Version 4.0.16 (2014-01-31)
+	Fixed bug where the editor wouldn't be properly rendered on IE 10 depending on the document.readyState.
+Version 4.0.15 (2014-01-31)
+	Fixed bug where paste in inline mode would produce an exception if the contents was pasted inside non overflow element.
+Version 4.0.14 (2014-01-30)
+	Fixed a bug in the image plugin where images couldn't be inserted if the image_advtab option wasn't set to true.
+Version 4.0.13 (2014-01-30)
+	Added language selection menu to spellchecker button similar to the 3.x functionality. Patch contributed by threebytesfull.
+	Added new style_formats_merge option that enables you to append to the default formats instead of replaceing them. Patch contributed by PacificMorrowind.
+	Fixed bug where the DOMUtils getPos API function didn't properly handle the location of the root element. Patch contributed by Andrew Ozz.
+	Fixed bug where the spellchecker wouldn't properly place the spellchecker suggestions menu. Patch contributed by Andrew Ozz.
+	Fixed bug where the tabfocus plugin would prevent the user from suing Ctrl+Tab, Patch contributed by Andrew Ozz.
+	Fixed bug where table resize handles could sometimes be added to elements out side the editable inline element.
+	Fixed bug where the inline mode editor UI would render incorrectly when the stylesheets didn't finish loading on Chrome.
+	Fixed bug where IE 8 would insert the image outside the editor unless it was focused first.
+	Fixed bug where older IE versions would throw an exception on drag/drop since they don't support modern dataTransfer API.
+	Fixed bug where the blockquote button text wasn't properly translated since it had the wrong English key.
+	Fixed bug where the importcss plugin didn't import a.class rules properly as selector formats.
+	Fixed bug where the combobox control couldn't be disabled or set to a specific character size initially.
+	Fixed bug where the FormItem didn't inherit the disabled state from the control to be wrapped.
+	Fixed bug where adding a TinyMCE instance within a TinyMCE dialog wouldn't properly delegate the events.
+	Fixed bug where any overflow parent containers would automatically scroll to the left when pasting in Chrome.
+	Fixed bug where IE could throw an error when search/replacing contents due to an invalid selection being returned.
+	Fixed bug where WebKit would fire focus/blur events incorrectly if the editor was empty due to a WebKit focus bug.
+	Fixed bug where WebKit/Blink would scroll to the top of editor if the height was more than the viewport height.
+	Fixed bug where blurring and removing the editor could cause an exteption to be thrown by the FocusManager.
+	Fixed bug where the media plugin would override specified dimensions for url pattern matches. Patch contributed by penc.
+	Fixed bug where the autoresize plugin wouldn't take margins into account when calculating the body size. Patch contributed by lepoltj.
+	Fixed bug where the image plugin would throw errors some times on IE 8 when it preloaded the image to get it's dimensions.
+	Fixed bug where the image plugin wouldn't update the style if the user closed the dialog before focusing out. Patch contributed by jonparrott.
+	Fixed bug where bindOnReady in EventUtils wouldn't work properly for some edge cases on older IE versions. Patch contributed by Godefroy.
+	Fixed bug where image selector formats wasn't properly handled by the importcss plugin.
+	Fixed bug where the dirty state of the editor wasn't set when editing an existing link URL.
+	Fixed bug where it wasn't possible to prevent paste from happening by blocking the default behavior when the paste plugin was enabled.
+	Fixed bug where text to display in the insert/edit link dialog wouldn't be properly entity encoded.
+	Fixed bug where Safari 7 on Mac OS X would delete contents if you pressed Cmd+C since it passes out a charCode for the event.
+	Fixed bug where bound drop events inside inline editors would get fired on all editor instances instead of the specific instance.
+	Fixed bug where images outlined selection border would be clipped when the autoresize plugin was enabled.
+	Fixed bug where image dimension constrains proportions wouldn't work properly if you altered a value and immediately clicked the submit button.
+	Fixed so you don't need to set language option to false when specifying a custom language_url.
+	Fixed so the link dialog "text to display" field gets automatically hidden if the selection isn't text contents. Patch contributed by Godefroy.
+	Fixed so the none option for the target field in the link dialog gets excluded when specifiying the target_list config option.
+	Fixed so outline styles are displayed by default in the formats preview. Patch contributed by nhammadi.
+	Fixed so the max characters for width/height is more than 3 in the media and image dialogs.
+	Fixed so the old mceSpellCheck command toggles the spellchecker on/off.
+	Fixed so the setupeditor event is fired before the setup callback setting to ease up compatibility with 3.x.
+	Fixed so auto url link creation in IE 9+ is disabled by default and re-enabled by the autolink plugin.
+	Removed the custom scrollbars for WebKit since the default browser scrollbars looks a lot better now days.
 Version 4.0.12 (2013-12-18)
 	Added new media_scripts option to the media plugin. This makes it possible to embed videos using script elements.
 	Fixed bug where WebKit/Blink would produce random span elements and styles when deleting contents inside the editor.
