@@ -90,7 +90,7 @@ function initTinyMCE(options) {
                         editor.on('init', function() {
                             var callback = window['callback_tinymce_init'];
                             if (typeof callback == 'function') {
-                                callback();
+                                callback(editor);
                             } else {
                                 alert('You have to create callback function: callback_tinymce_init');
                             }

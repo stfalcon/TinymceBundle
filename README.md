@@ -245,7 +245,7 @@ And then create a javascript callback function named `callback_tinymce_init` as 
 
 ```javascript
 
-function callback_tinymce_init() {
+function callback_tinymce_init(editor) {
     // execute your best script ever
 }
 
