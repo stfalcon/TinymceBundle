@@ -88,10 +88,10 @@ When upgrading TinyMCE bundle from 0.2.1 to 0.3.0, you need to do the following 
             # Advanced theme with almost all enabled plugins
             advanced:
                  plugins:
-                     - "advlist autolink lists link image charmap print preview hr anchor pagebreak"
-                     - "searchreplace wordcount visualblocks visualchars code fullscreen"
-                     - "insertdatetime media nonbreaking save table contextmenu directionality"
-                     - "emoticons template paste textcolor"
+                     - advlist autolink lists link image charmap print preview hr anchor pagebreak
+                     - searchreplace wordcount visualblocks visualchars code fullscreen
+                     - insertdatetime media nonbreaking save table contextmenu directionality
+                     - emoticons template paste textcolor
                  toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
                  toolbar2: "print preview media | forecolor backcolor emoticons | stfalcon | example"
                  image_advtab: true
