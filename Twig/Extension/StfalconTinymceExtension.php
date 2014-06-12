@@ -122,7 +122,7 @@ class StfalconTinymceExtension extends \Twig_Extension
 
         $config['language'] = LocaleHelper::getLanguage($config['language']);
 
-        $langDirectory = __DIR__ . '/../../Resources/public/vendor/tinymce/langs/';
+	$langDirectory = __DIR__ . '/../../Resources/public/vendor/tinymce-langs/';
 
         // A language code coming from the locale may not match an existing language file
         if (!file_exists($langDirectory . $config['language'] . '.js')) {
@@ -130,10 +130,15 @@ class StfalconTinymceExtension extends \Twig_Extension
         }
 
         if (isset($config['language']) && $config['language']) {
+	    $languageUrl = $assets->getUrl(
+		$this->baseUrl . 'bundles/stfalcontinymce/vendor/tinymce-langs/' . $config['language'] . '.js'
+	    );
             // TinyMCE does not allow to set different languages to each instance
             foreach ($config['theme'] as $themeName => $themeOptions) {
                 $config['theme'][$themeName]['language'] = $config['language'];
+		$config['theme'][$themeName]['language_url'] = $languageUrl;
             }
+	    $config['language_url'] = $languageUrl;
         }
 
         if (isset($config['theme']) && $config['theme'])
@@ -196,6 +201,34 @@ class StfalconTinymceExtension extends \Twig_Extension
         }
 
         return $inputUrl;
+    }
+
+    /**
+     * Expands a short locale to a long one
+     *
+     * @param string $locale
+     * @return string
+     */
+    protected function expandLocale($locale)
+    {
+	$conversion = array(
+	    'bn' => 'bn_BD',
+	    'en' => 'en_GB',
+	    'he' => 'he_IL',
+	    'ka' => 'ka_GE',
+	    'km' => 'km_KH',
+	    'ko' => 'ko_KR',
+	    'nb' => 'nb_NO',
+	    'si' => 'si_LK',
+	    'sl' => 'sl_SI',
+	    'sv' => 'sv_SE',
+	    'zh' => 'zh_CN',
+	);
+	if (array_key_exists($locale, $conversion)) {
+	    return $conversion[$locale];
+	}
+
+	return $locale;
     }
 }
 

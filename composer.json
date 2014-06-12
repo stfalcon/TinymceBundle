@@ -23,11 +23,21 @@
         {
             "name":     "Symfony Community",
             "homepage": "https://github.com/stfalcon/TinymceBundle/contributors"
-        }        
+        }
     ],
     "require": {
         "php":             ">=5.3.0",
-        "symfony/symfony": ">=2.1"
+        "symfony/symfony": ">=2.1",
+        "tinymce/tinymce": "~4.0",
+        "mopa/composer-bridge": "~1.3"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "Stfalcon\\Bundle\\TinymceBundle\\Composer\\ScriptHandler::postInstallSymlinkTinymce"
+        ],
+        "post-update-cmd": [
+            "Stfalcon\\Bundle\\TinymceBundle\\Composer\\ScriptHandler::postInstallSymlinkTinymce"
+        ]
     },
     "autoload": {
         "psr-0": {
