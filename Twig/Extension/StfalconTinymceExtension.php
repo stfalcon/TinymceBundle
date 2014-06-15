@@ -93,7 +93,17 @@ class StfalconTinymceExtension extends \Twig_Extension
 
         // Get local button's image
         foreach ($config['tinymce_buttons'] as &$customButton) {
-            $customButton['image'] = $this->getAssetsUrl($customButton['image']);
+            if ($customButton['image']) {
+                $customButton['image'] = $this->getAssetsUrl($customButton['image']);
+            } else {
+                unset($customButton['image']);
+            }
+
+            if ($customButton['icon']) {
+                $customButton['icon'] = $this->getAssetsUrl($customButton['icon']);
+            } else {
+                unset($customButton['icon']);
+            }
         }
 
         // Update URL to external plugins
