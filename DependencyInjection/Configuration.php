@@ -68,6 +68,8 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
                     ->end()
+                    ->scalarNode('skin')->defaultValue('lightgrey')->end()
+                    ->scalarNode('skin_url')->defaultNull()->end()
                 ->end()
             ->end();
     }

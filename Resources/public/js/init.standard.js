@@ -98,6 +98,16 @@ function initTinyMCE(options) {
                     }
                 }
             }
+
+            if (typeof options.skin_url != 'undefined') {
+                settings.skin_url = options.skin_url;
+            }
+
+
+            if (typeof options.skin != 'undefined') {
+                settings.skin = options.skin;
+            }
+
             // Initialize textarea by its ID attribute
             tinymce
                 .createEditor(textareas[i].getAttribute('id'), settings)
