@@ -1,6 +1,7 @@
 <?php
 namespace Stfalcon\Bundle\TinymceBundle\Twig\Extension;
 
+use Stfalcon\Bundle\TinymceBundle\Helper\LocaleHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -117,29 +118,13 @@ class StfalconTinymceExtension extends \Twig_Extension
             $config['language'] = $this->getService('request')->getLocale();
         }
 
+        $config['language'] = LocaleHelper::getLanguage($config['language']);
+
         $langDirectory = __DIR__ . '/../../Resources/public/vendor/tinymce/langs/';
 
         // A language code coming from the locale may not match an existing language file
         if (!file_exists($langDirectory . $config['language'] . '.js')) {
-            // Try shortening the code
-            if (strlen($config['language']) > 2) {
-                $shortCode = substr($config['language'], 0, 2);
-
-                if (file_exists($langDirectory . $shortCode . '.js')) {
-                    $config['language'] = $shortCode;
-                } else {
-                    unset($config['language']);
-                }
-            } else {
-                // Try expanding the code
-                $longCode = $config['language'] . '_' . strtoupper($config['language']);
-
-                if (file_exists($langDirectory . $longCode . '.js')) {
-                    $config['language'] = $longCode;
-                } else {
-                    unset($config['language']);
-                }
-            }
+            unset($config['language']);
         }
 
         if (isset($config['language']) && $config['language']) {
@@ -150,7 +135,10 @@ class StfalconTinymceExtension extends \Twig_Extension
         }
 
         return $this->getService('templating')->render('StfalconTinymceBundle:Script:init.html.twig', array(
-            'tinymce_config' => preg_replace('/"file_browser_callback":"([^"]+)"\s*/', 'file_browser_callback:$1', json_encode($config)),
+            'tinymce_config' => preg_replace(
+                '/"file_browser_callback":"([^"]+)"\s*/', 'file_browser_callback:$1',
+                json_encode($config)
+            ),
             'include_jquery' => $config['include_jquery'],
             'tinymce_jquery' => $config['tinymce_jquery'],
             'base_url'       => $this->baseUrl
@@ -166,7 +154,6 @@ class StfalconTinymceExtension extends \Twig_Extension
     {
         return 'stfalcon_tinymce';
     }
-
 
     /**
      * Get url from config string
