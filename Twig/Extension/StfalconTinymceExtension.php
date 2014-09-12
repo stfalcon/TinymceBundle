@@ -134,6 +134,17 @@ class StfalconTinymceExtension extends \Twig_Extension
             }
         }
 
+        if (isset($config['theme']) && $config['theme'])
+        {
+            // Parse the content_css of each theme so we can use 'asset[path/to/asset]' in there
+            foreach ($config['theme'] as $themeName => $themeOptions) {
+                if(isset($themeOptions['content_css']))
+                {
+                    $config['theme'][$themeName]['content_css'] = $this->getAssetsUrl($themeOptions['content_css']);
+                }
+            }
+        }
+
         return $this->getService('templating')->render('StfalconTinymceBundle:Script:init.html.twig', array(
             'tinymce_config' => preg_replace(
                 '/"file_browser_callback":"([^"]+)"\s*/', 'file_browser_callback:$1',
