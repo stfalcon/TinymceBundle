@@ -219,7 +219,7 @@ If you specify a relative path, it is resolved in relation to the URL of the (HT
         ...
         theme:
             simple:
-                content_css: "/bundles/mybundle/css/tinymce-content.css"
+                content_css: "asset[bundles/mybundle/css/tinymce-content.css]"
                 ...
 ```
 
