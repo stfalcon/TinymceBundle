@@ -46,6 +46,29 @@ This bundle comes with an extension for Twig. This makes it very easy to include
     {{ tinymce_init() }}
 ```
 
+The helper also allows to overwrite global configurations. This is especially helpful if you have conditional plugins or
+you want to change editor settings on used-based choices.
+
+```twig
+    {{
+        tinymce_init({
+             selector: '.tinymce',
+             external_plugins: {
+                 filemanager: {
+                     url: 'asset[bundles/acmedemo/js/tinymce-plugin/filemanager/editor_plugin.js]'
+                 }
+             }
+             theme:{
+                advanced:{
+                    theme: 'modern'
+                    file_browser_callback : 'someCallback'
+                }
+             }
+             ...
+        })
+    }}
+```
+
 ## Base configuration
 
 By default, tinymce is enabled for all textareas on the page. If you want to customize it, do the following:
