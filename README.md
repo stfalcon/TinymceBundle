@@ -46,6 +46,12 @@ This bundle comes with an extension for Twig. This makes it very easy to include
     {{ tinymce_init() }}
 ```
 
+You can also override the default configuration by passing an option like this:
+
+```twig
+    {{ tinymce_init({'use_callback_tinymce_init': true, 'theme': {'simple': {'menubar': false}}}) }}
+```
+
 ## Base configuration
 
 By default, tinymce is enabled for all textareas on the page. If you want to customize it, do the following:
