@@ -265,7 +265,7 @@ To initialize TinyMCE for new loaded textareas you should just call `initTinyMCE
 
 ```javascript
     jQuery(document).ready(function() {
-        $('form').on('sonata-collection-item-added', function(){
+        $('form').on('sonata.add_element', function(){
             initTinyMCE();
         });
     });
