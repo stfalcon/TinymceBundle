@@ -61,8 +61,8 @@ function initTinyMCE(options) {
                             }
                         });
                     }
-                };
-                textarea.tinymce(settings);
+                };          
+               textarea.tinymce(settings);
             });
         });
     }(jQuery));
