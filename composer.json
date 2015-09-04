@@ -1,5 +1,5 @@
 {
-    "name": "stfalcon/tinymce-bundle",
+    "name": "gibilogic/tinymce-bundle",
     "description": "This Bundle integrates TinyMCE WYSIWYG editor into a Symfony2 project.",
     "keywords": ["wysiwyg", "tinymce", "editor"],
     "type": "symfony-bundle",
@@ -14,6 +14,11 @@
             "name":     "Igor Negrutsa",
             "homepage": "http://igor-negrutsa.info",
             "email":    "progi2007@gmail.com"
+        },
+        {
+            "name":     "GiBilogic Snc",
+            "homepage": "http://www.gibilogic.com",
+            "email":    "info@gibilogic.com"
         },
         {
             "name":     "Symfony Community",
