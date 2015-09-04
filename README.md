@@ -10,14 +10,9 @@ This bundle makes it very easy to add the TinyMCE WYSIWYG editor to your Symfony
 
 > NOTE! This version of TinyMCE bundle contains TinyMCE version 4 and works only with Symfony version >= 2.1. To upgrade your configuration, please read UPGRADE.md
 
-Add TinyMCE bundle as a dependency to the composer.json of your application
+Add TinyMCE bundle as a dependency to the composer.json of your application with the following console command
 
-    "require": {
-        ...
-        "stfalcon/tinymce-bundle": "dev-master"
-        ...
-    },
-
+    composer require gibilogic/tinymce-bundle
 
 ## Add StfalconTinymceBundle to your application kernel.
 
