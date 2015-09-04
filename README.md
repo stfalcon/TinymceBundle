@@ -1,5 +1,7 @@
 # TinymceBundle
 
+> NOTE! This repo has been forked from stfalcon/TinymceBundle because it was no longer maintained. Documentation / copyright info / naming still reference the old repo, it will be fixed along the way.
+
 This bundle makes it very easy to add the TinyMCE WYSIWYG editor to your Symfony2 project.
 
 ## Installation
