@@ -163,7 +163,9 @@ class StfalconTinymceExtension extends \Twig_Extension
             ),
             'include_jquery' => $config['include_jquery'],
             'tinymce_jquery' => $config['tinymce_jquery'],
+            'asset_package_name' => $config['asset_package_name'],
             'base_url'       => $this->baseUrl
+
         ));
     }
 
