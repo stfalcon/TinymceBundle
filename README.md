@@ -50,7 +50,21 @@ You can also override the default configuration by passing an option like this:
 
 ```twig
     {{ tinymce_init({'use_callback_tinymce_init': true, 'theme': {'simple': {'menubar': false}}}) }}
+```   
+
+   or
+   
+```{{ tinymce_init({
+        theme: {'simple':{'language': app.request.locale, 'height': 500 }},
+        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+        autosave_ask_before_unload: false,
+        asset_package_name: 'backend'})
+    }}
 ```
+
+
+***NEW !*** Added posibility to specify asset package [doc](http://symfony.com/doc/current/components/templating/helpers/assetshelper.html#multiple-packages) to generate proper js links, see above, parameter: asset_package_name
+
 
 ## Base configuration
 
