@@ -54,7 +54,8 @@ You can also override the default configuration by passing an option like this:
 
    or
    
-```{{ tinymce_init({
+```
+    {{ tinymce_init({
         theme: {'simple':{'language': app.request.locale, 'height': 500 }},
         toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
         autosave_ask_before_unload: false,
