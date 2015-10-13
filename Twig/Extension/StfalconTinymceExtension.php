@@ -84,7 +84,11 @@ class StfalconTinymceExtension extends \Twig_Extension
         $config = array_merge_recursive($config, $options);
 
         $this->baseUrl = (!isset($config['base_url']) ? null : $config['base_url']);
+
+        #ASSET PACKAGE NAME
         $asset_package_name = (!isset($config['asset_package_name']) ? null : $config['asset_package_name']);
+        unset($config['asset_package_name']);
+
         /** @var $assets \Symfony\Component\Templating\Helper\CoreAssetsHelper */
         $assets = $this->getService('templating.helper.assets');
 
