@@ -84,6 +84,7 @@ class StfalconTinymceExtension extends \Twig_Extension
         $config = array_merge_recursive($config, $options);
 
         $this->baseUrl = (!isset($config['base_url']) ? null : $config['base_url']);
+        $asset_package_name = (!isset($config['asset_package_name']) ? null : $config['asset_package_name']);
         /** @var $assets \Symfony\Component\Templating\Helper\CoreAssetsHelper */
         $assets = $this->getService('templating.helper.assets');
 
@@ -91,7 +92,7 @@ class StfalconTinymceExtension extends \Twig_Extension
         if ($config['tinymce_jquery']) {
             $config['jquery_script_url'] = $assets->getUrl(
                 $this->baseUrl . 'bundles/stfalcontinymce/vendor/tinymce/tinymce.jquery.min.js',
-                $config['asset_package_name']
+                $asset_package_name
             );
         }
 
@@ -164,7 +165,7 @@ class StfalconTinymceExtension extends \Twig_Extension
             ),
             'include_jquery' => $config['include_jquery'],
             'tinymce_jquery' => $config['tinymce_jquery'],
-            'asset_package_name' => $config['asset_package_name'],
+            'asset_package_name' => $asset_package_name,
             'base_url'       => $this->baseUrl
 
         ));
