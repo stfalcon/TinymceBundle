@@ -34,6 +34,8 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('selector')->defaultValue('.tinymce')->end()
                     // base url for content
                     ->scalarNode('base_url')->end()
+                    // asset packageName
+                    ->scalarNode('asset_package_name')->end()
                     // Default language for all instances of the editor
                     ->scalarNode('language')->defaultNull()->end()
                     ->arrayNode('theme')
