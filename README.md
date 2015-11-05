@@ -1,21 +1,29 @@
 # TinymceBundle
 
+> NOTE! This repo has been forked from stfalcon/TinymceBundle because it was no longer maintained. Documentation / copyright info / naming still reference the old repo, it will be fixed along the way.
+
 This bundle makes it very easy to add the TinyMCE WYSIWYG editor to your Symfony2 project.
 
 ## Installation
 
 ### Installation by Composer
 
-> NOTE! This version of TinyMCE bundle contains TinyMCE version 4 and works only with Symfony version >= 2.1. To upgrade your configuration, please read UPGRADE.md
+> NOTE! This version of TinyMCE bundle intended for TinyMCE version 4 and works only with Symfony version >= 2.1. To upgrade your configuration, please read UPGRADE.md
 
-Add TinyMCE bundle as a dependency to the composer.json of your application
+Add TinyMCE bundle as a dependency to the composer.json of your application with the following console command
 
-    "require": {
-        ...
-        "stfalcon/tinymce-bundle": "dev-master"
-        ...
+    composer require gibilogic/tinymce-bundle
+
+Add TinyMCE automatic symlinking
+
+    "scripts": {
+	"post-install-cmd": [
+	    "Stfalcon\\Bundle\\TinymceBundle\\Composer\\ScriptHandler::postInstallSymlinkTinymce"
+	],
+	"post-update-cmd": [
+	    "Stfalcon\\Bundle\\TinymceBundle\\Composer\\ScriptHandler::postInstallSymlinkTinymce"
+	]
     },
-
 
 ## Add StfalconTinymceBundle to your application kernel.
 
