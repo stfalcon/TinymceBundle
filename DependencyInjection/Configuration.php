@@ -36,6 +36,7 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('base_url')->end()
                     // Default language for all instances of the editor
                     ->scalarNode('language')->defaultNull()->end()
+                    ->scalarNode('language_url')->defaultNull()->end()
                     ->arrayNode('theme')
                         ->useAttributeAsKey('name')
                         ->prototype('array')
