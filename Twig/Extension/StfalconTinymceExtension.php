@@ -12,14 +12,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class StfalconTinymceExtension extends \Twig_Extension
 {
     /**
-     * Container
-     *
-     * @var ContainerInterface
+     * @var ContainerInterface $container Container interface
      */
     protected $container;
 
     /**
      * Asset Base Url
+     *
      * Used to over ride the asset base url (to not use CDN for instance)
      *
      * @var String
@@ -68,7 +67,11 @@ class StfalconTinymceExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'tinymce_init' => new \Twig_SimpleFunction('tinymce_init', array($this, 'tinymceInit'), array('is_safe' => array('html')))
+            'tinymce_init' => new \Twig_SimpleFunction(
+                'tinymce_init',
+                array($this, 'tinymceInit'),
+                array('is_safe' => array('html'))
+            ),
         );
     }
 
@@ -76,6 +79,7 @@ class StfalconTinymceExtension extends \Twig_Extension
      * TinyMce initializations
      *
      * @param array $options
+     *
      * @return string
      */
     public function tinymceInit($options = array())
@@ -85,7 +89,7 @@ class StfalconTinymceExtension extends \Twig_Extension
 
         $this->baseUrl = (!isset($config['base_url']) ? null : $config['base_url']);
 
-        #ASSET PACKAGE NAME
+        // Asset package name
         $assetPackageName = (!isset($config['asset_package_name']) ? null : $config['asset_package_name']);
         unset($config['asset_package_name']);
 
@@ -95,7 +99,7 @@ class StfalconTinymceExtension extends \Twig_Extension
         // Get path to tinymce script for the jQuery version of the editor
         if ($config['tinymce_jquery']) {
             $config['jquery_script_url'] = $assets->getUrl(
-                $this->baseUrl . 'bundles/stfalcontinymce/vendor/tinymce/tinymce.jquery.min.js',
+                $this->baseUrl.'bundles/stfalcontinymce/vendor/tinymce/tinymce.jquery.min.js',
                 $assetPackageName
             );
         }
@@ -128,10 +132,10 @@ class StfalconTinymceExtension extends \Twig_Extension
 
         $config['language'] = LocaleHelper::getLanguage($config['language']);
 
-        $langDirectory = __DIR__ . '/../../Resources/public/vendor/tinymce/langs/';
+        $langDirectory = __DIR__.'/../../Resources/public/vendor/tinymce/langs/';
 
         // A language code coming from the locale may not match an existing language file
-        if (!file_exists($langDirectory . $config['language'] . '.js')) {
+        if (!file_exists($langDirectory.$config['language'].'.js')) {
             unset($config['language']);
         }
 
@@ -142,17 +146,14 @@ class StfalconTinymceExtension extends \Twig_Extension
             }
         }
 
-        if (isset($config['theme']) && $config['theme'])
-        {
+        if (isset($config['theme']) && $config['theme']) {
             // Parse the content_css of each theme so we can use 'asset[path/to/asset]' in there
             foreach ($config['theme'] as $themeName => $themeOptions) {
-                if(isset($themeOptions['content_css']))
-                {
+                if (isset($themeOptions['content_css'])) {
                     // As there may be multiple CSS Files specified we need to parse each of them individually
                     $cssFiles = explode(',', $themeOptions['content_css']);
 
-                    foreach($cssFiles as $idx => $file)
-                    {
+                    foreach ($cssFiles as $idx => $file) {
                         $cssFiles[$idx] = $this->getAssetsUrl(trim($file)); // we trim to be sure we get the file without spaces.
                     }
 
@@ -162,23 +163,24 @@ class StfalconTinymceExtension extends \Twig_Extension
             }
         }
 
-        return $this->getService('templating')->render('StfalconTinymceBundle:Script:init.html.twig', array(
-            'tinymce_config' => preg_replace(
-                array(
-                    '/"file_browser_callback":"([^"]+)"\s*/',
-                    '/"paste_preprocess":"([^"]+)"\s*/',
-                ),
-                array(
-                    'file_browser_callback:$1',
-                    '"paste_preprocess":$1',
-                ),
-                json_encode($config)
+        $tinymceConfiguration = preg_replace(
+            array(
+                '/"file_browser_callback":"([^"]+)"\s*/',
+                '/"paste_preprocess":"([^"]+)"\s*/',
             ),
-            'include_jquery' => $config['include_jquery'],
-            'tinymce_jquery' => $config['tinymce_jquery'],
-            'asset_package_name' => $assetPackageName,
-            'base_url' => $this->baseUrl
+            array(
+                'file_browser_callback:$1',
+                '"paste_preprocess":$1',
+            ),
+            json_encode($config)
+        );
 
+        return $this->getService('templating')->render('StfalconTinymceBundle:Script:init.html.twig', array(
+            'tinymce_config'     => $tinymceConfiguration,
+            'include_jquery'     => $config['include_jquery'],
+            'tinymce_jquery'     => $config['tinymce_jquery'],
+            'asset_package_name' => $assetPackageName,
+            'base_url'           => $this->baseUrl,
         ));
     }
 
@@ -207,7 +209,7 @@ class StfalconTinymceExtension extends \Twig_Extension
         $url = preg_replace('/^asset\[(.+)\]$/i', '$1', $inputUrl);
 
         if ($inputUrl !== $url) {
-            return $assets->getUrl($this->baseUrl . $url);
+            return $assets->getUrl($this->baseUrl.$url);
         }
 
         return $inputUrl;

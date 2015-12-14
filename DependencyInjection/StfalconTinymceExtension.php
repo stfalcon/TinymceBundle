@@ -25,7 +25,7 @@ class StfalconTinymceExtension extends Extension
 
         if (empty($config['theme'])) {
             $config['theme'] = array(
-                'simple' => array()
+                'simple' => array(),
             );
         } else {
             foreach ($config['theme'] as &$bundleTheme) {
@@ -40,7 +40,7 @@ class StfalconTinymceExtension extends Extension
         $container->setParameter('stfalcon_tinymce.config', $config);
 
         // load dependency injection config
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('service.xml');
     }
 
