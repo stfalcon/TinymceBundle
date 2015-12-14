@@ -94,7 +94,7 @@ class StfalconTinymceExtension extends \Twig_Extension
         unset($config['asset_package_name']);
 
         /** @var $assets \Symfony\Component\Templating\Helper\CoreAssetsHelper */
-        $assets = $this->getService('templating.helper.assets');
+        $assets = $this->getService('assets.packages');
 
         // Get path to tinymce script for the jQuery version of the editor
         if ($config['tinymce_jquery']) {
@@ -127,7 +127,7 @@ class StfalconTinymceExtension extends \Twig_Extension
         // If the language is not set in the config...
         if (!isset($config['language']) || empty($config['language'])) {
             // get it from the request
-            $config['language'] = $this->getService('request')->getLocale();
+            $config['language'] = $this->container->get('request_stack')->getCurrentRequest()->getLocale();
         }
 
         $config['language'] = LocaleHelper::getLanguage($config['language']);
@@ -204,7 +204,7 @@ class StfalconTinymceExtension extends \Twig_Extension
     protected function getAssetsUrl($inputUrl)
     {
         /** @var $assets \Symfony\Component\Templating\Helper\CoreAssetsHelper */
-        $assets = $this->getService('templating.helper.assets');
+        $assets = $this->getService('assets.packages');
 
         $url = preg_replace('/^asset\[(.+)\]$/i', '$1', $inputUrl);
 
@@ -215,4 +215,3 @@ class StfalconTinymceExtension extends \Twig_Extension
         return $inputUrl;
     }
 }
-
