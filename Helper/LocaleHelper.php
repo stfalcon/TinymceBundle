@@ -20,7 +20,7 @@ class LocaleHelper
         'sl' => 'sl_SI',
         'tr' => 'tr_TR',
         'tw' => 'zh_TW',
-        'uk' => 'uk_UA'
+        'uk' => 'uk_UA',
     );
 
     /**
@@ -30,10 +30,8 @@ class LocaleHelper
      */
     public static function getLanguage($locale)
     {
-
         return isset(self::$locales[$locale])
             ? self::$locales[$locale]
             : $locale;
     }
 }
- 
