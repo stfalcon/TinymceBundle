@@ -2,16 +2,16 @@
     <script type="text/javascript" src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 {% endif %}
 {% if tinymce_jquery %}
-    <script type="text/javascript" src="{{ asset(base_url~'bundles/stfalcontinymce/vendor/tinymce/jquery.tinymce.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset(base_url~'bundles/stfalcontinymce/js/init.jquery.js') }}"></script>
+    <script type="text/javascript" src="{{ asset(base_url~'bundles/stfalcontinymce/vendor/tinymce/jquery.tinymce.min.js', asset_package_name) }}"></script>
+    <script type="text/javascript" src="{{ asset(base_url~'bundles/stfalcontinymce/js/init.jquery.js', asset_package_name) }}"></script>
 {% else %}
-    <script type="text/javascript" src="{{ asset(base_url~'bundles/stfalcontinymce/vendor/tinymce/tinymce.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset(base_url~'bundles/stfalcontinymce/js/ready.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset(base_url~'bundles/stfalcontinymce/js/init.standard.js') }}"></script>
+    <script type="text/javascript" src="{{ asset(base_url~'bundles/stfalcontinymce/vendor/tinymce/tinymce.min.js', asset_package_name) }}"></script>
+    <script type="text/javascript" src="{{ asset(base_url~'bundles/stfalcontinymce/js/ready.min.js', asset_package_name) }}"></script>
+    <script type="text/javascript" src="{{ asset(base_url~'bundles/stfalcontinymce/js/init.standard.js', asset_package_name) }}"></script>
 {% endif %}
 <script type="text/javascript">
-//<![CDATA[
+    //<![CDATA[
     stfalcon_tinymce_config = {{ tinymce_config|raw }};
     initTinyMCE();
-//]]>
+    //]]>
 </script>
