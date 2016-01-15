@@ -50,10 +50,10 @@ You can also override the default configuration by passing an option like this:
 
 ```twig
     {{ tinymce_init({'use_callback_tinymce_init': true, 'theme': {'simple': {'menubar': false}}}) }}
-```   
+```
 
    or
-   
+
 ```
     {{ tinymce_init({
         theme: {'simple':{'language': app.request.locale, 'height': 500 }},
