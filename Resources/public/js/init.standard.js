@@ -62,7 +62,8 @@ function initTinyMCE(options) {
             if (textareas[i].getAttribute("required") !== '') {
                 textareas[i].removeAttribute("required")
             }
-            if (textareas[i].getAttribute('id') === '') {
+            var textAreaId = textareas[i].getAttribute('id');
+            if (textAreaId === '' || textAreaId === null) {
                 textareas[i].setAttribute("id", "tinymce_" + Math.random().toString(36).substr(2));
             }
             // Add custom buttons to current editor
