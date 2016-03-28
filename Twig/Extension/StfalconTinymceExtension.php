@@ -94,7 +94,7 @@ class StfalconTinymceExtension extends \Twig_Extension
         unset($config['asset_package_name']);
 
         /** @var $assets \Symfony\Component\Templating\Helper\CoreAssetsHelper */
-        $assets = $this->getService('assets.packages');
+        $assets = $this->getService('templating.helper.assets');
 
         // Get path to tinymce script for the jQuery version of the editor
         if ($config['tinymce_jquery']) {
@@ -204,7 +204,7 @@ class StfalconTinymceExtension extends \Twig_Extension
     protected function getAssetsUrl($inputUrl)
     {
         /** @var $assets \Symfony\Component\Templating\Helper\CoreAssetsHelper */
-        $assets = $this->getService('assets.packages');
+        $assets = $this->getService('templating.helper.assets');
 
         $url = preg_replace('/^asset\[(.+)\]$/i', '$1', $inputUrl);
 
