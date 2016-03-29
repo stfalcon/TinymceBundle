@@ -33,5 +33,10 @@
             "Stfalcon\\Bundle\\TinymceBundle": ""
         }
     },
-    "target-dir" : "Stfalcon/Bundle/TinymceBundle"
+    "target-dir" : "Stfalcon/Bundle/TinymceBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.x-dev"
+        }
+    }
 }
