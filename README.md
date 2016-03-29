@@ -4,20 +4,22 @@ This bundle makes it very easy to add the TinyMCE WYSIWYG editor to your Symfony
 
 ## Installation
 
-### Installation by Composer
+### Choose the appropriate version
 
-> NOTE! This version of TinyMCE bundle contains TinyMCE version 4 and works only with Symfony version >= 2.1. To upgrade your configuration, please read UPGRADE.md
+| Bundle Version (X.Y) | PHP     | Symfony            | Comment                                  |
+|:--------------------:|:-------:|:------------------:|------------------------------------------|
+| 2.0                  | >= 5.4  | >= 3.0             | Actual version                           |
+| 1.0                  | >= 5.4  | >= 2.1 and <= 2.8  |                                          |
 
-Add TinyMCE bundle as a dependency to the composer.json of your application
+> NOTE! To upgrade your configuration, please read UPGRADE.md
 
-    "require": {
-        ...
-        "stfalcon/tinymce-bundle": "dev-master"
-        ...
-    },
+### Add TinyMCE bundle as a dependency of your application via composer
 
+```
+$ php composer.phar require stfalcon/tinymce-bundle='X.Y'
+```
 
-## Add StfalconTinymceBundle to your application kernel.
+### Add StfalconTinymceBundle to your application kernel.
 
 ```php
 // app/AppKernel.php
@@ -32,10 +34,10 @@ Add TinyMCE bundle as a dependency to the composer.json of your application
     }
 ```
 
-The bundle needs to copy the resources necessary to the web folder. You can use the command below:
+### The bundle needs to copy the resources necessary to the web folder. You can use the command below:
 
-```bash
-    php app/console assets:install web/
+```
+$ php app/console assets:install web/
 ```
 
 ## Include in template
@@ -50,10 +52,10 @@ You can also override the default configuration by passing an option like this:
 
 ```twig
     {{ tinymce_init({'use_callback_tinymce_init': true, 'theme': {'simple': {'menubar': false}}}) }}
-```   
+```
 
    or
-   
+
 ```
     {{ tinymce_init({
         theme: {'simple':{'language': app.request.locale, 'height': 500 }},
