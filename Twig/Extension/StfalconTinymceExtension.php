@@ -131,7 +131,7 @@ class StfalconTinymceExtension extends \Twig_Extension
         // If the language is not set in the config...
         if (!isset($config['language']) || empty($config['language'])) {
             // get it from the request
-            $config['language'] = $this->container->get('request_stack')->getCurrentRequest()->getLocale();
+            $config['language'] = $this->container->get('request')->getLocale();
         }
 
         $config['language'] = LocaleHelper::getLanguage($config['language']);
