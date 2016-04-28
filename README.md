@@ -37,7 +37,7 @@ $ php composer.phar require stfalcon/tinymce-bundle='X.Y'
 ### The bundle needs to copy the resources necessary to the web folder. You can use the command below:
 
 ```
-$ php app/console assets:install web/
+$ php bin/console assets:install web/
 ```
 
 ## Include in template
