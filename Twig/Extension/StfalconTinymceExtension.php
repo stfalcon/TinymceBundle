@@ -166,10 +166,12 @@ class StfalconTinymceExtension extends \Twig_Extension
         $tinymceConfiguration = preg_replace(
             array(
                 '/"file_browser_callback":"([^"]+)"\s*/',
+                '/"file_picker_callback":"([^"]+)"\s*/',
                 '/"paste_preprocess":"([^"]+)"\s*/',
             ),
             array(
                 'file_browser_callback:$1',
+                'file_picker_callback:$1',
                 '"paste_preprocess":$1',
             ),
             json_encode($config)
