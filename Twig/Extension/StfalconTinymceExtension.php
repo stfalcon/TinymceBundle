@@ -151,7 +151,10 @@ class StfalconTinymceExtension extends \Twig_Extension
             foreach ($config['theme'] as $themeName => $themeOptions) {
                 if (isset($themeOptions['content_css'])) {
                     // As there may be multiple CSS Files specified we need to parse each of them individually
-                    $cssFiles = explode(',', $themeOptions['content_css']);
+                    $cssFiles = $themeOptions['content_css'];
+                    if (!is_array($themeOptions['content_css'])) {
+                        $cssFiles = explode(',', $themeOptions['content_css']);
+                    }
 
                     foreach ($cssFiles as $idx => $file) {
                         $cssFiles[$idx] = $this->getAssetsUrl(trim($file)); // we trim to be sure we get the file without spaces.
