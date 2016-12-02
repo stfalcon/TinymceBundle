@@ -62,6 +62,7 @@ function initTinyMCE(options) {
                         });
                     }
                 };
+                settings.plugins = options.theme.advanced.plugins;
                 textarea.tinymce(settings);
             });
         });
