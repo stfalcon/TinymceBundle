@@ -163,6 +163,10 @@ class StfalconTinymceExtension extends \Twig_Extension
                     // After parsing we add them together again.
                     $config['theme'][$themeName]['content_css'] = implode(',', $cssFiles);
                 }
+
+                if (isset($themeOptions['language_url'])) {
+                    $config['theme'][$themeName]['language_url'] = $this->getAssetsUrl($themeOptions['language_url']) . $config['language'] . '.js';
+                }
             }
         }
 
