@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<language-pack>
+	<header>
+		<author></author>
+		<version minor="2" major="1" releasedate="2006-12-05" />
+		<description>
+			This is the English language pack for the MCUploadImage.
+		</description>
+	</header>
+
+	<language code="en" title="English" dir="ltr">
+
+		<group target="button">
+			<!-- think about the length of the text -->
+			<item name="create">Create</item>
+			<item name="cancel">Cancel</item>
+			<item name="apply">Apply</item>
+			<item name="save">Save</item>
+		</group>
+
+		<group target="upload">
+			<item name="title">Upload</item>
+			<item name="description">Use the form to upload files.</item>
+			<item name="valid_extensions">Valid extensions:</item>
+			<item name="max_upload_size">Max upload size:</item>
+			<item name="file_to_upload">File to upload:</item>
+			<item name="as_file_name">As file name:</item>
+			<item name="path">Path: </item>
+			<item name="button_upload">Upload</item>
+			<item name="browse">Add file(s)</item>
+			<item name="progress">Uploading...</item>
+			<item name="upload_warn">Files are being uploaded, are you sure you want to cancel the upload?</item>
+			<item name="statusrow">You have {files} files (total {size}) eagerly waiting to be uploaded.</item>
+			<item name="progressinfo">{loaded} of {total} uploaded at {speed}/s.</item>
+			<item name="abort">Abort upload</item>
+			<item name="add_more">Add more?</item>
+			<item name="upload_to_server">Upload to server</item>
+			<item name="cancelled">Upload was cancelled</item>
+			<item name="choose_files">Choose files</item>
+			<item name="basic_upload">If you're having trouble uploading you can always use the {a}basic uploader{/a}.</item>
+			<item name="remove">Remove</item>
+			<item name="file">File</item>
+			<item name="size">Size</item>
+			<item name="status">Status</item>
+			<item name="no_valid_files">No valid files selected, please try again.</item>
+		</group>
+	</language>
+</language-pack>
