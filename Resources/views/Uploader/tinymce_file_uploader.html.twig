@@ -1,0 +1,6 @@
+<form id="tinymce_file_uploader" action="{{ path('stfalcon_tinymce_fastload_uploader') }}" method="post" enctype="multipart/form-data">
+    <input type="file" id="tiny_inner_image" name="tiny_inner_image">
+</form>
+
+{% include 'SyliusUiBundle::_javascripts.html.twig' with {'path': 'bundles/stfalcontinymce/js/tinymce-fastload.js'} %}
+{% include 'SyliusUiBundle::_stylesheets.html.twig' with {'path': 'bundles/stfalcontinymce/css/tinymce-fastload.css'} %}

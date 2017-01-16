@@ -1,0 +1,5 @@
+stfalcon_tinymce_fastload_uploader:
+    path:  /tinymce/upload
+    defaults: { _controller: StfalconTinymceBundle:Uploader:upload }
+    requirements:
+        _method:  POST
