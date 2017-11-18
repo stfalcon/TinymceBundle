@@ -2,6 +2,7 @@
 namespace Stfalcon\Bundle\TinymceBundle\Twig\Extension;
 
 use Stfalcon\Bundle\TinymceBundle\Helper\LocaleHelper;
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -26,13 +27,19 @@ class StfalconTinymceExtension extends \Twig_Extension
     protected $baseUrl;
 
     /**
+     * @var Packages
+     */
+    private $packages;
+
+    /**
      * Initialize tinymce helper
      *
      * @param ContainerInterface $container
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, Packages $packages)
     {
         $this->container = $container;
+        $this->packages = $packages;
     }
 
     /**
@@ -94,7 +101,7 @@ class StfalconTinymceExtension extends \Twig_Extension
         unset($config['asset_package_name']);
 
         /** @var $assets \Symfony\Component\Templating\Helper\CoreAssetsHelper */
-        $assets = $this->getService('assets.packages');
+        $assets = $this->packages;
 
         // Get path to tinymce script for the jQuery version of the editor
         if ($config['tinymce_jquery']) {
@@ -180,7 +187,7 @@ class StfalconTinymceExtension extends \Twig_Extension
             json_encode($config)
         );
 
-        return $this->getService('templating')->render('StfalconTinymceBundle:Script:init.html.twig', array(
+        return $this->getService('twig')->render('@StfalconTinymce/Script/init.html.twig', array(
             'tinymce_config'     => $tinymceConfiguration,
             'include_jquery'     => $config['include_jquery'],
             'tinymce_jquery'     => $config['tinymce_jquery'],
@@ -208,8 +215,7 @@ class StfalconTinymceExtension extends \Twig_Extension
      */
     protected function getAssetsUrl($inputUrl)
     {
-        /** @var $assets \Symfony\Component\Templating\Helper\CoreAssetsHelper */
-        $assets = $this->getService('assets.packages');
+        $assets = $this->packages;
 
         $url = preg_replace('/^asset\[(.+)\]$/i', '$1', $inputUrl);
 
