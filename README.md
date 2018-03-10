@@ -8,7 +8,8 @@ This bundle makes it very easy to add the TinyMCE WYSIWYG editor to your Symfony
 
 | Bundle Version (X.Y) | PHP     | Symfony            | Comment                                  |
 |:--------------------:|:-------:|:------------------:|------------------------------------------|
-| 2.0                  | >= 5.4  | >= 3.0             | Actual version                           |
+| 2.3                  | >= 7.1  | >= 3.4             | Actual version                           |
+| 2.0                  | >= 5.4  | >= 3.0             |                                          |
 | 1.0                  | >= 5.4  | >= 2.1 and <= 2.8  |                                          |
 
 > NOTE! To upgrade your configuration, please read UPGRADE.md
