@@ -18,7 +18,7 @@ function initTinyMCE(options) {
                 if (_t) textareas.push(_t);
                 break;
             case ".":
-                textareas = getElementsByClassName(options.selector, 'textarea');
+                textareas = document.getElementsByClassName(options.selector.substring(1));
                 break;
             default :
                 textareas = document.getElementsByTagName('textarea');
