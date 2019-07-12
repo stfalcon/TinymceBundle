@@ -2,14 +2,19 @@
 namespace Stfalcon\Bundle\TinymceBundle\Twig\Extension;
 
 use Stfalcon\Bundle\TinymceBundle\Helper\LocaleHelper;
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Twig\Environment;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * Twig Extension for TinyMce support.
  *
  * @author naydav <web@naydav.com>
  */
-class StfalconTinymceExtension extends \Twig_Extension
+class StfalconTinymceExtension extends AbstractExtension
 {
     /**
      * @var ContainerInterface $container Container interface
@@ -24,27 +29,31 @@ class StfalconTinymceExtension extends \Twig_Extension
      * @var String
      */
     protected $baseUrl;
+    /**
+     * @var Packages
+     */
+    private $assetPackages;
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
+    /**
+     * @var Environment
+     */
+    private $twig;
 
     /**
      * Initialize tinymce helper
      *
      * @param ContainerInterface $container
+     * @param Packages $assetPackages
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, Packages $assetPackages, RequestStack $requestStack, Environment $twig)
     {
         $this->container = $container;
-    }
-
-    /**
-     * Gets a service.
-     *
-     * @param string $id The service identifier
-     *
-     * @return object The associated service
-     */
-    public function getService($id)
-    {
-        return $this->container->get($id);
+        $this->assetPackages = $assetPackages;
+        $this->requestStack = $requestStack;
+        $this->twig = $twig;
     }
 
     /**
@@ -67,7 +76,7 @@ class StfalconTinymceExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'tinymce_init' => new \Twig_SimpleFunction(
+            'tinymce_init' => new TwigFunction(
                 'tinymce_init',
                 array($this, 'tinymceInit'),
                 array('is_safe' => array('html'))
@@ -93,12 +102,9 @@ class StfalconTinymceExtension extends \Twig_Extension
         $assetPackageName = (!isset($config['asset_package_name']) ? null : $config['asset_package_name']);
         unset($config['asset_package_name']);
 
-        /** @var $assets \Symfony\Component\Templating\Helper\CoreAssetsHelper */
-        $assets = $this->getService('assets.packages');
-
         // Get path to tinymce script for the jQuery version of the editor
         if ($config['tinymce_jquery']) {
-            $config['jquery_script_url'] = $assets->getUrl(
+            $config['jquery_script_url'] = $this->assetPackages->getUrl(
                 $this->baseUrl.'bundles/stfalcontinymce/vendor/tinymce/tinymce.jquery.min.js',
                 $assetPackageName
             );
@@ -127,7 +133,7 @@ class StfalconTinymceExtension extends \Twig_Extension
         // If the language is not set in the config...
         if (!isset($config['language']) || empty($config['language'])) {
             // get it from the request, if available
-            $currentRequest = $this->container->get('request_stack')
+            $currentRequest = $this->requestStack
                 ->getCurrentRequest()
             ;
 
@@ -186,7 +192,7 @@ class StfalconTinymceExtension extends \Twig_Extension
             json_encode($config)
         );
 
-        return $this->getService('templating')->render('StfalconTinymceBundle:Script:init.html.twig', array(
+        return $this->twig->render('StfalconTinymceBundle:Script:init.html.twig', array(
             'tinymce_config'     => $tinymceConfiguration,
             'include_jquery'     => $config['include_jquery'],
             'tinymce_jquery'     => $config['tinymce_jquery'],
@@ -214,13 +220,10 @@ class StfalconTinymceExtension extends \Twig_Extension
      */
     protected function getAssetsUrl($inputUrl)
     {
-        /** @var $assets \Symfony\Component\Templating\Helper\CoreAssetsHelper */
-        $assets = $this->getService('assets.packages');
-
         $url = preg_replace('/^asset\[(.+)\]$/i', '$1', $inputUrl);
 
         if ($inputUrl !== $url) {
-            return $assets->getUrl($this->baseUrl.$url);
+            return $this->assetPackages->getUrl($this->baseUrl.$url);
         }
 
         return $inputUrl;
