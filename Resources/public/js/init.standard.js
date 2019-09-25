@@ -12,17 +12,38 @@ function initTinyMCE(options) {
         for (i in t) {
             if (t.hasOwnProperty(i)) t[i].remove();
         }
-        switch (options.selector.substring(0, 1)) {
-            case "#":
-                var _t = document.getElementById(options.selector.substring(1));
-                if (_t) textareas.push(_t);
-                break;
-            case ".":
-                textareas = document.getElementsByClassName(options.selector.substring(1));
-                break;
-            default :
-                textareas = document.getElementsByTagName('textarea');
+        
+        // Check only one selector
+        if(!Array.isArray(options.selector) {
+            switch (options.selector.substring(0, 1)) {
+                case "#":
+                    var _t = document.getElementById(options.selector.substring(1));
+                    if (_t) textareas.push(_t);
+                    break;
+                case ".":
+                    textareas = document.getElementsByClassName(options.selector.substring(1));
+                    break;
+                default:
+                    textareas = document.getElementsByTagName('textarea');
+            }
         }
+        else // Allow multiple selectors, example: ['textarea', '.tinymce', '#description']
+        {
+            options.selector.forEach(function(selector) {
+                switch (selector.substring(0, 1)) {
+                case "#":
+                    var _t = document.getElementById(selector.substring(1));
+                    if (_t) textareas.push(_t);
+                    break;
+                case ".":
+                    textareas = document.getElementsByClassName(selector.substring(1));
+                    break;
+                default:
+                    textareas = document.getElementsByTagName('textarea');
+                }
+            });
+        }
+             
         if (!textareas.length) {
             return false;
         }
