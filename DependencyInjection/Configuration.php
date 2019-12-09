@@ -6,7 +6,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * TinymceBundle configuration structure.
+ * Configuration.
  */
 class Configuration implements ConfigurationInterface
 {
@@ -15,14 +15,14 @@ class Configuration implements ConfigurationInterface
      *
      * @return TreeBuilder
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $defaults = $this->getTinymceDefaults();
 
-        $treeBuilder = new TreeBuilder('stfalcon_tinymce');
+        $treeBuilder = new TreeBuilder();
 
         return $treeBuilder
-            ->getRootNode()
+            ->root('stfalcon_tinymce', 'array')
                 ->children()
                     // Include jQuery (true) library or not (false)
                     ->booleanNode('include_jquery')->defaultFalse()->end()
@@ -79,23 +79,23 @@ class Configuration implements ConfigurationInterface
      *
      * @return array
      */
-    private function getTinymceDefaults()
+    private function getTinymceDefaults(): array
     {
-        return array(
-            'advanced' => array(
-                "theme"        => "modern",
-                "plugins"      => array(
-                    "advlist autolink lists link image charmap print preview hr anchor pagebreak",
-                    "searchreplace wordcount visualblocks visualchars code fullscreen",
-                    "insertdatetime media nonbreaking save table contextmenu directionality",
-                    "emoticons template paste textcolor",
-                ),
-                "toolbar1"     => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify
-                                   | bullist numlist outdent indent | link image",
-                "toolbar2"     => "print preview media | forecolor backcolor emoticons",
-                "image_advtab" => true,
-            ),
-            'simple'   => array(),
-        );
+        return [
+            'advanced' => [
+                'theme' => 'modern',
+                'plugins' => [
+                    'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+                    'searchreplace wordcount visualblocks visualchars code fullscreen',
+                    'insertdatetime media nonbreaking save table contextmenu directionality',
+                    'emoticons template paste textcolor',
+                ],
+                'toolbar1' => 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify
+                                   | bullist numlist outdent indent | link image',
+                'toolbar2' => 'print preview media | forecolor backcolor emoticons',
+                'image_advtab' => true,
+            ],
+            'simple' => [],
+        ];
     }
 }
