@@ -3,13 +3,11 @@
 namespace Stfalcon\Bundle\TinymceBundle\Helper;
 
 /**
- * Class LocaleHelper
- *
- * @package Stfalcon\Bundle\TinymceBundle\Helper
+ * LocaleHelper.
  */
 class LocaleHelper
 {
-    static private $locales = array(
+    private static $locales = [
         'bn' => 'bn_BD',
         'bg' => 'bg_BG',
         'cn' => 'zh_CN',
@@ -21,17 +19,15 @@ class LocaleHelper
         'tr' => 'tr_TR',
         'tw' => 'zh_TW',
         'uk' => 'uk_UA',
-    );
+    ];
 
     /**
      * @param string $locale
      *
      * @return string
      */
-    public static function getLanguage($locale)
+    public static function getLanguage($locale): string
     {
-        return isset(self::$locales[$locale])
-            ? self::$locales[$locale]
-            : $locale;
+        return self::$locales[$locale] ?? $locale;
     }
 }
