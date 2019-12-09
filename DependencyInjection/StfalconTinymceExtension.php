@@ -8,29 +8,29 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * StfalconTinymceExtension
+ * StfalconTinymceExtension.
  */
 class StfalconTinymceExtension extends Extension
 {
     /**
-     * Loads the StfalconTinymce configuration.
+     * Loads the StfalconTinymceBundle configuration.
      *
      * @param array            $configs   An array of configuration values
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         // Get default configuration of the bundle
         $config = $this->processConfiguration(new Configuration(), $configs);
 
         if (empty($config['theme'])) {
-            $config['theme'] = array(
-                'simple' => array(),
-            );
+            $config['theme'] = [
+                'simple' => [],
+            ];
         } else {
             foreach ($config['theme'] as &$bundleTheme) {
                 // Quick fix for the removed obsolete themes
-                if (isset($bundleTheme['theme']) && in_array($bundleTheme['theme'], array('advanced', 'simple'))) {
+                if (isset($bundleTheme['theme']) && \in_array($bundleTheme['theme'], ['advanced', 'simple'], true)) {
                     $bundleTheme['theme'] = 'modern';
                 }
                 unset($bundleTheme);
@@ -51,7 +51,7 @@ class StfalconTinymceExtension extends Extension
      *
      * @return string The alias
      */
-    public function getAlias()
+    public function getAlias(): string
     {
         return 'stfalcon_tinymce';
     }

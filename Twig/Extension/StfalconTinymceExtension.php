@@ -32,9 +32,8 @@ class StfalconTinymceExtension extends \Twig_Extension
     private $packages;
 
     /**
-     * Initialize tinymce helper
-     *
      * @param ContainerInterface $container
+     * @param Packages           $packages
      */
     public function __construct(ContainerInterface $container, Packages $packages)
     {
@@ -43,8 +42,6 @@ class StfalconTinymceExtension extends \Twig_Extension
     }
 
     /**
-     * Gets a service.
-     *
      * @param string $id The service identifier
      *
      * @return object The associated service
@@ -73,13 +70,13 @@ class StfalconTinymceExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
+        return [
             'tinymce_init' => new \Twig_SimpleFunction(
                 'tinymce_init',
-                array($this, 'tinymceInit'),
-                array('is_safe' => array('html'))
+                [$this, 'tinymceInit'],
+                ['is_safe' => ['html']]
             ),
-        );
+        ];
     }
 
     /**
@@ -89,7 +86,7 @@ class StfalconTinymceExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function tinymceInit($options = array())
+    public function tinymceInit($options = []): string
     {
         $config = $this->getParameter('stfalcon_tinymce.config');
         $config = array_merge_recursive($config, $options);
@@ -159,7 +156,7 @@ class StfalconTinymceExtension extends \Twig_Extension
                 if (isset($themeOptions['content_css'])) {
                     // As there may be multiple CSS Files specified we need to parse each of them individually
                     $cssFiles = $themeOptions['content_css'];
-                    if (!is_array($themeOptions['content_css'])) {
+                    if (!\is_array($themeOptions['content_css'])) {
                         $cssFiles = explode(',', $themeOptions['content_css']);
                     }
 
@@ -173,27 +170,30 @@ class StfalconTinymceExtension extends \Twig_Extension
             }
         }
 
-        $tinymceConfiguration = preg_replace(
-            array(
+        $tinymceConfiguration = \preg_replace(
+            [
                 '/"file_browser_callback":"([^"]+)"\s*/',
                 '/"file_picker_callback":"([^"]+)"\s*/',
                 '/"paste_preprocess":"([^"]+)"\s*/',
-            ),
-            array(
+            ],
+            [
                 'file_browser_callback:$1',
                 'file_picker_callback:$1',
                 '"paste_preprocess":$1',
-            ),
-            json_encode($config)
+            ],
+            \json_encode($config)
         );
 
-        return $this->getService('twig')->render('@StfalconTinymce/Script/init.html.twig', array(
-            'tinymce_config'     => $tinymceConfiguration,
-            'include_jquery'     => $config['include_jquery'],
-            'tinymce_jquery'     => $config['tinymce_jquery'],
-            'asset_package_name' => $assetPackageName,
-            'base_url'           => $this->baseUrl,
-        ));
+        return $this->getService('twig')->render(
+            '@StfalconTinymce/Script/init.html.twig',
+            [
+                'tinymce_config' => $tinymceConfiguration,
+                'include_jquery' => $config['include_jquery'],
+                'tinymce_jquery' => $config['tinymce_jquery'],
+                'asset_package_name' => $assetPackageName,
+                'base_url' => $this->baseUrl,
+            ]
+        );
     }
 
     /**
@@ -201,7 +201,7 @@ class StfalconTinymceExtension extends \Twig_Extension
      *
      * @return string The extension name
      */
-    public function getName()
+    public function getName(): string
     {
         return 'stfalcon_tinymce';
     }
@@ -213,7 +213,7 @@ class StfalconTinymceExtension extends \Twig_Extension
      *
      * @return string
      */
-    protected function getAssetsUrl($inputUrl)
+    protected function getAssetsUrl(string $inputUrl): string
     {
         $assets = $this->packages;
 
