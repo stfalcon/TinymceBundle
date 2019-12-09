@@ -19,10 +19,10 @@ class Configuration implements ConfigurationInterface
     {
         $defaults = $this->getTinymceDefaults();
 
-        $treeBuilder = new TreeBuilder();
+        $treeBuilder = new TreeBuilder('stfalcon_tinymce');
 
         return $treeBuilder
-            ->root('stfalcon_tinymce', 'array')
+            ->getRootNode()
                 ->children()
                     // Include jQuery (true) library or not (false)
                     ->booleanNode('include_jquery')->defaultFalse()->end()
