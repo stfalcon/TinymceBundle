@@ -2,6 +2,7 @@
 namespace Stfalcon\Bundle\TinymceBundle\Twig\Extension;
 
 use Stfalcon\Bundle\TinymceBundle\Helper\LocaleHelper;
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -26,13 +27,19 @@ class StfalconTinymceExtension extends \Twig_Extension
     protected $baseUrl;
 
     /**
+     * @var Packages
+     */
+    private $packages;
+
+    /**
      * Initialize tinymce helper
      *
      * @param ContainerInterface $container
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, Packages $packages)
     {
         $this->container = $container;
+        $this->packages = $packages;
     }
 
     /**
@@ -94,7 +101,7 @@ class StfalconTinymceExtension extends \Twig_Extension
         unset($config['asset_package_name']);
 
         /** @var $assets \Symfony\Component\Templating\Helper\CoreAssetsHelper */
-        $assets = $this->getService('assets.packages');
+        $assets = $this->packages;
 
         // Get path to tinymce script for the jQuery version of the editor
         if ($config['tinymce_jquery']) {
@@ -151,7 +158,10 @@ class StfalconTinymceExtension extends \Twig_Extension
             foreach ($config['theme'] as $themeName => $themeOptions) {
                 if (isset($themeOptions['content_css'])) {
                     // As there may be multiple CSS Files specified we need to parse each of them individually
-                    $cssFiles = explode(',', $themeOptions['content_css']);
+                    $cssFiles = $themeOptions['content_css'];
+                    if (!is_array($themeOptions['content_css'])) {
+                        $cssFiles = explode(',', $themeOptions['content_css']);
+                    }
 
                     foreach ($cssFiles as $idx => $file) {
                         $cssFiles[$idx] = $this->getAssetsUrl(trim($file)); // we trim to be sure we get the file without spaces.
@@ -166,16 +176,18 @@ class StfalconTinymceExtension extends \Twig_Extension
         $tinymceConfiguration = preg_replace(
             array(
                 '/"file_browser_callback":"([^"]+)"\s*/',
+                '/"file_picker_callback":"([^"]+)"\s*/',
                 '/"paste_preprocess":"([^"]+)"\s*/',
             ),
             array(
                 'file_browser_callback:$1',
+                'file_picker_callback:$1',
                 '"paste_preprocess":$1',
             ),
             json_encode($config)
         );
 
-        return $this->getService('templating')->render('StfalconTinymceBundle:Script:init.html.twig', array(
+        return $this->getService('twig')->render('@StfalconTinymce/Script/init.html.twig', array(
             'tinymce_config'     => $tinymceConfiguration,
             'include_jquery'     => $config['include_jquery'],
             'tinymce_jquery'     => $config['tinymce_jquery'],
@@ -203,8 +215,7 @@ class StfalconTinymceExtension extends \Twig_Extension
      */
     protected function getAssetsUrl($inputUrl)
     {
-        /** @var $assets \Symfony\Component\Templating\Helper\CoreAssetsHelper */
-        $assets = $this->getService('assets.packages');
+        $assets = $this->packages;
 
         $url = preg_replace('/^asset\[(.+)\]$/i', '$1', $inputUrl);
 
