@@ -1,28 +1,31 @@
 <?php
+
 namespace Stfalcon\Bundle\TinymceBundle\Twig\Extension;
 
 use Stfalcon\Bundle\TinymceBundle\Helper\LocaleHelper;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
- * Twig Extension for TinyMce support.
+ * StfalconTinymceExtension.
  *
  * @author naydav <web@naydav.com>
  */
-class StfalconTinymceExtension extends \Twig_Extension
+class StfalconTinymceExtension extends AbstractExtension
 {
     /**
-     * @var ContainerInterface $container Container interface
+     * @var ContainerInterface $container
      */
     protected $container;
 
     /**
-     * Asset Base Url
+     * Asset Base Url.
      *
      * Used to over ride the asset base url (to not use CDN for instance)
      *
-     * @var String
+     * @var string
      */
     protected $baseUrl;
 
@@ -52,7 +55,7 @@ class StfalconTinymceExtension extends \Twig_Extension
     }
 
     /**
-     * Get parameters from the service container
+     * Get parameters from the service container.
      *
      * @param string $name
      *
@@ -68,10 +71,10 @@ class StfalconTinymceExtension extends \Twig_Extension
      *
      * @return array An array of functions
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
-            'tinymce_init' => new \Twig_SimpleFunction(
+            'tinymce_init' => new TwigFunction(
                 'tinymce_init',
                 [$this, 'tinymceInit'],
                 ['is_safe' => ['html']]
@@ -91,10 +94,10 @@ class StfalconTinymceExtension extends \Twig_Extension
         $config = $this->getParameter('stfalcon_tinymce.config');
         $config = array_merge_recursive($config, $options);
 
-        $this->baseUrl = (!isset($config['base_url']) ? null : $config['base_url']);
+        $this->baseUrl = $config['base_url'] ?? null;
 
         // Asset package name
-        $assetPackageName = (!isset($config['asset_package_name']) ? null : $config['asset_package_name']);
+        $assetPackageName = $config['asset_package_name'] ?? null;
         unset($config['asset_package_name']);
 
         /** @var $assets \Symfony\Component\Templating\Helper\CoreAssetsHelper */
