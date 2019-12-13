@@ -1,6 +1,6 @@
 # TinymceBundle
 
-This bundle makes it very easy to add the TinyMCE WYSIWYG editor to your Symfony2 project.
+:package: This bundle makes it very easy to add the TinyMCE WYSIWYG editor to your Symfony2 project.
 
 ## Installation
 
@@ -8,7 +8,8 @@ This bundle makes it very easy to add the TinyMCE WYSIWYG editor to your Symfony
 
 | Bundle Version (X.Y) | PHP     | Symfony            | Comment                                  |
 |:--------------------:|:-------:|:------------------:|------------------------------------------|
-| 2.3                  | >= 7.1  | >= 3.4             | Actual version                           |
+| 3.0                  | >= 7.2  | >= 5.0             | Actual version                           |
+| 2.4                  | >= 7.1  | >= 3.4 and 4.*     |                                          |
 | 2.0                  | >= 5.4  | >= 3.0             |                                          |
 | 1.0                  | >= 5.4  | >= 2.1 and <= 2.8  |                                          |
 
