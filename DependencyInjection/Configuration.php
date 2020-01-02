@@ -31,7 +31,19 @@ class Configuration implements ConfigurationInterface
                     // Set init to true to use callback on the event init
                     ->booleanNode('use_callback_tinymce_init')->defaultFalse()->end()
                     // Selector
-                    ->scalarNode('selector')->defaultValue('.tinymce')->end()
+                    ->arrayNode('selector')
+                        ->requiresAtLeastOneElement()
+                        ->prototype('scalar')->end()
+                        ->beforeNormalization()
+                            ->ifString()
+                            ->then(function ($value) { return [$value]; })
+                        ->end()
+                        ->isRequired()
+                        ->validate()
+                            ->ifEmpty()
+                            ->then(function() { return ['.tinymce']; })
+                        ->end()
+                    ->end()
                     // base url for content
                     ->scalarNode('base_url')->end()
                     // asset packageName

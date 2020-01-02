@@ -8,29 +8,25 @@ function initTinyMCE(options) {
     if (typeof options == 'undefined') options = stfalcon_tinymce_config;
     // Load when DOM is ready
     domready(function() {
-        let i, t = tinymce.editors, textareas = [];
+        var i, t = tinymce.editors, textareas = [];
         for (i in t) {
             if (t.hasOwnProperty(i)) t[i].remove();
         }
-        if(Array.isArray(options.selector)) {
-            options.selector.forEach(function(selector) {
-                textareas = processSelector(selector, textareas);
-            });
-        } else {
-            textareas = processSelector(options.selector, textareas);
-        }
+        options.selector.forEach(function(selector) {
+            textareas = processSelector(selector, textareas);
+        });
         if (!textareas.length) {
             return false;
         }
 
-        let externalPlugins = [];
+        var externalPlugins = [];
         // Load external plugins
         if (typeof options.external_plugins == 'object') {
-            for (let pluginId in options.external_plugins) {
+            for (var pluginId in options.external_plugins) {
                 if (!options.external_plugins.hasOwnProperty(pluginId)) {
                     continue;
                 }
-                let opts = options.external_plugins[pluginId],
+                var opts = options.external_plugins[pluginId],
                     url = opts.url || null;
                 if (url) {
                     externalPlugins.push({
@@ -44,28 +40,28 @@ function initTinyMCE(options) {
 
         for (i = 0; i < textareas.length; i++) {
             // Get editor's theme from the textarea data
-            let theme = textareas[i].getAttribute("data-theme") || 'simple';
+            var theme = textareas[i].getAttribute("data-theme") || 'simple';
             // Get selected theme options
-            let settings = (typeof options.theme[theme] != 'undefined')
+            var settings = (typeof options.theme[theme] != 'undefined')
                 ? options.theme[theme]
                 : options.theme['simple'];
 
             settings.external_plugins = settings.external_plugins || {};
-            for (let p = 0; p < externalPlugins.length; p++) {
+            for (var p = 0; p < externalPlugins.length; p++) {
                 settings.external_plugins[externalPlugins[p]['id']] = externalPlugins[p]['url'];
             }
             // workaround for an incompatibility with html5-validation
             if (textareas[i].getAttribute("required") !== '') {
                 textareas[i].removeAttribute("required")
             }
-            let textAreaId = textareas[i].getAttribute('id');
+            var textAreaId = textareas[i].getAttribute('id');
             if (textAreaId === '' || textAreaId === null) {
                 textareas[i].setAttribute("id", "tinymce_" + Math.random().toString(36).substr(2));
             }
             // Add custom buttons to current editor
             if (typeof options.tinymce_buttons == 'object') {
                 settings.setup = function(editor) {
-                    for (let buttonId in options.tinymce_buttons) {
+                    for (var buttonId in options.tinymce_buttons) {
                         if (!options.tinymce_buttons.hasOwnProperty(buttonId)) continue;
 
                         // Some tricky function to isolate variables values
@@ -85,7 +81,7 @@ function initTinyMCE(options) {
                     //Init Event
                     if (options.use_callback_tinymce_init) {
                         editor.on('init', function() {
-                            let callback = window['callback_tinymce_init'];
+                            var callback = window['callback_tinymce_init'];
                             if (typeof callback == 'function') {
                                 callback(editor);
                             } else {
@@ -110,14 +106,20 @@ function initTinyMCE(options) {
 function processSelector(selector, textareas) {
     switch (selector.substring(0, 1)) {
         case "#":
-            let _t = document.getElementById(selector.substring(1));
+            _t = document.getElementById(selector.substring(1));
             if (_t) textareas.push(_t);
             break;
         case ".":
-            textareas = textareas.concat(document.getElementsByClassName(selector.substring(1)));
+            elements = document.getElementsByClassName(selector.substring(1));
+            for (element of elements) {
+                textareas.push(element);
+            }
             break;
         default:
-            textareas = textareas.concat(document.getElementsByTagName('textarea'));
+            elements = document.getElementsByTagName('textarea');
+            for (element of elements) {
+                textareas.push(element);
+            };
     }
     return textareas;
 }
@@ -129,10 +131,10 @@ function processSelector(selector, textareas) {
  * @param node
  */
 function getElementsByClassName(classname, node) {
-    let elements = document.getElementsByTagName(node),
+    var elements = document.getElementsByTagName(node),
         array = [],
         re = new RegExp('\\b' + classname + '\\b');
-    for (let i = 0, j = elements.length; i < j; i++) {
+    for (var i = 0, j = elements.length; i < j; i++) {
         if (re.test(elements[i].className)) array.push(elements[i]);
     }
     return array;
@@ -147,7 +149,7 @@ function clone(o) {
     if (!o || "object" !== typeof o) {
         return o;
     }
-    let c = "function" === typeof o.pop ? [] : {}, p, v;
+    var c = "function" === typeof o.pop ? [] : {}, p, v;
     for (p in o) {
         if (o.hasOwnProperty(p)) {
             v = o[p];
