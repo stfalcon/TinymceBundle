@@ -23,6 +23,9 @@ class StfalconTinymceExtension extends Extension
         // Get default configuration of the bundle
         $config = $this->processConfiguration(new Configuration(), $configs);
 
+        if (empty($config['selector'])) {
+            $config['selector'] = ['.tinymce'];
+        }
         if (empty($config['theme'])) {
             $config['theme'] = [
                 'simple' => [],
