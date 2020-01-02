@@ -130,6 +130,35 @@ In the example we set default language from the parameters.ini. Of course you ca
 
 If language parameter isn't set, the default language will be get from the session.
 
+## Multiply selector
+
+You can specify one or many selectors for editor placement.
+
+```yaml
+    // app/config/config.yml
+    stfalcon_tinymce:
+        selector: ".tinymce"
+```
+
+or 
+
+```yaml
+    // app/config/config.yml
+    stfalcon_tinymce:
+        selector: 
+            - ".tinymce"
+            - "#tinymce"
+```
+
+or
+
+```yaml
+    // app/config/config.yml
+    stfalcon_tinymce:
+        selector: [".tinymce", "#tinymce"]
+```
+
+
 ## Custom configurations
 
 According to the TinyMCE documentation you can configure your editor as you wish. Below is an almost full list of available parameters that you can configure by yourself:
@@ -139,7 +168,10 @@ According to the TinyMCE documentation you can configure your editor as you wish
     stfalcon_tinymce:
         include_jquery: true
         tinymce_jquery: true
-        selector: ".tinymce"
+        selector:
+            - ".tinymce"
+            - "#editor1"
+            - "#editor2"
         base_url: "http://yourdomain.com/" # this parameter may be included if you need to override the assets_base_urls for your template engine (to override a CDN base url)
         # Get current language from the parameters.ini
         language: %locale%
