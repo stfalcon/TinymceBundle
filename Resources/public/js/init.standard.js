@@ -12,17 +12,9 @@ function initTinyMCE(options) {
         for (i in t) {
             if (t.hasOwnProperty(i)) t[i].remove();
         }
-        switch (options.selector.substring(0, 1)) {
-            case "#":
-                var _t = document.getElementById(options.selector.substring(1));
-                if (_t) textareas.push(_t);
-                break;
-            case ".":
-                textareas = document.getElementsByClassName(options.selector.substring(1));
-                break;
-            default :
-                textareas = document.getElementsByTagName('textarea');
-        }
+        options.selector.forEach(function(selector) {
+            textareas = processSelector(selector, textareas);
+        });
         if (!textareas.length) {
             return false;
         }
@@ -105,6 +97,31 @@ function initTinyMCE(options) {
                 .render();
         }
     });
+}
+
+/**
+ * @param selector
+ * @param textareas
+ */
+function processSelector(selector, textareas) {
+    switch (selector.substring(0, 1)) {
+        case "#":
+            _t = document.getElementById(selector.substring(1));
+            if (_t) textareas.push(_t);
+            break;
+        case ".":
+            elements = document.getElementsByClassName(selector.substring(1));
+            for (element of elements) {
+                textareas.push(element);
+            }
+            break;
+        default:
+            elements = document.getElementsByTagName('textarea');
+            for (element of elements) {
+                textareas.push(element);
+            };
+    }
+    return textareas;
 }
 
 /**
