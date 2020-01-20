@@ -119,7 +119,7 @@ function processSelector(selector, textareas) {
             elements = document.getElementsByTagName('textarea');
             for (element of elements) {
                 textareas.push(element);
-            };
+            }
     }
     return textareas;
 }

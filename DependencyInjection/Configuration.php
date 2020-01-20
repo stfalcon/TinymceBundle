@@ -76,6 +76,7 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
                     ->end()
+                    ->scalarNode('paste_word_valid_elements')->defaultNull()->end()
                 ->end()
             ->end();
     }
