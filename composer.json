@@ -27,7 +27,8 @@
     "require": {
         "php": "^7.2.5",
         "symfony/framework-bundle": "^4.4",
-        "twig/twig": "^2.12|^3.0"
+        "twig/twig": "^2.12|^3.0",
+        "tinymce/tinymce": "^4"
     },
     "autoload": {
         "psr-0": {
