@@ -27,8 +27,7 @@ class Configuration implements ConfigurationInterface
             $rootNode = $treeBuilder->root('stfalcon_tinymce');
         }
 
-        return $treeBuilder
-            ->getRootNode()
+        $rootNode
                 ->children()
                     // Include jQuery (true) library or not (false)
                     ->booleanNode('include_jquery')->defaultFalse()->end()
@@ -84,6 +83,8 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end();
+
+        return $treeBuilder;
     }
 
     /**
