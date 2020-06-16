@@ -3,6 +3,7 @@ namespace Stfalcon\Bundle\TinymceBundle\Twig\Extension;
 
 use Stfalcon\Bundle\TinymceBundle\Helper\LocaleHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\FormView;
 
 /**
  * Twig Extension for TinyMce support.
@@ -24,6 +25,12 @@ class StfalconTinymceExtension extends \Twig_Extension
      * @var String
      */
     protected $baseUrl;
+    /**
+     * Trigger of initialization
+     *
+     * @var bool
+     */
+    private $initialized = false;
 
     /**
      * Initialize tinymce helper
@@ -69,20 +76,39 @@ class StfalconTinymceExtension extends \Twig_Extension
         return array(
             'tinymce_init' => new \Twig_SimpleFunction(
                 'tinymce_init',
-                array($this, 'tinymceInit'),
+                array($this, 'printIfNotInit'),
                 array('is_safe' => array('html'))
             ),
         );
     }
 
     /**
+     * Be smart - initialize things only once
+     *
+     * @param FormView $form
+     * @param array $options
+     * @return string|null
+     */
+    public function printIfNotInit($form, $options = array())
+    {
+        $html = '';
+        if(!$this->initialized) {
+            $this->initialized = true;
+            $html .= $this->tinymceInit($form, $options);
+        }
+
+        return $html . $this->getService('templating')->render('StfalconTinymceBundle:Script:textarea.html.twig', ['form' => $form]);
+    }
+
+    /**
      * TinyMce initializations
      *
+     * @param FormView $form
      * @param array $options
      *
      * @return string
      */
-    public function tinymceInit($options = array())
+    public function tinymceInit($form, $options = array())
     {
         $config = $this->getParameter('stfalcon_tinymce.config');
         $config = array_merge_recursive($config, $options);
@@ -135,7 +161,7 @@ class StfalconTinymceExtension extends \Twig_Extension
         $langDirectory = __DIR__.'/../../Resources/public/vendor/tinymce/langs/';
 
         // A language code coming from the locale may not match an existing language file
-        if (!file_exists($langDirectory.$config['language'].'.js')) {
+        if (!file_exists($langDirectory . $config['language'].'.js')) {
             unset($config['language']);
         }
 
@@ -144,6 +170,18 @@ class StfalconTinymceExtension extends \Twig_Extension
             foreach ($config['theme'] as $themeName => $themeOptions) {
                 $config['theme'][$themeName]['language'] = $config['language'];
             }
+        }
+
+        if(!isset($config['theme']['simple'])) {
+            $config['theme']['simple'] = [
+                'language' => $config['language']
+            ];
+        }
+
+        if(!isset($config['theme']['advanced'])) {
+            $config['theme']['advanced'] = [
+                'language' => $config['language']
+            ];
         }
 
         if (isset($config['theme']) && $config['theme']) {
@@ -186,6 +224,7 @@ class StfalconTinymceExtension extends \Twig_Extension
             'tinymce_jquery'     => $config['tinymce_jquery'],
             'asset_package_name' => $assetPackageName,
             'base_url'           => $this->baseUrl,
+            'form'               => $form,
         ));
     }
 

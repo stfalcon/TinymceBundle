@@ -9,9 +9,13 @@
     <script type="text/javascript" src="{{ asset(base_url~'bundles/stfalcontinymce/js/ready.min.js', asset_package_name) }}"></script>
     <script type="text/javascript" src="{{ asset(base_url~'bundles/stfalcontinymce/js/init.standard.js', asset_package_name) }}"></script>
 {% endif %}
-<script type="text/javascript">
-    //<![CDATA[
-    stfalcon_tinymce_config = {{ tinymce_config|raw }};
-    initTinyMCE();
-    //]]>
-</script>
+
+{% block tinymce_widget_initializer %}
+    <script type="text/javascript">
+        initTinyMCE({{ tinymce_config|raw }});
+    </script>
+
+{% endblock %}
+
+{% block tinymce_widget_extra %}
+{% endblock %}
