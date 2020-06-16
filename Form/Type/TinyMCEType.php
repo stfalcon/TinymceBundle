@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\TinymceBundle\Form\Type;
 
+use Stfalcon\Bundle\TinymceBundle\Model\ConfigManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -12,13 +13,23 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class TinyMCEType extends AbstractType
 {
+    /** @var ConfigManagerInterface */
+    private $configManager;
+
+    public function __construct(ConfigManagerInterface $configManager)
+    {
+        $this->configManager = $configManager;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
-            ->setDefaults([]);
+            ->setDefaults([
+                'config_name' => $this->configManager->getDefaultConfig(),
+            ]);
     }
 
     /**

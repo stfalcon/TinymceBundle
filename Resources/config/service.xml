@@ -15,5 +15,12 @@
             <argument type="service" id="assets.packages" />
             <tag name="twig.extension" alias="stfalcon_tinymce" />
         </service>
+
+        <service id="stfalcon_tinymce.form.type" class="Stfalcon\Bundle\TinymceBundle\Form\Type\TinyMCEType">
+            <argument type="service" id="stfalcon_tinymce.config_manager" />
+            <tag name="form.type" />
+        </service>
+
+        <service id="stfalcon_tinymce.config_manager" class="Stfalcon\Bundle\TinymceBundle\Model\ConfigManager" />
     </services>
 </container>
