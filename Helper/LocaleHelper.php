@@ -19,7 +19,7 @@ class LocaleHelper
         'tr' => 'tr_TR',
         'tw' => 'zh_TW',
         'uk' => 'uk_UA',
-    ];
+    );
 
     /**
      * @param string $locale
