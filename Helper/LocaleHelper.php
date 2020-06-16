@@ -21,6 +21,7 @@ class LocaleHelper
         'tr' => 'tr_TR',
         'tw' => 'zh_TW',
         'uk' => 'uk_UA',
+        'pl' => 'pl_PL',
     );
 
     /**
