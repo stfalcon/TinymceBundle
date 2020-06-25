@@ -4,6 +4,7 @@ namespace Stfalcon\Bundle\TinymceBundle\Twig\Extension;
 use Stfalcon\Bundle\TinymceBundle\Helper\LocaleHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Twig Extension for TinyMce support.
@@ -118,36 +119,48 @@ class StfalconTinymceExtension extends \Twig_Extension
         // Asset package name
         $assetPackageName = (!isset($config['asset_package_name']) ? null : $config['asset_package_name']);
         unset($config['asset_package_name']);
+        $browsers = [];
 
-        /** @var $assets \Symfony\Component\Templating\Helper\CoreAssetsHelper */
-        $assets = $this->getService('templating.helper.assets');
-
-        // Get path to tinymce script for the jQuery version of the editor
-        if ($config['tinymce_jquery']) {
-            $config['jquery_script_url'] = $assets->getUrl(
-                $this->baseUrl.'bundles/stfalcontinymce/vendor/tinymce/tinymce.jquery.min.js',
-                $assetPackageName
-            );
+        // set route of filebrowser
+        if(isset($config['file_browser']) && $config['file_browser'] && $type = $this->getFilePickerType($config['file_browser']['engine'])) {
+            $browsers[$type] = [
+                'type' => $type,
+                'name' => $type . ' with TinyMCE',
+            ];
+            if($config['file_browser']['route']) {
+                $route = $this->getRouter()->generate(
+                    $config['file_browser']['engine'],
+                    $config['file_browser']['route_parameters'] ?: []
+                );
+            } else {
+                $route = '';
+            }
+            $config['file_browser_callback'] = 'getBrowser(\'' . $route . '\', \'' . str_replace(
+                '"',
+                '',
+                $config['file_browser']['name'] ?: $browsers[$type]['name']
+                ) . '\')';
         }
 
-        // Get local button's image
-        foreach ($config['tinymce_buttons'] as &$customButton) {
-            if ($customButton['image']) {
-                $customButton['image'] = $this->getAssetsUrl($customButton['image']);
+        // set route of filepicker
+        if(isset($config['file_picker']) && $config['file_picker'] && $type = $this->getFilePickerType($config['file_picker']['engine'])) {
+            $browsers[$type] = [
+                'type' => $type,
+                'name' => $type . ' with TinyMCE',
+            ];
+            if($config['file_picker']['route']) {
+                $route = $this->getRouter()->generate(
+                    $config['file_picker']['engine'],
+                    $config['file_picker']['route_parameters'] ?: []
+                );
             } else {
-                unset($customButton['image']);
+                $route = '';
             }
-
-            if ($customButton['icon']) {
-                $customButton['icon'] = $this->getAssetsUrl($customButton['icon']);
-            } else {
-                unset($customButton['icon']);
-            }
-        }
-
-        // Update URL to external plugins
-        foreach ($config['external_plugins'] as &$extPlugin) {
-            $extPlugin['url'] = $this->getAssetsUrl($extPlugin['url']);
+            $config['file_picker_callback'] = 'getBrowser(\'' . $route . '\', \'' . str_replace(
+                '"',
+                '',
+                $config['file_picker']['name'] ?: $browsers[$type]['name']
+                ) . '\')';
         }
 
         // If the language is not set in the config...
@@ -165,45 +178,6 @@ class StfalconTinymceExtension extends \Twig_Extension
             unset($config['language']);
         }
 
-        if (isset($config['language']) && $config['language']) {
-            // TinyMCE does not allow to set different languages to each instance
-            foreach ($config['theme'] as $themeName => $themeOptions) {
-                $config['theme'][$themeName]['language'] = $config['language'];
-            }
-        }
-
-        if(!isset($config['theme']['simple'])) {
-            $config['theme']['simple'] = [
-                'language' => $config['language']
-            ];
-        }
-
-        if(!isset($config['theme']['advanced'])) {
-            $config['theme']['advanced'] = [
-                'language' => $config['language']
-            ];
-        }
-
-        if (isset($config['theme']) && $config['theme']) {
-            // Parse the content_css of each theme so we can use 'asset[path/to/asset]' in there
-            foreach ($config['theme'] as $themeName => $themeOptions) {
-                if (isset($themeOptions['content_css'])) {
-                    // As there may be multiple CSS Files specified we need to parse each of them individually
-                    $cssFiles = $themeOptions['content_css'];
-                    if (!is_array($themeOptions['content_css'])) {
-                        $cssFiles = explode(',', $themeOptions['content_css']);
-                    }
-
-                    foreach ($cssFiles as $idx => $file) {
-                        $cssFiles[$idx] = $this->getAssetsUrl(trim($file)); // we trim to be sure we get the file without spaces.
-                    }
-
-                    // After parsing we add them together again.
-                    $config['theme'][$themeName]['content_css'] = implode(',', $cssFiles);
-                }
-            }
-        }
-
         $tinymceConfiguration = preg_replace(
             array(
                 '/"file_browser_callback":"([^"]+)"\s*/',
@@ -213,18 +187,17 @@ class StfalconTinymceExtension extends \Twig_Extension
             array(
                 'file_browser_callback:$1',
                 'file_picker_callback:$1',
-                '"paste_preprocess":$1',
+                'paste_preprocess:$1',
             ),
             json_encode($config)
         );
 
         return $this->getService('templating')->render('StfalconTinymceBundle:Script:init.html.twig', array(
             'tinymce_config'     => $tinymceConfiguration,
-            'include_jquery'     => $config['include_jquery'],
-            'tinymce_jquery'     => $config['tinymce_jquery'],
             'asset_package_name' => $assetPackageName,
             'base_url'           => $this->baseUrl,
             'form'               => $form,
+            'file_browsers'      => $browsers,
         ));
     }
 
@@ -257,5 +230,27 @@ class StfalconTinymceExtension extends \Twig_Extension
         }
 
         return $inputUrl;
+    }
+
+    /**
+     * @param $filePicker
+     * @return string
+     */
+    protected function getFilePickerType($filePicker)
+    {
+        switch ($filePicker) {
+            case 'elfinder':
+                return 'elfinder';
+            default:
+                return '';
+        }
+    }
+
+    /**
+     * @return RouterInterface
+     */
+    private function getRouter()
+    {
+        return $this->container->get('router');
     }
 }

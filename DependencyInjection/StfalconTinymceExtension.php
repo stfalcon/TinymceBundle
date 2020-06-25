@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 class StfalconTinymceExtension extends Extension
 {
     /**
-     * Loads the StfalconTinymce configuration.
+     * Loads the Tinymce configuration.
      *
      * @param array            $configs   An array of configuration values
      * @param ContainerBuilder $container A ContainerBuilder instance
@@ -22,20 +22,6 @@ class StfalconTinymceExtension extends Extension
     {
         // Get default configuration of the bundle
         $config = $this->processConfiguration(new Configuration(), $configs);
-
-        if (empty($config['theme'])) {
-            $config['theme'] = array(
-                'simple' => array(),
-            );
-        } else {
-            foreach ($config['theme'] as &$bundleTheme) {
-                // Quick fix for the removed obsolete themes
-                if (isset($bundleTheme['theme']) && in_array($bundleTheme['theme'], array('advanced', 'simple'))) {
-                    $bundleTheme['theme'] = 'modern';
-                }
-                unset($bundleTheme);
-            }
-        }
 
         $container->setParameter('stfalcon_tinymce.config', $config);
 

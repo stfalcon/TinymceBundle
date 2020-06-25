@@ -79,17 +79,6 @@ Add class "tinymce" to textarea field to initialize TinyMCE.
     <textarea class="tinymce"></textarea>
 ```
 
-If you want to use jQuery version of the editor set the following parameters:
-
-```yaml
-    stfalcon_tinymce:
-        include_jquery: true
-        tinymce_jquery: true
-        ...
-```
-
-The option `include_jquery` allows you to load external jQuery library from the Google CDN. Set it to `true` if you haven't included jQuery on your page.
-
 If you are using FormBuilder, use an array to add the class, you can also use the `theme` option to change the
 used theme to something other than 'simple' (i.e. on of the other defined themes in your config - the example above
 defined 'bbcode'). e.g.:
@@ -111,8 +100,6 @@ You can change the language of your TinyMCE editor by adding language selector i
 ```yaml
     // app/config/config.yml
     stfalcon_tinymce:
-        include_jquery: true
-        tinymce_jquery: true
         selector: ".tinymce"
         language: %locale%
         theme:
@@ -135,8 +122,6 @@ According to the TinyMCE documentation you can configure your editor as you wish
 ```yaml
     // app/config/config.yml
     stfalcon_tinymce:
-        include_jquery: true
-        tinymce_jquery: true
         selector: ".tinymce"
         base_url: "http://yourdomain.com/" # this parameter may be included if you need to override the assets_base_urls for your template engine (to override a CDN base url)
         # Get current language from the parameters.ini
@@ -250,8 +235,6 @@ If you specify a relative path, it is resolved in relation to the URL of the (HT
 
 ## Init Event
 
-As $(document).ready() in jQuery you can listen to the init event as well in Tinymce.
-
 To do so you must edit your config and set `use_callback_tinymce_init` to true.
 
 `app/config/config.yml`:
@@ -277,13 +260,3 @@ function callback_tinymce_init(editor) {
 ## How to init TinyMCE for dynamically loaded elements
 
 To initialize TinyMCE for new loaded textareas you should just call `initTinyMCE()` function.
-
-#### Example for Sonata Admin Bundle
-
-```javascript
-    jQuery(document).ready(function() {
-        $('form').on('sonata.add_element', function(){
-            initTinyMCE();
-        });
-    });
-```
