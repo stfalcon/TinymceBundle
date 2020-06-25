@@ -84,6 +84,11 @@ class StfalconTinymceExtension extends \Twig_Extension
                 [$this, 'printIfNotInit'],
                 ['is_safe' => ['html']]
             ),
+            'tinymce_simple' => new \Twig_SimpleFunction(
+                'tinymce_simple',
+                array($this, 'initSimple'),
+                array('is_safe' => array('html'))
+            ),
         ];
     }
 
@@ -127,7 +132,6 @@ class StfalconTinymceExtension extends \Twig_Extension
         /** @var $assets \Symfony\Component\Templating\Helper\CoreAssetsHelper */
         $assets = $this->packages;
         $browsers = [];
-
         // set route of filebrowser
         if(isset($config['file_browser']) && $config['file_browser'] && $type = $this->getFilePickerType($config['file_browser']['engine'])) {
             $browsers[$type] = [
@@ -143,9 +147,9 @@ class StfalconTinymceExtension extends \Twig_Extension
                 $route = '';
             }
             $config['file_browser_callback'] = 'getBrowser(\'' . $route . '\', \'' . str_replace(
-                '"',
-                '',
-                $config['file_browser']['name'] ?: $browsers[$type]['name']
+                    '"',
+                    '',
+                    $config['file_browser']['name'] ?: $browsers[$type]['name']
                 ) . '\')';
         }
 
@@ -164,9 +168,9 @@ class StfalconTinymceExtension extends \Twig_Extension
                 $route = '';
             }
             $config['file_picker_callback'] = 'getBrowser(\'' . $route . '\', \'' . str_replace(
-                '"',
-                '',
-                $config['file_picker']['name'] ?: $browsers[$type]['name']
+                    '"',
+                    '',
+                    $config['file_picker']['name'] ?: $browsers[$type]['name']
                 ) . '\')';
         }
 
