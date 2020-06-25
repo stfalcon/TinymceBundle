@@ -80,6 +80,11 @@ class StfalconTinymceExtension extends \Twig_Extension
                 array($this, 'printIfNotInit'),
                 array('is_safe' => array('html'))
             ),
+            'tinymce_simple' => new \Twig_SimpleFunction(
+                'tinymce_simple',
+                array($this, 'initSimple'),
+                array('is_safe' => array('html'))
+            ),
         );
     }
 
@@ -119,8 +124,82 @@ class StfalconTinymceExtension extends \Twig_Extension
         // Asset package name
         $assetPackageName = (!isset($config['asset_package_name']) ? null : $config['asset_package_name']);
         unset($config['asset_package_name']);
-        $browsers = [];
+        $browsers = $this->getFileBrowsers($config);
 
+        // If the language is not set in the config...
+        if (!isset($config['language']) || empty($config['language'])) {
+            // get it from the request
+            $config['language'] = $this->container->get('request')->getLocale();
+        }
+
+        $config['language'] = LocaleHelper::getLanguage($config['language']);
+
+        $langDirectory = __DIR__.'/../../Resources/public/vendor/tinymce/langs/';
+
+        // A language code coming from the locale may not match an existing language file
+        if (!file_exists($langDirectory . $config['language'].'.js')) {
+            unset($config['language']);
+        }
+
+        return $this->getService('templating')->render('StfalconTinymceBundle:Script:init.html.twig', array(
+            'tinymce_config'     => $this->getTinyMCEConfiguration($config),
+            'asset_package_name' => $assetPackageName,
+            'base_url'           => $this->baseUrl,
+            'form'               => $form,
+            'file_browsers'      => $browsers,
+        ));
+    }
+
+    /**
+     * Initialize TinyMCE in simple mode
+     * @param $config
+     * @return mixed
+     */
+    public function initSimple($config)
+    {
+        // Asset package name
+        $assetPackageName = (!isset($config['asset_package_name']) ? null : $config['asset_package_name']);
+        $browsers = $this->getFileBrowsers($config);
+
+        return $this->getService('templating')->render('StfalconTinymceBundle:Script:init.html.twig', array(
+            'tinymce_config'     => $this->getTinyMCEConfiguration($config),
+            'asset_package_name' => $assetPackageName,
+            'base_url'           => $this->baseUrl,
+            'file_browsers'      => $browsers,
+        ));
+    }
+
+    /**
+     * Prepare configuration in JSON
+     * @param $config
+     * @return string|string[]|null
+     */
+    private function getTinyMCEConfiguration($config)
+    {
+        unset($config['asset_package_name']);
+        return preg_replace(
+            array(
+                '/"file_browser_callback":"([^"]+)"\s*/',
+                '/"file_picker_callback":"([^"]+)"\s*/',
+                '/"paste_preprocess":"([^"]+)"\s*/',
+            ),
+            array(
+                'file_browser_callback:$1',
+                'file_picker_callback:$1',
+                'paste_preprocess:$1',
+            ),
+            json_encode($config)
+        );
+    }
+
+    /**
+     * Get all file browsers
+     * @param $config
+     * @return array
+     */
+    public function getFileBrowsers(&$config)
+    {
+        $browsers = [];
         // set route of filebrowser
         if(isset($config['file_browser']) && $config['file_browser'] && $type = $this->getFilePickerType($config['file_browser']['engine'])) {
             $browsers[$type] = [
@@ -136,9 +215,9 @@ class StfalconTinymceExtension extends \Twig_Extension
                 $route = '';
             }
             $config['file_browser_callback'] = 'getBrowser(\'' . $route . '\', \'' . str_replace(
-                '"',
-                '',
-                $config['file_browser']['name'] ?: $browsers[$type]['name']
+                    '"',
+                    '',
+                    $config['file_browser']['name'] ?: $browsers[$type]['name']
                 ) . '\')';
         }
 
@@ -157,48 +236,13 @@ class StfalconTinymceExtension extends \Twig_Extension
                 $route = '';
             }
             $config['file_picker_callback'] = 'getBrowser(\'' . $route . '\', \'' . str_replace(
-                '"',
-                '',
-                $config['file_picker']['name'] ?: $browsers[$type]['name']
+                    '"',
+                    '',
+                    $config['file_picker']['name'] ?: $browsers[$type]['name']
                 ) . '\')';
         }
 
-        // If the language is not set in the config...
-        if (!isset($config['language']) || empty($config['language'])) {
-            // get it from the request
-            $config['language'] = $this->container->get('request')->getLocale();
-        }
-
-        $config['language'] = LocaleHelper::getLanguage($config['language']);
-
-        $langDirectory = __DIR__.'/../../Resources/public/vendor/tinymce/langs/';
-
-        // A language code coming from the locale may not match an existing language file
-        if (!file_exists($langDirectory . $config['language'].'.js')) {
-            unset($config['language']);
-        }
-
-        $tinymceConfiguration = preg_replace(
-            array(
-                '/"file_browser_callback":"([^"]+)"\s*/',
-                '/"file_picker_callback":"([^"]+)"\s*/',
-                '/"paste_preprocess":"([^"]+)"\s*/',
-            ),
-            array(
-                'file_browser_callback:$1',
-                'file_picker_callback:$1',
-                'paste_preprocess:$1',
-            ),
-            json_encode($config)
-        );
-
-        return $this->getService('templating')->render('StfalconTinymceBundle:Script:init.html.twig', array(
-            'tinymce_config'     => $tinymceConfiguration,
-            'asset_package_name' => $assetPackageName,
-            'base_url'           => $this->baseUrl,
-            'form'               => $form,
-            'file_browsers'      => $browsers,
-        ));
+        return $browsers;
     }
 
     /**
