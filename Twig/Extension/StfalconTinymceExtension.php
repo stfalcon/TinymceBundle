@@ -5,6 +5,7 @@ use Stfalcon\Bundle\TinymceBundle\Helper\LocaleHelper;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Twig Extension for TinyMce support.
@@ -125,33 +126,48 @@ class StfalconTinymceExtension extends \Twig_Extension
 
         /** @var $assets \Symfony\Component\Templating\Helper\CoreAssetsHelper */
         $assets = $this->packages;
+        $browsers = [];
 
-        // Get path to tinymce script for the jQuery version of the editor
-        if ($config['tinymce_jquery']) {
-            $config['jquery_script_url'] = $assets->getUrl(
-                $this->baseUrl.'bundles/stfalcontinymce/vendor/tinymce/tinymce.jquery.min.js',
-                $assetPackageName
-            );
+        // set route of filebrowser
+        if(isset($config['file_browser']) && $config['file_browser'] && $type = $this->getFilePickerType($config['file_browser']['engine'])) {
+            $browsers[$type] = [
+                'type' => $type,
+                'name' => $type . ' with TinyMCE',
+            ];
+            if($config['file_browser']['route']) {
+                $route = $this->getRouter()->generate(
+                    $config['file_browser']['engine'],
+                    $config['file_browser']['route_parameters'] ?: []
+                );
+            } else {
+                $route = '';
+            }
+            $config['file_browser_callback'] = 'getBrowser(\'' . $route . '\', \'' . str_replace(
+                '"',
+                '',
+                $config['file_browser']['name'] ?: $browsers[$type]['name']
+                ) . '\')';
         }
 
-        // Get local button's image
-        foreach ($config['tinymce_buttons'] as &$customButton) {
-            if ($customButton['image']) {
-                $customButton['image'] = $this->getAssetsUrl($customButton['image']);
+        // set route of filepicker
+        if(isset($config['file_picker']) && $config['file_picker'] && $type = $this->getFilePickerType($config['file_picker']['engine'])) {
+            $browsers[$type] = [
+                'type' => $type,
+                'name' => $type . ' with TinyMCE',
+            ];
+            if($config['file_picker']['route']) {
+                $route = $this->getRouter()->generate(
+                    $config['file_picker']['engine'],
+                    $config['file_picker']['route_parameters'] ?: []
+                );
             } else {
-                unset($customButton['image']);
+                $route = '';
             }
-
-            if ($customButton['icon']) {
-                $customButton['icon'] = $this->getAssetsUrl($customButton['icon']);
-            } else {
-                unset($customButton['icon']);
-            }
-        }
-
-        // Update URL to external plugins
-        foreach ($config['external_plugins'] as &$extPlugin) {
-            $extPlugin['url'] = $this->getAssetsUrl($extPlugin['url']);
+            $config['file_picker_callback'] = 'getBrowser(\'' . $route . '\', \'' . str_replace(
+                '"',
+                '',
+                $config['file_picker']['name'] ?: $browsers[$type]['name']
+                ) . '\')';
         }
 
         // If the language is not set in the config...
@@ -217,7 +233,7 @@ class StfalconTinymceExtension extends \Twig_Extension
             [
                 'file_browser_callback:$1',
                 'file_picker_callback:$1',
-                '"paste_preprocess":$1',
+                'paste_preprocess:$1',
             ],
             \json_encode($config)
         );
@@ -231,6 +247,7 @@ class StfalconTinymceExtension extends \Twig_Extension
                 'asset_package_name' => $assetPackageName,
                 'base_url' => $this->baseUrl,
                 'form'               => $form,
+                'file_browsers'      => $browsers,
             ]
         );
     }
@@ -263,5 +280,27 @@ class StfalconTinymceExtension extends \Twig_Extension
         }
 
         return $inputUrl;
+    }
+
+    /**
+     * @param $filePicker
+     * @return string
+     */
+    protected function getFilePickerType($filePicker)
+    {
+        switch ($filePicker) {
+            case 'elfinder':
+                return 'elfinder';
+            default:
+                return '';
+        }
+    }
+
+    /**
+     * @return RouterInterface
+     */
+    private function getRouter()
+    {
+        return $this->container->get('router');
     }
 }

@@ -44,8 +44,6 @@ When upgrading TinyMCE bundle from 0.2.1 to 0.3.0, you need to do the following 
 ```yaml
     // app/config/config.yml
     stfalcon_tinymce:
-        include_jquery: true
-        tinymce_jquery: true
         ...
         theme:
             # Simple theme: same as default theme
@@ -79,8 +77,6 @@ When upgrading TinyMCE bundle from 0.2.1 to 0.3.0, you need to do the following 
 ```yaml
     // app/config/config.yml
     stfalcon_tinymce:
-        include_jquery: true
-        tinymce_jquery: true
         ...
         theme:
             # Simple theme: same as default theme

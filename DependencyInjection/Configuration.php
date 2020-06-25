@@ -17,56 +17,43 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $defaults = $this->getTinymceDefaults();
-
         $treeBuilder = new TreeBuilder();
 
         return $treeBuilder
-            ->root('stfalcon_tinymce', 'array')
+            ->root('tinymce', 'array')
                 ->children()
-                    // Include jQuery (true) library or not (false)
-                    ->booleanNode('include_jquery')->defaultFalse()->end()
-                    // Use jQuery (true) or standalone (false) build of the TinyMCE
-                    ->booleanNode('tinymce_jquery')->defaultFalse()->end()
-                    // Set init to true to use callback on the event init
-                    ->booleanNode('use_callback_tinymce_init')->defaultFalse()->end()
+                    // Default language for all instances of the editor
+                    ->scalarNode('language')->defaultNull()->end()
                     // Selector
                     ->scalarNode('selector')->defaultValue('[data-tinymce]')->end()
+                    // Set init to true to use callback on the event init
+                    ->booleanNode('use_callback_tinymce_init')->defaultFalse()->end()
                     // base url for content
                     ->scalarNode('base_url')->end()
                     // asset packageName
                     ->scalarNode('asset_package_name')->end()
-                    // Default language for all instances of the editor
-                    ->scalarNode('language')->defaultNull()->end()
-                    ->arrayNode('theme')
-                        ->useAttributeAsKey('name')
-                        ->prototype('array')
-                            ->useAttributeAsKey('name')
-                            ->prototype('variable')->end()
-                        ->end()
-                        // Add default theme if it doesn't set
-                        ->defaultValue($defaults)
-                    ->end()
-                    // Configure custom TinyMCE buttons
-                    ->arrayNode('tinymce_buttons')
-                        ->useAttributeAsKey('name')
-                        ->prototype('array')
-                            ->addDefaultsIfNotSet()
-                            ->children()
-                                ->scalarNode('text')->defaultNull()->end()
-                                ->scalarNode('title')->defaultNull()->end()
-                                ->scalarNode('image')->defaultNull()->end()
-                                ->scalarNode('icon')->defaultNull()->end()
+                    // plugins
+                    ->scalarNode('plugins')->defaultValue('')->end()
+                    // toolbar
+                    ->scalarNode('toolbar')->defaultValue('undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent')->end()
+                    ->scalarNode('quickbars_selection_toolbar')->defaultValue('')->end()
+                    ->arrayNode('file_picker')
+                        ->children()
+                            ->scalarNode('engine')->defaultNull()->end()
+                            ->scalarNode('name')->defaultNull()->end()
+                            ->scalarNode('route')->defaultNull()->end()
+                            ->arrayNode('route_parameters')
+                                ->prototype('scalar')->end()
                             ->end()
                         ->end()
                     ->end()
-                    // Configure external TinyMCE plugins
-                    ->arrayNode('external_plugins')
-                        ->useAttributeAsKey('name')
-                        ->prototype('array')
-                            ->addDefaultsIfNotSet()
-                            ->children()
-                                ->scalarNode('url')->isRequired()->end()
+                    ->arrayNode('file_browser')
+                        ->children()
+                            ->scalarNode('engine')->defaultNull()->end()
+                            ->scalarNode('name')->defaultNull()->end()
+                            ->scalarNode('route')->defaultNull()->end()
+                            ->arrayNode('route_parameters')
+                                ->prototype('scalar')->end()
                             ->end()
                         ->end()
                     ->end()
