@@ -73,6 +73,17 @@ class TinyMCEType extends AbstractType
     {
         $builder->setAttribute('enable', $options['enable']);
 
+        if(isset($options['config_name'])) {
+            if($this->configManager->hasConfig('config')) {
+                $config = $this->configManager->getConfig('config');
+            } else {
+                $config = [];
+            }
+
+            $config['config_name'] = $options['config_name'];
+            $this->configManager->setConfig('config', $config);
+        }
+
         if (!$options['enable']) {
             return;
         }
