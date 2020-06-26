@@ -2,6 +2,7 @@
 namespace Stfalcon\Bundle\TinymceBundle\Twig\Extension;
 
 use Stfalcon\Bundle\TinymceBundle\Helper\LocaleHelper;
+use Stfalcon\Bundle\TinymceBundle\Model\ConfigManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Routing\RouterInterface;
@@ -32,15 +33,21 @@ class StfalconTinymceExtension extends \Twig_Extension
      * @var bool
      */
     private $initialized = false;
+    /**
+     * @var ConfigManager
+     */
+    private $configManager;
 
     /**
      * Initialize tinymce helper
      *
      * @param ContainerInterface $container
+     * @param ConfigManager $configManager
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, ConfigManager $configManager)
     {
         $this->container = $container;
+        $this->configManager = $configManager;
     }
 
     /**
@@ -120,11 +127,19 @@ class StfalconTinymceExtension extends \Twig_Extension
         $config = array_merge_recursive($config, $options);
 
         $this->baseUrl = (!isset($config['base_url']) ? null : $config['base_url']);
+        if($this->configManager->hasConfig('config')) {
+            $config = array_merge($config, $this->configManager->getConfig('config'));
+        }
 
         // Asset package name
         $assetPackageName = (!isset($config['asset_package_name']) ? null : $config['asset_package_name']);
         unset($config['asset_package_name']);
         $browsers = $this->getFileBrowsers($config);
+
+        // overwrite config
+        if($config['config_name'] !== 'default' && isset($config['theme'][$config['config_name']])) {
+            $config = array_merge($config, $config['theme'][$config['config_name']]);
+        }
 
         // If the language is not set in the config...
         if (!isset($config['language']) || empty($config['language'])) {
@@ -135,6 +150,7 @@ class StfalconTinymceExtension extends \Twig_Extension
         $config['language'] = LocaleHelper::getLanguage($config['language']);
 
         $langDirectory = __DIR__.'/../../Resources/public/vendor/tinymce/langs/';
+
 
         // A language code coming from the locale may not match an existing language file
         if (!file_exists($langDirectory . $config['language'].'.js')) {
@@ -147,16 +163,19 @@ class StfalconTinymceExtension extends \Twig_Extension
             'base_url'           => $this->baseUrl,
             'form'               => $form,
             'file_browsers'      => $browsers,
+            'initializeFunction' => false,
         ));
     }
 
     /**
      * Initialize TinyMCE in simple mode
      * @param $config
+     * @param null $initializeFunctionName
      * @return mixed
      */
-    public function initSimple($config)
+    public function initSimple($config, $initializeFunctionName = null)
     {
+        $config = array_merge_recursive($this->getParameter('stfalcon_tinymce.config'), $config);
         // Asset package name
         $assetPackageName = (!isset($config['asset_package_name']) ? null : $config['asset_package_name']);
         $browsers = $this->getFileBrowsers($config);
@@ -166,6 +185,7 @@ class StfalconTinymceExtension extends \Twig_Extension
             'asset_package_name' => $assetPackageName,
             'base_url'           => $this->baseUrl,
             'file_browsers'      => $browsers,
+            'initializeFunction' => $initializeFunctionName,
         ));
     }
 
@@ -176,7 +196,7 @@ class StfalconTinymceExtension extends \Twig_Extension
      */
     private function getTinyMCEConfiguration($config)
     {
-        unset($config['asset_package_name']);
+        unset($config['asset_package_name'], $config['init'], $config['theme']);
         return preg_replace(
             array(
                 '/"file_browser_callback":"([^"]+)"\s*/',

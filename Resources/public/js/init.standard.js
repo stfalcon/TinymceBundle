@@ -3,8 +3,14 @@
  *
  * @param options
  */
-function initTinyMCE(options) {
+async function initTinyMCE(options) {
     if (typeof tinymce == 'undefined') return false;
+    let resolver = () => {}, rejector = () => {};
+    let editors = [];
+    const prom = new Promise((resolve, reject) => {
+        resolver = resolve;
+        rejector = reject;
+    });
     // Load when DOM is ready
     domready(function() {
         let i, t = tinymce.editors, textareas = [];
@@ -56,10 +62,14 @@ function initTinyMCE(options) {
 
             // Initialize textarea by its ID attribute
             const editor = tinymce
-                .createEditor(textareas[i].getAttribute('id'), settings)
-                .render();
+                .createEditor(textareas[i].getAttribute('id'), settings);
+            editor.render();
+            editors.push(editor);
         }
+        resolver(editors);
     });
+
+    return prom;
 }
 
 /**
@@ -68,22 +78,26 @@ function initTinyMCE(options) {
  */
 function processSelector(selector, textareas) {
     let elements;
-    switch (selector.substring(0, 1)) {
-        case "#":
-            const _t = document.getElementById(selector.substring(1));
-            if (_t) textareas.push(_t);
-            break;
-        case ".":
-            elements = document.getElementsByClassName(selector.substring(1));
-            for (element of elements) {
-                textareas.push(element);
-            }
-            break;
-        default:
-            elements = document.getElementsByTagName('textarea');
-            for (element of elements) {
-                textareas.push(element);
-            }
+    if(typeof selector === "string") {
+        switch (selector.substring(0, 1)) {
+            case "#":
+                const _t = document.getElementById(selector.substring(1));
+                if (_t) textareas.push(_t);
+                break;
+            case ".":
+                elements = document.getElementsByClassName(selector.substring(1));
+                for (element of elements) {
+                    textareas.push(element);
+                }
+                break;
+            default:
+                elements = document.getElementsByTagName('textarea');
+                for (element of elements) {
+                    textareas.push(element);
+                }
+        }
+    } else {
+        textareas = textareas.push(selector);
     }
     return textareas;
 }

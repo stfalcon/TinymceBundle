@@ -7,7 +7,13 @@
 
 {% block tinymce_widget_initializer %}
     <script type="text/javascript">
-        initTinyMCE({{ tinymce_config|raw }});
+        {% if not initializeFunction %}
+            initTinyMCE({{ tinymce_config|raw }});
+        {% else %}
+            async function {{ initializeFunction }}(options) {
+                return initTinyMCE({...{{ tinymce_config|raw }}, ...options});
+            }
+        {% endif %}
     </script>
 
 {% endblock %}
