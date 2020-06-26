@@ -72,18 +72,25 @@ class TinyMCEType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->setAttribute('enable', $options['enable']);
-
-        if(isset($options['config_name'])) {
-            if($this->configManager->hasConfig('config')) {
-                $config = $this->configManager->getConfig('config');
-            } else {
-                $config = [];
-            }
-
-            $config['config_name'] = $options['config_name'];
-            $this->configManager->setConfig('config', $config);
+        if($this->configManager->hasConfig('config')) {
+            $config = $this->configManager->getConfig('config');
+        } else {
+            $config = [];
         }
 
+        $checkTypes = [
+            'config_name', 'language', 'selector', 'plugins',
+            'toolbar', 'quickbars_selection_toolbar', 'quickbars_insert_toolbar',
+            'valid_elements', 'file_picker',
+        ];
+
+        foreach ($checkTypes as $type) {
+            if(isset($options[$type]) && $options[$type] !== null) {
+                $config[$type] = $options[$type];
+            }
+        }
+
+        $this->configManager->setConfig('config', $config);
         if (!$options['enable']) {
             return;
         }
@@ -97,9 +104,27 @@ class TinyMCEType extends AbstractType
         $resolver
             ->setDefaults([
                 'config_name' => $this->configManager->getDefaultConfig(),
+                'language' => null,
+                'selector' => null,
+                'plugins' => null,
+                'toolbar' => null,
+                'quickbars_selection_toolbar' => null,
+                'quickbars_insert_toolbar' => null,
+                'valid_elements' => null,
+                'file_picker' => null,
                 'enable' => $this->enable,
             ])
-        ->setAllowedTypes('enable', 'bool');
+        ->setAllowedTypes('config_name', ['string', 'null'])
+        ->setAllowedTypes('language', ['string', 'null'])
+        ->setAllowedTypes('selector', ['string', 'null'])
+        ->setAllowedTypes('plugins', ['string', 'null'])
+        ->setAllowedTypes('toolbar', ['string', 'null'])
+        ->setAllowedTypes('quickbars_selection_toolbar', ['string', 'null'])
+        ->setAllowedTypes('quickbars_insert_toolbar', ['string', 'null'])
+        ->setAllowedTypes('valid_elements', ['string', 'null'])
+        ->setAllowedTypes('file_picker', ['array', 'null'])
+        ->setAllowedTypes('enable', 'bool')
+        ;
     }
 
     /**
