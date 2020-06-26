@@ -11,7 +11,7 @@
             initTinyMCE({{ tinymce_config|raw }});
         {% else %}
             async function {{ initializeFunction }}(options) {
-                return initTinyMCE({...{{ tinymce_config|raw }}, ...options});
+                return await initTinyMCE({...{{ tinymce_config|raw }}, ...options});
             }
         {% endif %}
     </script>

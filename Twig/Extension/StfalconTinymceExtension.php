@@ -128,7 +128,20 @@ class StfalconTinymceExtension extends \Twig_Extension
 
         $this->baseUrl = (!isset($config['base_url']) ? null : $config['base_url']);
         if($this->configManager->hasConfig('config')) {
-            $config = array_merge($config, $this->configManager->getConfig('config'));
+            foreach ($this->configManager->getConfig('config') as $key => $value) {
+                if(
+                    isset($config[$key])
+                    &&
+                    (
+                        is_array($config[$key])
+                        && $value
+                        || in_array(strtolower(gettype($config[$key])), ['string', 'integer', 'float', 'double', 'boolean'])
+                        && $value !== null
+                    )
+                ) {
+                    $config[$key] = is_array($config[$key]) ? array_merge_recursive($config[$key], $value) : $value;
+                }
+            }
         }
 
         // Asset package name

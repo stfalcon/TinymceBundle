@@ -23,33 +23,45 @@ async function initTinyMCE(options) {
         options.selector.forEach(function(selector) {
             textareas = processSelector(selector, textareas);
         });
+
         if (!textareas.length) {
+            rejector('TinyMCE error: no target found from selector');
             return false;
         }
 
         for (i = 0; i < textareas.length; i++) {
             // Get selected options
             let settings = {...{
-                plugins: 'importcss searchreplace autolink directionality fullscreen image link media table charmap hr anchor advlist lists wordcount textpattern noneditable help charmap quickbars code',
+                    plugins: 'importcss searchreplace autolink directionality fullscreen image link media table charmap hr anchor advlist lists wordcount textpattern noneditable help charmap quickbars code',
 
-                language: options.language,
-                selector: options.selector,
-                menu: {
-                },
-                menubar: false,
-                toolbar: 'undo redo | formatselect | bold italic underline strikethrough | removeformat | numlist bullist | alignleft aligncenter alignright alignjustify | '
-                    +' link unlink anchor blockquote | image media table | fullscreen code',
+                    language: options.language,
+                    selector: options.selector,
+                    menu: {
+                    },
+                    content_style: '.variable,[data-original-variable]{\n' +
+                        '    cursor: default;\n' +
+                        '    background-color: #65b9dd;\n' +
+                        '    color: #FFF;\n' +
+                        '    padding: 2px 8px;\n' +
+                        '    border-radius: 3px;\n' +
+                        '    font-weight: bold;\n' +
+                        '    font-style: normal;\n' +
+                        '    display: inline-block;\n' +
+                        '}',
+                    menubar: false,
+                    toolbar: 'undo redo | formatselect | bold italic underline strikethrough | removeformat | numlist bullist | alignleft aligncenter alignright alignjustify | '
+                        +' link unlink anchor blockquote | image media table | fullscreen code',
 
-                // image_advtab: true,
-                content_css: options.content_css,
-                importcss_append: true,
-                quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
-                noneditable_noneditable_class: "mceNonEditable",
-                toolbar_mode: 'sliding',
-                spellchecker_whitelist: ['Ephox', 'Moxiecode'],
+                    // image_advtab: true,
+                    // content_css: options.content_css,
+                    importcss_append: true,
+                    quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
+                    // noneditable_noneditable_class: "mceNonEditable",
+                    toolbar_mode: 'sliding',
+                    spellchecker_whitelist: ['Ephox', 'Moxiecode'],
 
-                contextmenu: "link image imagetools table configurepermanentpen",
-            }, ...options};
+                    contextmenu: "link image imagetools table configurepermanentpen",
+                }, ...options};
 
             // workaround for an incompatibility with html5-validation
             if (textareas[i].getAttribute("required") !== '') {
@@ -66,7 +78,7 @@ async function initTinyMCE(options) {
             editor.render();
             editors.push(editor);
         }
-        resolver(editors);
+        resolver(editors.length > 1 ? editors : editors[0]);
     });
 
     return prom;
@@ -97,7 +109,7 @@ function processSelector(selector, textareas) {
                 }
         }
     } else {
-        textareas = textareas.push(selector);
+        textareas.push(selector);
     }
     return textareas;
 }
