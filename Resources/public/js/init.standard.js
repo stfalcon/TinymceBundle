@@ -104,7 +104,7 @@ function processSelector(selector, textareas) {
                 }
                 break;
             default:
-                elements = document.getElementsByTagName('textarea');
+                elements = document.querySelectorAll(selector);
                 for (element of elements) {
                     textareas.push(element);
                 }
