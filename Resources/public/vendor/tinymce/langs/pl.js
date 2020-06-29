@@ -187,5 +187,7 @@ tinymce.addI18n('pl',{
 "Tools": "Narz\u0119dzia",
 "View": "Widok",
 "Table": "Tabela",
-"Format": "Format"
+"Format": "Format",
+"{0} characters": "{0} znaków",
+"{0} words": "{0} słów"
 });
