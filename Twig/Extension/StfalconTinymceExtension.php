@@ -126,6 +126,10 @@ class StfalconTinymceExtension extends \Twig_Extension
         $config = $this->getParameter('stfalcon_tinymce.config');
         $config = array_merge_recursive($config, $options);
 
+        if(!isset($config['variables'])) {
+            $config['variables'] = [];
+        }
+
         $this->baseUrl = (!isset($config['base_url']) ? null : $config['base_url']);
         if($this->configManager->hasConfig('config')) {
             foreach ($this->configManager->getConfig('config') as $key => $value) {
@@ -139,9 +143,38 @@ class StfalconTinymceExtension extends \Twig_Extension
                         && $value !== null
                     )
                 ) {
-                    $config[$key] = is_array($config[$key]) ? array_merge_recursive($config[$key], $value) : $value;
+                    $config[$key] = is_array($config[$key]) ? array_merge($config[$key], $value) : $value;
                 }
             }
+        }
+
+        if(isset($config['variables'], $config['variables']['list'], $config['variables']['title']) && $config['variables']) {
+            $config['variable_mapper'] = $config['variables']['list'];
+            if(!isset($config['variables']['tag'])) {
+                $config['variables']['tag'] = 'span';
+            }
+            $config['setup'] = 'ed => { ' .
+                'ed.ui.registry.addMenuButton(\'variables\', {' .
+                        'text: \'' . str_replace(['""', "''"], '', $config['variables']['title']) . '\',' .
+                        'classes: \'tinymce_erpbox_var\',' .
+                        'fetch: callback => {' .
+                            'let items = [];' .
+                            'for (const key in ed.settings.variable_mapper) {' .
+                                'items.push({' .
+                                    'type: \'menuitem\',' .
+                                    'text: ed.settings.variable_mapper[key],' .
+                                    'onAction: () => {' .
+                                        'ed.plugins.variable.addVariable(key);' .
+                                    '}' .
+                                '});' .
+                            '}' .
+                            'callback(items);' .
+                        '}' .
+                    '});' .
+            '}';
+            $config['variable_tag'] = $config['variables']['tag'];
+            unset($config['variables']);
+            $config['valid_elements'] .= ',*[]';
         }
 
         // Asset package name
@@ -210,16 +243,23 @@ class StfalconTinymceExtension extends \Twig_Extension
     private function getTinyMCEConfiguration($config)
     {
         unset($config['asset_package_name'], $config['init'], $config['theme']);
+
+        if(isset($config['paste_data_images']) && is_string($config['paste_data_images'])) {
+            $config['paste_data_images'] = $config['paste_data_images'] === 'true';
+        }
+
         return preg_replace(
             array(
                 '/"file_browser_callback":"([^"]+)"\s*/',
                 '/"file_picker_callback":"([^"]+)"\s*/',
                 '/"paste_preprocess":"([^"]+)"\s*/',
+                '/"setup":"([^"]+)"\s*/',
             ),
             array(
                 'file_browser_callback:$1',
                 'file_picker_callback:$1',
                 'paste_preprocess:$1',
+                'setup:$1',
             ),
             json_encode($config)
         );
@@ -252,6 +292,7 @@ class StfalconTinymceExtension extends \Twig_Extension
                     '',
                     $config['file_browser']['name'] ?: $browsers[$type]['name']
                 ) . '\')';
+            unset($config['file_browser']);
         }
 
         // set route of filepicker
@@ -273,6 +314,7 @@ class StfalconTinymceExtension extends \Twig_Extension
                     '',
                     $config['file_picker']['name'] ?: $browsers[$type]['name']
                 ) . '\')';
+            unset($config['file_picker']);
         }
 
         return $browsers;

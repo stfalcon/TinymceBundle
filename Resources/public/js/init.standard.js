@@ -36,8 +36,9 @@ async function initTinyMCE(options) {
 
                     language: options.language,
                     selector: options.selector,
-                    menu: {
-                    },
+                    variable_prefix: '{',
+                    variable_suffix: '}',
+                    menu: {},
                     content_style: '.variable,[data-original-variable]{\n' +
                         '    cursor: default;\n' +
                         '    background-color: #65b9dd;\n' +

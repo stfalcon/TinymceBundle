@@ -29,6 +29,7 @@ tinymce.PluginManager.add('variable', function(editor) {
      * @type {array}
      */
     var valid = editor.getParam("variable_valid", null);
+    var tag = editor.getParam("variable_tag", 'span') || 'span';
 
     /**
      * Get custom variable class name
@@ -99,7 +100,7 @@ tinymce.PluginManager.add('variable', function(editor) {
         });
 
         var variable = prefix + cleanValue + suffix;
-        return '<b class="' + className + '" data-original-variable="' + variable + '" contenteditable="false">' + cleanMappedValue + '</b>';
+        return '<' + tag + ' class="' + className + '" data-original-variable="' + variable + '" contenteditable="false">' + cleanMappedValue + '</' + tag + '>';
     }
 
     /**
