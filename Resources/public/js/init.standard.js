@@ -50,6 +50,7 @@ async function initTinyMCE(options) {
                         '    display: inline-block;\n' +
                         '}',
                     menubar: false,
+                    browser_spellcheck: true,
                     toolbar: 'undo redo | formatselect | bold italic underline strikethrough | removeformat | numlist bullist | alignleft aligncenter alignright alignjustify | '
                         +' link unlink anchor blockquote | image media table | fullscreen code',
 
