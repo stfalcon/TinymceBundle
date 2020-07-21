@@ -38,6 +38,10 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('valid_elements')->end()
                     // plugins
                     ->scalarNode('plugins')->defaultValue('')->end()
+                    // extended valid elements (tags)
+                    ->scalarNode('extended_valid_elements')->defaultValue('')->end()
+                    // extended valid elements for tags (tags in tags)
+                    ->scalarNode('valid_children')->defaultValue('')->end()
                     // toolbar
                     ->scalarNode('toolbar')->defaultValue('undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent')->end()
                     ->scalarNode('quickbars_selection_toolbar')->defaultValue('')->end()
