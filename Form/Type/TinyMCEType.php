@@ -79,9 +79,9 @@ class TinyMCEType extends AbstractType
         }
 
         $checkTypes = [
-            'config_name', 'language', 'selector', 'plugins',
+            'config_name', 'language', 'selector', 'plugins', 'extended_valid_elements',
             'toolbar', 'quickbars_selection_toolbar', 'quickbars_insert_toolbar',
-            'valid_elements', 'file_picker', 'variables',
+            'valid_elements', 'file_picker', 'variables', 'valid_children',
         ];
 
         foreach ($checkTypes as $type) {
@@ -89,6 +89,7 @@ class TinyMCEType extends AbstractType
                 $config[$type] = $options[$type];
             }
         }
+        dump($options, $config);
 
         $this->configManager->setConfig('config', $config);
         if (!$options['enable']) {
@@ -111,6 +112,8 @@ class TinyMCEType extends AbstractType
                 'quickbars_selection_toolbar' => null,
                 'quickbars_insert_toolbar' => null,
                 'valid_elements' => null,
+                'valid_children' => null,
+                'extended_valid_elements' => null,
                 'file_picker' => null,
                 'enable' => $this->enable,
                 'variables' => null,
@@ -123,6 +126,8 @@ class TinyMCEType extends AbstractType
         ->setAllowedTypes('quickbars_selection_toolbar', ['string', 'null'])
         ->setAllowedTypes('quickbars_insert_toolbar', ['string', 'null'])
         ->setAllowedTypes('valid_elements', ['string', 'null'])
+        ->setAllowedTypes('valid_children', ['string', 'null'])
+        ->setAllowedTypes('extended_valid_elements', ['string', 'null'])
         ->setAllowedTypes('file_picker', ['array', 'null'])
         ->setAllowedTypes('variables', ['array', 'null'])
         ->setAllowedTypes('enable', 'bool')
