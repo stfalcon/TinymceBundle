@@ -17,7 +17,7 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
+        $treeBuilder = new TreeBuilder("TinyMCEBundle");
 
         return $treeBuilder
             ->root('tinymce', 'array')
@@ -38,6 +38,8 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('valid_elements')->end()
                     // plugins
                     ->scalarNode('plugins')->defaultValue('')->end()
+                    // character encoding
+                    ->scalarNode('entity_encoding ')->defaultValue('raw')->end()
                     // extended valid elements (tags)
                     ->scalarNode('extended_valid_elements')->defaultValue('')->end()
                     // extended valid elements for tags (tags in tags)

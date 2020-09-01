@@ -51,6 +51,7 @@ async function initTinyMCE(options) {
                         '}',
                     menubar: false,
                     browser_spellcheck: true,
+                    entity_encoding: 'raw',
                     toolbar: 'undo redo | formatselect | bold italic underline strikethrough | removeformat | numlist bullist | alignleft aligncenter alignright alignjustify | '
                         +' link unlink anchor blockquote | image media table | fullscreen code',
 
