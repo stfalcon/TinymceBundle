@@ -1,9 +1,9 @@
 <script type="text/javascript" src="{{ asset(base_url~'bundles/stfalcontinymce/vendor/tinymce/tinymce.min.js', asset_package_name) }}"></script>
 <script type="text/javascript" src="{{ asset(base_url~'bundles/stfalcontinymce/js/ready.min.js', asset_package_name) }}"></script>
 {% for browser in file_browsers %}
-    <script type="text/javascript" src="{{ asset(base_url~'bundles/stfalcontinymce/js/'~browser.type~'.js', asset_package_name) }}"></script>
+    <script type="text/javascript" src="{{ asset(base_url~'bundles/stfalcontinymce/js/'~browser.type~'.js', asset_package_name) }}?v=1.2"></script>
 {% endfor %}
-<script type="text/javascript" src="{{ asset(base_url~'bundles/stfalcontinymce/js/init.standard.js', asset_package_name) }}"></script>
+<script type="text/javascript" src="{{ asset(base_url~'bundles/stfalcontinymce/js/init.standard.js', asset_package_name) }}?v=1.2"></script>
 
 {% block tinymce_widget_initializer %}
     <script type="text/javascript">
