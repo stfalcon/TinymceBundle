@@ -1,5 +1,5 @@
 {
-    "name": "stfalcon/tinymce-bundle",
+    "name": "beebop1032/tinymce-bundle",
     "description": "This Bundle integrates TinyMCE WYSIWYG editor into a Symfony2 project.",
     "keywords": ["wysiwyg", "tinymce", "editor", "symfony2", "bundle"],
     "type": "symfony-bundle",
@@ -37,7 +37,7 @@
     "target-dir" : "Stfalcon/Bundle/TinymceBundle",
     "extra": {
         "branch-alias": {
-            "dev-master": "3.x-dev"
+            "dev-master": "1.2"
         }
     }
 }
