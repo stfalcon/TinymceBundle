@@ -25,7 +25,7 @@
         "issues": "https://github.com/stfalcon/TinymceBundle/issues"
     },
     "require": {
-        "php": "^8.0",
+        "php": "^7.2.5|^8.0",
         "symfony/framework-bundle": "^5.0",
         "twig/twig": "^2.12|^3.0"
     },
