@@ -82,6 +82,7 @@ class TinyMCEType extends AbstractType
             'config_name', 'language', 'selector', 'plugins', 'extended_valid_elements',
             'toolbar', 'quickbars_selection_toolbar', 'quickbars_insert_toolbar',
             'valid_elements', 'file_picker', 'variables', 'valid_children', 'entity_encoding ',
+            'content_style',
         ];
 
         foreach ($checkTypes as $type) {
@@ -117,6 +118,7 @@ class TinyMCEType extends AbstractType
                 'file_picker' => null,
                 'enable' => $this->enable,
                 'variables' => null,
+                'content_style' => '',
             ])
         ->setAllowedTypes('config_name', ['string', 'null'])
         ->setAllowedTypes('language', ['string', 'null'])

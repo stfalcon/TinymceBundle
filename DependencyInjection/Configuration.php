@@ -34,6 +34,8 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('base_url')->end()
                     // asset packageName
                     ->scalarNode('asset_package_name')->end()
+                    // content style
+                    ->scalarNode('content_style')->defaultValue('')->end()
                     // valid html elements
                     ->scalarNode('valid_elements')->end()
                     // plugins
