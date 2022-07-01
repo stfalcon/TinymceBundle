@@ -5,22 +5,49 @@
  */
 async function initTinyMCE(options) {
     if (typeof tinymce == 'undefined') return false;
-    let resolver = () => {}, rejector = () => {};
+    let resolver = () => {
+    }, rejector = () => {
+    };
     let editors = [];
     const prom = new Promise((resolve, reject) => {
         resolver = resolve;
         rejector = reject;
     });
+    const defaults = {
+        plugins: 'importcss searchreplace autolink directionality fullscreen image link media table charmap hr anchor advlist lists wordcount textpattern noneditable help charmap quickbars code',
+
+        language: options.language,
+        selector: options.selector,
+        variable_prefix: '{',
+        variable_suffix: '}',
+        menu: {},
+        content_style: '',
+        menubar: false,
+        browser_spellcheck: true,
+        entity_encoding: 'raw',
+        toolbar: 'undo redo | formatselect | bold italic underline strikethrough | removeformat | numlist bullist | alignleft aligncenter alignright alignjustify | '
+            + ' link unlink anchor blockquote | image media table | fullscreen code',
+
+        // image_advtab: true,
+        // content_css: options.content_css,
+        importcss_append: true,
+        quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
+        // noneditable_noneditable_class: "mceNonEditable",
+        toolbar_mode: 'sliding',
+        spellchecker_whitelist: ['Ephox', 'Moxiecode'],
+
+        contextmenu: "link image imagetools table configurepermanentpen",
+    };
     // Load when DOM is ready
-    domready(function() {
+    domready(function () {
         let i, t = tinymce.editors, textareas = [];
         for (i in t) {
             if (t.hasOwnProperty(i)) t[i].remove();
         }
-        if(!(options.selector instanceof Array)) {
+        if (!(options.selector instanceof Array)) {
             options.selector = [options.selector];
         }
-        options.selector.forEach(function(selector) {
+        options.selector.forEach(function (selector) {
             textareas = processSelector(selector, textareas);
         });
 
@@ -31,40 +58,17 @@ async function initTinyMCE(options) {
 
         for (i = 0; i < textareas.length; i++) {
             // Get selected options
-            let settings = {...{
-                    plugins: 'importcss searchreplace autolink directionality fullscreen image link media table charmap hr anchor advlist lists wordcount textpattern noneditable help charmap quickbars code',
-
-                    language: options.language,
-                    selector: options.selector,
-                    variable_prefix: '{',
-                    variable_suffix: '}',
-                    menu: {},
-                    content_style: '.variable,[data-original-variable]{\n' +
-                        '    cursor: default;\n' +
-                        '    background-color: #65b9dd;\n' +
-                        '    color: #FFF;\n' +
-                        '    padding: 2px 8px;\n' +
-                        '    border-radius: 3px;\n' +
-                        '    font-weight: bold;\n' +
-                        '    font-style: normal;\n' +
-                        '    display: inline-block;\n' +
-                        '}',
-                    menubar: false,
-                    browser_spellcheck: true,
-                    entity_encoding: 'raw',
-                    toolbar: 'undo redo | formatselect | bold italic underline strikethrough | removeformat | numlist bullist | alignleft aligncenter alignright alignjustify | '
-                        +' link unlink anchor blockquote | image media table | fullscreen code',
-
-                    // image_advtab: true,
-                    // content_css: options.content_css,
-                    importcss_append: true,
-                    quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
-                    // noneditable_noneditable_class: "mceNonEditable",
-                    toolbar_mode: 'sliding',
-                    spellchecker_whitelist: ['Ephox', 'Moxiecode'],
-
-                    contextmenu: "link image imagetools table configurepermanentpen",
-                }, ...options};
+            let settings = {...defaults, ...options};
+            settings.content_style += '.variable,[data-original-variable]{\n' +
+                '    cursor: default;\n' +
+                '    background-color: #65b9dd;\n' +
+                '    color: #FFF;\n' +
+                '    padding: 2px 8px;\n' +
+                '    border-radius: 3px;\n' +
+                '    font-weight: bold;\n' +
+                '    font-style: normal;\n' +
+                '    display: inline-block;\n' +
+                '}';
 
             // workaround for an incompatibility with html5-validation
             if (textareas[i].getAttribute("required") !== '') {
