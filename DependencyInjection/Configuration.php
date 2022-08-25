@@ -41,7 +41,7 @@ class Configuration implements ConfigurationInterface
                     // plugins
                     ->scalarNode('plugins')->defaultValue('')->end()
                     // character encoding
-                    ->scalarNode('entity_encoding ')->defaultValue('raw')->end()
+                    ->scalarNode('entity_encoding')->defaultValue('raw')->end()
                     // extended valid elements (tags)
                     ->scalarNode('extended_valid_elements')->defaultValue('')->end()
                     // extended valid elements for tags (tags in tags)
