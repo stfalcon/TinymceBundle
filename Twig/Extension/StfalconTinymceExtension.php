@@ -3,6 +3,7 @@ namespace Stfalcon\Bundle\TinymceBundle\Twig\Extension;
 
 use Stfalcon\Bundle\TinymceBundle\Helper\LocaleHelper;
 use Symfony\Component\Asset\Packages;
+use Stfalcon\Bundle\TinymceBundle\Model\ConfigManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Routing\RouterInterface;
@@ -35,21 +36,31 @@ class StfalconTinymceExtension extends \Twig_Extension
     private $initialized = false;
 
     /**
+     * @var ConfigManager
+     */
+    private $configManager;
+
+    /**
      * @var Packages
      */
     private $packages;
 
     /**
+     * Initialize tinymce helper
+     *
      * @param ContainerInterface $container
-     * @param Packages           $packages
+     * @param ConfigManager $configManager
      */
-    public function __construct(ContainerInterface $container, Packages $packages)
+    public function __construct(ContainerInterface $container, ConfigManager $configManager, Packages $packages)
     {
         $this->container = $container;
+        $this->configManager = $configManager;
         $this->packages = $packages;
     }
 
     /**
+     * Gets a service.
+     *
      * @param string $id The service identifier
      *
      * @return object The associated service
@@ -86,8 +97,8 @@ class StfalconTinymceExtension extends \Twig_Extension
             ),
             'tinymce_simple' => new \Twig_SimpleFunction(
                 'tinymce_simple',
-                array($this, 'initSimple'),
-                array('is_safe' => array('html'))
+                [$this, 'initSimple'],
+                ['is_safe' => ['html']]
             ),
         ];
     }
@@ -118,19 +129,159 @@ class StfalconTinymceExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function tinymceInit($form, $options = []): string
+    public function tinymceInit($form, $options = array()): string
     {
         $config = $this->getParameter('stfalcon_tinymce.config');
         $config = array_merge_recursive($config, $options);
 
+        if(!isset($config['variables'])) {
+            $config['variables'] = [];
+        }
+
         $this->baseUrl = (!isset($config['base_url']) ? null : $config['base_url']);
+        if($this->configManager->hasConfig('config')) {
+            foreach ($this->configManager->getConfig('config') as $key => $value) {
+                if(
+                    isset($config[$key])
+                    &&
+                    (
+                        is_array($config[$key])
+                        && $value
+                        || in_array(strtolower(gettype($config[$key])), ['string', 'integer', 'float', 'double', 'boolean'])
+                        && $value !== null
+                    )
+                ) {
+                    $config[$key] = is_array($config[$key]) ? array_merge($config[$key], $value) : $value;
+                }
+            }
+        }
+
+        if(isset($config['variables'], $config['variables']['list'], $config['variables']['title']) && $config['variables']) {
+            $config['variable_mapper'] = $config['variables']['list'];
+            if(!isset($config['variables']['tag'])) {
+                $config['variables']['tag'] = 'span';
+            }
+            $config['setup'] = 'ed => { ' .
+                'ed.ui.registry.addMenuButton(\'variables\', {' .
+                        'text: \'' . str_replace(['""', "''"], '', $config['variables']['title']) . '\',' .
+                        'classes: \'tinymce_erpbox_var\',' .
+                        'fetch: callback => {' .
+                            'let items = [];' .
+                            'for (const key in ed.settings.variable_mapper) {' .
+                                'items.push({' .
+                                    'type: \'menuitem\',' .
+                                    'text: ed.settings.variable_mapper[key],' .
+                                    'onAction: () => {' .
+                                        'ed.plugins.variable.addVariable(key);' .
+                                    '}' .
+                                '});' .
+                            '}' .
+                            'callback(items);' .
+                        '}' .
+                    '});' .
+            '}';
+            $config['variable_tag'] = $config['variables']['tag'];
+            unset($config['variables']);
+            $config['valid_elements'] .= ',*[]';
+        }
 
         // Asset package name
         $assetPackageName = (!isset($config['asset_package_name']) ? null : $config['asset_package_name']);
         unset($config['asset_package_name']);
+        $browsers = $this->getFileBrowsers($config);
 
-        /** @var $assets \Symfony\Component\Templating\Helper\CoreAssetsHelper */
-        $assets = $this->packages;
+        // overwrite config
+        if($config['config_name'] !== 'default' && isset($config['theme'][$config['config_name']])) {
+            $config = array_merge($config, $config['theme'][$config['config_name']]);
+        }
+
+        // If the language is not set in the config...
+        if (!isset($config['language']) || empty($config['language'])) {
+            // get it from the request
+            $config['language'] = $this->container->get('request')->getLocale();
+        }
+
+        $config['language'] = LocaleHelper::getLanguage($config['language']);
+
+        $langDirectory = __DIR__.'/../../Resources/public/vendor/tinymce/langs/';
+
+        // A language code coming from the locale may not match an existing language file
+        if (!file_exists($langDirectory . $config['language'].'.js')) {
+            unset($config['language']);
+        }
+
+        return $this->getService('twig')->render(
+            '@StfalconTinymce/Script/init.html.twig',
+            [
+                'tinymce_config'     => $this->getTinyMCEConfiguration($config),
+                'asset_package_name' => $assetPackageName,
+                'base_url'           => $this->baseUrl,
+                'form'               => $form,
+                'file_browsers'      => $browsers,
+                'initializeFunction' => false,
+            ]
+        );
+    }
+
+    /**
+     * Initialize TinyMCE in simple mode
+     * @param $config
+     * @param null $initializeFunctionName
+     * @return string
+     */
+    public function initSimple($config, $initializeFunctionName = null): string
+    {
+        $config = array_merge_recursive($this->getParameter('stfalcon_tinymce.config'), $config);
+        // Asset package name
+        $assetPackageName = (!isset($config['asset_package_name']) ? null : $config['asset_package_name']);
+        $browsers = $this->getFileBrowsers($config);
+
+        return $this->getService('templating')->render('StfalconTinymceBundle:Script:init.html.twig', array(
+            'tinymce_config'     => $this->getTinyMCEConfiguration($config),
+            'asset_package_name' => $assetPackageName,
+            'base_url'           => $this->baseUrl,
+            'file_browsers'      => $browsers,
+            'initializeFunction' => $initializeFunctionName,
+        ));
+    }
+
+    /**
+     * Prepare configuration in JSON
+     * @param $config
+     * @return string
+     */
+    private function getTinyMCEConfiguration($config): string
+    {
+        unset($config['asset_package_name'], $config['init'], $config['theme']);
+
+        if(isset($config['paste_data_images']) && is_string($config['paste_data_images'])) {
+            $config['paste_data_images'] = $config['paste_data_images'] === 'true';
+        }
+
+        return preg_replace(
+            array(
+                '/"file_browser_callback":"([^"]+)"\s*/',
+                '/"file_picker_callback":"([^"]+)"\s*/',
+                '/"paste_preprocess":"([^"]+)"\s*/',
+                '/"setup":"([^"]+)"\s*/',
+            ),
+            array(
+                'file_browser_callback:$1',
+                'file_picker_callback:$1',
+                'paste_preprocess:$1',
+                'setup:$1',
+            ),
+            json_encode($config)
+        );
+    }
+
+    /**
+     * Get all file browsers
+     * @param $config
+     * @return array
+     */
+    public function getFileBrowsers(&$config): array
+    {
         $browsers = [];
         // set route of filebrowser
         if(isset($config['file_browser']) && $config['file_browser'] && $type = $this->getFilePickerType($config['file_browser']['engine'])) {
@@ -151,6 +302,7 @@ class StfalconTinymceExtension extends \Twig_Extension
                     '',
                     $config['file_browser']['name'] ?: $browsers[$type]['name']
                 ) . '\')';
+            unset($config['file_browser']);
         }
 
         // set route of filepicker
@@ -172,88 +324,10 @@ class StfalconTinymceExtension extends \Twig_Extension
                     '',
                     $config['file_picker']['name'] ?: $browsers[$type]['name']
                 ) . '\')';
+            unset($config['file_picker']);
         }
 
-        // If the language is not set in the config...
-        if (!isset($config['language']) || empty($config['language'])) {
-            // get it from the request
-            $config['language'] = $this->container->get('request')->getLocale();
-        }
-
-        $config['language'] = LocaleHelper::getLanguage($config['language']);
-
-        $langDirectory = __DIR__.'/../../Resources/public/vendor/tinymce/langs/';
-
-        // A language code coming from the locale may not match an existing language file
-        if (!file_exists($langDirectory . $config['language'].'.js')) {
-            unset($config['language']);
-        }
-
-        if (isset($config['language']) && $config['language']) {
-            // TinyMCE does not allow to set different languages to each instance
-            foreach ($config['theme'] as $themeName => $themeOptions) {
-                $config['theme'][$themeName]['language'] = $config['language'];
-            }
-        }
-
-        if(!isset($config['theme']['simple'])) {
-            $config['theme']['simple'] = [
-                'language' => $config['language']
-            ];
-        }
-
-        if(!isset($config['theme']['advanced'])) {
-            $config['theme']['advanced'] = [
-                'language' => $config['language']
-            ];
-        }
-
-        if (isset($config['theme']) && $config['theme']) {
-            // Parse the content_css of each theme so we can use 'asset[path/to/asset]' in there
-            foreach ($config['theme'] as $themeName => $themeOptions) {
-                if (isset($themeOptions['content_css'])) {
-                    // As there may be multiple CSS Files specified we need to parse each of them individually
-                    $cssFiles = $themeOptions['content_css'];
-                    if (!\is_array($themeOptions['content_css'])) {
-                        $cssFiles = explode(',', $themeOptions['content_css']);
-                    }
-
-                    foreach ($cssFiles as $idx => $file) {
-                        $cssFiles[$idx] = $this->getAssetsUrl(trim($file)); // we trim to be sure we get the file without spaces.
-                    }
-
-                    // After parsing we add them together again.
-                    $config['theme'][$themeName]['content_css'] = implode(',', $cssFiles);
-                }
-            }
-        }
-
-        $tinymceConfiguration = \preg_replace(
-            [
-                '/"file_browser_callback":"([^"]+)"\s*/',
-                '/"file_picker_callback":"([^"]+)"\s*/',
-                '/"paste_preprocess":"([^"]+)"\s*/',
-            ],
-            [
-                'file_browser_callback:$1',
-                'file_picker_callback:$1',
-                'paste_preprocess:$1',
-            ],
-            \json_encode($config)
-        );
-
-        return $this->getService('twig')->render(
-            '@StfalconTinymce/Script/init.html.twig',
-            [
-                'tinymce_config' => $tinymceConfiguration,
-                'include_jquery' => $config['include_jquery'],
-                'tinymce_jquery' => $config['tinymce_jquery'],
-                'asset_package_name' => $assetPackageName,
-                'base_url' => $this->baseUrl,
-                'form'               => $form,
-                'file_browsers'      => $browsers,
-            ]
-        );
+        return $browsers;
     }
 
     /**
@@ -275,7 +349,8 @@ class StfalconTinymceExtension extends \Twig_Extension
      */
     protected function getAssetsUrl(string $inputUrl): string
     {
-        $assets = $this->packages;
+        /** @var $assets \Symfony\Component\Templating\Helper\CoreAssetsHelper */
+        $assets = $this->getService('templating.helper.assets');
 
         $url = preg_replace('/^asset\[(.+)\]$/i', '$1', $inputUrl);
 
