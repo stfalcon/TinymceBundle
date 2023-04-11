@@ -110,7 +110,7 @@ async function initTinyMCE(options) {
 
                         // Some tricky function to isolate variables values
                         (function(id, opts) {
-                            opts.onclick = function() {
+                            opts.onAction = function() {
                                 const callback = window['tinymce_button_' + id];
                                 if (typeof callback == 'function') {
                                     callback(editor);
@@ -118,7 +118,7 @@ async function initTinyMCE(options) {
                                     alert('You have to create callback function: "tinymce_button_' + id + '"');
                                 }
                             }
-                            editor.addButton(id, opts);
+                            editor.ui.registry.addButton(id, opts);
 
                         })(buttonId, clone(options.tinymce_buttons[buttonId]));
                     }
