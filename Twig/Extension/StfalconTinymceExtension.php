@@ -156,6 +156,15 @@ class StfalconTinymceExtension extends \Twig_Extension
             }
         }
 
+        // Get local button's image
+        foreach ($config['tinymce_buttons'] as &$customButton) {
+            if (array_key_exists('icon', $customButton)) {
+                $customButton['icon'] = $this->getAssetsUrl($customButton['icon']);
+            } else {
+                unset($customButton['icon']);
+            }
+        }
+
         if(isset($config['variables'], $config['variables']['list'], $config['variables']['title']) && $config['variables']) {
             $config['variable_mapper'] = $config['variables']['list'];
             if(!isset($config['variables']['tag'])) {
@@ -349,8 +358,7 @@ class StfalconTinymceExtension extends \Twig_Extension
      */
     protected function getAssetsUrl(string $inputUrl): string
     {
-        /** @var $assets \Symfony\Component\Templating\Helper\CoreAssetsHelper */
-        $assets = $this->getService('templating.helper.assets');
+        $assets = $this->packages;
 
         $url = preg_replace('/^asset\[(.+)\]$/i', '$1', $inputUrl);
 

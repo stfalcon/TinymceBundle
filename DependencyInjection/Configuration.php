@@ -97,6 +97,20 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
                     ->end()
+
+                    // Configure custom TinyMCE buttons
+                    ->arrayNode('tinymce_buttons')
+                        ->useAttributeAsKey('name')
+                            ->prototype('array')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('text')->defaultNull()->end()
+                                ->scalarNode('tooltip')->defaultNull()->end()
+                                ->scalarNode('icon')->defaultNull()->end()
+                            ->end()
+                        ->end()
+                    ->end()
+
                 ->end()
             ->end();
     }
