@@ -105,19 +105,37 @@ async function initTinyMCE(options) {
             // Add custom buttons to current editor
             if (typeof options.tinymce_buttons == 'object') {
                 settings.setup = function(editor) {
+
+                    //icons;
+                    for (const iconId in options.tinymce_icons) {
+                        if (!options.tinymce_icons.hasOwnProperty(iconId)) continue;
+
+                        (function (id, opts) {
+                            editor.ui.registry.addIcon(opts.name_icon, opts.svg_data);
+                        })(iconId, clone(options.tinymce_icons[iconId]));
+                    }
+
+                    ///buttons
                     for (const buttonId in options.tinymce_buttons) {
                         if (!options.tinymce_buttons.hasOwnProperty(buttonId)) continue;
 
                         // Some tricky function to isolate variables values
-                        (function(id, opts) {
-                            opts.onAction = function() {
-                                const callback = window['tinymce_button_' + id];
+                        (function (id, opts) {
+                            opts.onAction = function () {
+                                const callback = window['tinymce_button_' + id + '_action'];
                                 if (typeof callback == 'function') {
                                     callback(editor);
                                 } else {
-                                    alert('You have to create callback function: "tinymce_button_' + id + '"');
+                                    alert('You have to create callback function: "tinymce_button_' + id + '_action"');
+                                }
+                            };
+                            opts.onSetup = function (buttonApi) {
+                                const callback = window['tinymce_button_' + id + '_setup'];
+                                if (typeof callback == 'function') {
+                                    callback(buttonApi, editor);
                                 }
                             }
+
                             editor.ui.registry.addButton(id, opts);
 
                         })(buttonId, clone(options.tinymce_buttons[buttonId]));
