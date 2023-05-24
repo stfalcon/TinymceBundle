@@ -104,7 +104,14 @@ async function initTinyMCE(options) {
 
             // Add custom buttons to current editor
             if (typeof options.tinymce_buttons == 'object') {
-                settings.setup = function(editor) {
+                const setupFunctions = [];
+
+                if(typeof settings.setup === "function") {
+                    // if the setup function is already defined, save it to the array
+                    setupFunctions.push(settings.setup);
+                }
+
+                setupFunctions.push(function(editor) {
 
                     //icons;
                     for (const iconId in options.tinymce_icons) {
@@ -151,7 +158,13 @@ async function initTinyMCE(options) {
                             }
                         });
                     }
-                }
+                });
+
+                settings.setup = function(editor) {
+                    for(const callback of setupFunctions) {
+                        callback(editor);
+                    }
+                };
             }
 
             // Initialize textarea by its ID attribute
