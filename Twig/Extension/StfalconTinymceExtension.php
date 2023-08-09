@@ -118,7 +118,7 @@ class StfalconTinymceExtension extends \Twig_Extension
             $html .= $this->tinymceInit($form, $options);
         }
 
-        return $html . $this->getService('templating')->render('StfalconTinymceBundle:Script:textarea.html.twig', ['form' => $form]);
+        return $html . $this->getService('twig')->render('@StfalconTinymce\Script\textarea.html.twig', ['form' => $form]);
     }
 
     /**
@@ -245,7 +245,7 @@ class StfalconTinymceExtension extends \Twig_Extension
         $assetPackageName = (!isset($config['asset_package_name']) ? null : $config['asset_package_name']);
         $browsers = $this->getFileBrowsers($config);
 
-        return $this->getService('templating')->render('StfalconTinymceBundle:Script:init.html.twig', array(
+        return $this->getService('twig')->render('@StfalconTinymce\Script\init.html.twig', array(
             'tinymce_config'     => $this->getTinyMCEConfiguration($config),
             'asset_package_name' => $assetPackageName,
             'base_url'           => $this->baseUrl,
