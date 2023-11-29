@@ -89,6 +89,12 @@ function initTinyMCE(options) {
                             }
                         });
                     }
+
+                    // Fix to make the whole editor area focusable on click
+                    editor.on('init', function() {
+                        $('.mce-edit-area iframe').contents().find('html').css("height", "100%");
+                        $('.mce-edit-area iframe').contents().find('body').css("height", "92%");
+                    });
                 }
             }
             // Initialize textarea by its ID attribute
