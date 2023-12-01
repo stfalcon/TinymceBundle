@@ -23,6 +23,7 @@ class Configuration implements ConfigurationInterface
 
         return $treeBuilder
             ->getRootNode()
+                ->ignoreExtraKeys(false)
                 ->children()
                     // Include jQuery (true) library or not (false)
                     ->booleanNode('include_jquery')->defaultFalse()->end()
