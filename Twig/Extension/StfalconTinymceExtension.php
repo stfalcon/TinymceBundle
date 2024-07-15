@@ -4,7 +4,9 @@ namespace Stfalcon\Bundle\TinymceBundle\Twig\Extension;
 
 use Stfalcon\Bundle\TinymceBundle\Helper\LocaleHelper;
 use Symfony\Component\Asset\Packages;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -15,10 +17,9 @@ use Twig\TwigFunction;
  */
 class StfalconTinymceExtension extends AbstractExtension
 {
-    /**
-     * @var ContainerInterface $container
-     */
-    protected $container;
+    private Environment $twig;
+    private ParameterBagInterface $parameterBag;
+    private RequestStack $requestStack;
 
     /**
      * Asset Base Url.
@@ -27,43 +28,24 @@ class StfalconTinymceExtension extends AbstractExtension
      *
      * @var string
      */
-    protected $baseUrl;
+    protected ?string $baseUrl = null;
 
     /**
      * @var Packages
      */
-    private $packages;
+    private Packages $packages;
 
     /**
-     * @param ContainerInterface $container
-     * @param Packages           $packages
+     * @param ParameterBagInterface $parameterBag
+     * @param Environment           $twig
+     * @param Packages              $packages
      */
-    public function __construct(ContainerInterface $container, Packages $packages)
+    public function __construct(ParameterBagInterface $parameterBag, Environment $twig, Packages $packages, RequestStack $requestStack)
     {
-        $this->container = $container;
+        $this->twig = $twig;
         $this->packages = $packages;
-    }
-
-    /**
-     * @param string $id The service identifier
-     *
-     * @return object The associated service
-     */
-    public function getService($id)
-    {
-        return $this->container->get($id);
-    }
-
-    /**
-     * Get parameters from the service container.
-     *
-     * @param string $name
-     *
-     * @return mixed
-     */
-    public function getParameter($name)
-    {
-        return $this->container->getParameter($name);
+        $this->parameterBag = $parameterBag;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -91,7 +73,7 @@ class StfalconTinymceExtension extends AbstractExtension
      */
     public function tinymceInit($options = []): string
     {
-        $config = $this->getParameter('stfalcon_tinymce.config');
+        $config = $this->parameterBag->get('stfalcon_tinymce.config');
         $config = array_merge_recursive($config, $options);
 
         $this->baseUrl = $config['base_url'] ?? null;
@@ -134,7 +116,7 @@ class StfalconTinymceExtension extends AbstractExtension
         // If the language is not set in the config...
         if (!isset($config['language']) || empty($config['language'])) {
             // get it from the request
-            $config['language'] = $this->container->get('request_stack')->getCurrentRequest()->getLocale();
+            $config['language'] = $this->requestStack->getCurrentRequest()->getLocale();
         }
 
         $config['language'] = LocaleHelper::getLanguage($config['language']);
@@ -187,7 +169,7 @@ class StfalconTinymceExtension extends AbstractExtension
             \json_encode($config)
         );
 
-        return $this->getService('twig')->render(
+        return $this->twig->render(
             '@StfalconTinymce/Script/init.html.twig',
             [
                 'tinymce_config' => $tinymceConfiguration,
