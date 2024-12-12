@@ -9,10 +9,9 @@
     </parameters>
 
     <services>
-        <!-- T W I G   H E L P E R S -->
+	<!-- T W I G   H E L P E R S -->
+	<defaults autowire="true" autoconfigure="true"/>
         <service id="twig.extension.stfalcon_tinymce" class="%stfalcon_tinymce.twig.extension.class%">
-            <argument type="service" id="service_container" />
-            <argument type="service" id="assets.packages" />
             <tag name="twig.extension" alias="stfalcon_tinymce" />
         </service>
     </services>
