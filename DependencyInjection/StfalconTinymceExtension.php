@@ -4,7 +4,7 @@ namespace Stfalcon\Bundle\TinymceBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
@@ -43,8 +43,8 @@ class StfalconTinymceExtension extends Extension
         $container->setParameter('stfalcon_tinymce.config', $config);
 
         // load dependency injection config
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('service.xml');
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('service.yaml');
     }
 
     /**
