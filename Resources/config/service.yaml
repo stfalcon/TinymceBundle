@@ -2,5 +2,10 @@
 # yaml-language-server: $schema=../vendor/symfony/dependency-injection/Loader/schema/services.schema.json
 
 services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
     twig.extension.stfalcon_tinymce:
         class: Stfalcon\Bundle\TinymceBundle\Twig\Extension\StfalconTinymceExtension
+        tags: ['twig.extension']
