@@ -10,7 +10,7 @@ function initTinyMCE(options) {
             var textareas = $('textarea');
 
             if (options.selector) {
-                textareas = $('textarea' + options.selector);
+                textareas = $(options.selector);
             }
             textareas.each(function() {
                 var textarea = $(this),
